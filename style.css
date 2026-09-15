@@ -1607,3 +1607,78 @@ body.black-mode .modal [style*="border-top"] {
 }
 
 
+/* =========================================================
+   ESTILOS COMPLETOS MODO BLACK - GASTOS PRÓXIMOS
+========================================================= */
+
+/* 1. Fondo general de la página en negro OLED puro */
+body.black-mode {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 2. Tarjetas de balance, cabeceras y elementos de la lista */
+body.black-mode header,
+body.black-mode .summary-card,
+body.black-mode .expense,
+body.black-mode .card,
+body.black-mode div[class*="card"],
+body.black-mode section {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border-color: #262626 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 3. Forzar que todos los textos, títulos y números sean blancos y legibles */
+body.black-mode h1, 
+body.black-mode h2, 
+body.black-mode h3, 
+body.black-mode p, 
+body.black-mode span, 
+body.black-mode strong,
+body.black-mode label {
+  color: #ffffff !important;
+}
+
+/* 4. Buscador y campos de entrada en tonos oscuros */
+body.black-mode input,
+body.black-mode select,
+body.black-mode textarea {
+  background-color: #181818 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+/* 5. Fondo con efecto blur y solapas/modales limpios en Modo Black */
+body.black-mode dialog::backdrop,
+body.black-mode .modal-backdrop,
+body.black-mode .backdrop,
+body.black-mode .modal.show {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+body.black-mode .modal,
+body.black-mode .modal-content,
+body.black-mode .modal-box {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* 6. Botones interactivos dentro de las vistas y modales */
+body.black-mode button,
+body.black-mode .secondary-button,
+body.black-mode .filter {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+body.black-mode .filter.active {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
