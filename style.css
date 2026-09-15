@@ -55,7 +55,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
   margin-bottom: 35px;
 }
 
@@ -80,12 +80,10 @@ body {
 }
 
 .header-actions {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-  justify-content: flex-end !important;
-  max-width: 60% !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .user-email {
@@ -106,6 +104,7 @@ body {
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(232, 93, 158, 0.25);
   transition: 0.2s ease;
+  white-space: nowrap;
 }
 
 .primary-button:hover {
@@ -123,12 +122,13 @@ body {
   border: 1px solid var(--border);
   background: white;
   color: var(--text);
-  padding: 12px 18px;
+  padding: 12px 16px;
   border-radius: 12px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: 0.2s ease;
+  white-space: nowrap;
 }
 
 .secondary-button:hover {
@@ -767,159 +767,7 @@ body.amounts-hidden .expense-amount strong::after {
 
 
 /* =========================================================
-   MODO OSCURO (Dark Aesthetic Pink)
-========================================================= */
-body.dark-mode {
-  background: #140e13;
-  color: #fceef3;
-}
-
-body.dark-mode .auth-card,
-body.dark-mode .summary-card,
-body.dark-mode .expense,
-body.dark-mode .modal,
-body.dark-mode .empty-state {
-  background: #211620;
-  border-color: #3b2334;
-  color: #fceef3;
-}
-
-body.dark-mode .main-card {
-  background: linear-gradient(135deg, #2b1825, #211620);
-}
-
-body.dark-mode .header h1 {
-  color: #ffdbe4;
-}
-
-body.dark-mode .header p,
-body.dark-mode .user-email {
-  color: #e5a7be;
-}
-
-body.dark-mode .eyebrow {
-  color: #ff9db4;
-}
-
-body.dark-mode .summary-card span,
-body.dark-mode .section-title span,
-body.dark-mode .expense-info p,
-body.dark-mode .expense-date,
-body.dark-mode .auth-subtitle,
-body.dark-mode .modal-header p,
-body.dark-mode .helper,
-body.dark-mode footer {
-  color: #b893a4;
-}
-
-body.dark-mode .expense-date strong {
-  color: #ffdbe4;
-}
-
-body.dark-mode .card-icon,
-body.dark-mode .small-icon,
-body.dark-mode .expense-icon,
-body.dark-mode .modal-icon,
-body.dark-mode .auth-logo {
-  background: #331d2b;
-  color: #ff9db4;
-}
-
-body.dark-mode .close-modal {
-  background: #2b1c2a;
-  color: #e5a7be;
-}
-
-body.dark-mode .close-modal:hover {
-  background: #3d233a;
-  color: #ffffff;
-}
-
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea,
-body.dark-mode .money-input {
-  background: #170f16;
-  border-color: #3b2334;
-  color: #fceef3;
-}
-
-body.dark-mode .money-input span {
-  color: #ff9db4;
-}
-
-body.dark-mode input:focus,
-body.dark-mode select:focus,
-body.dark-mode textarea:focus {
-  border-color: var(--pink);
-  box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.2);
-}
-
-body.dark-mode .secondary-button {
-  background: #211620;
-  color: #ff9db4;
-  border-color: #592e47;
-}
-
-body.dark-mode .secondary-button:hover {
-  background: #331d2b;
-  border-color: #e85d9e;
-  color: #ffdbe4;
-}
-
-body.dark-mode .filter {
-  background: #211620;
-  border-color: #3b2334;
-  color: #b893a4;
-}
-
-body.dark-mode .filter:hover {
-  border-color: #592e47;
-  color: #ffdbe4;
-}
-
-body.dark-mode .filter.active {
-  background: var(--pink);
-  border-color: var(--pink);
-  color: #ffffff;
-}
-
-body.dark-mode .action-button {
-  background: #2b1c2a;
-  border-color: #592e47;
-  color: #fceef3;
-}
-
-body.dark-mode .action-button:hover {
-  background: #3d233a;
-}
-
-body.dark-mode .type-option span {
-  border-color: #3b2334;
-  background: #191118;
-}
-
-body.dark-mode .type-option input:checked + span {
-  border-color: var(--pink);
-  background: #301726;
-}
-
-body.dark-mode .type-option small {
-  color: #b893a4;
-}
-
-body.dark-mode .badge.debt {
-  background: #3d1b2e;
-  color: #ffb0c2;
-}
-
-body.dark-mode .empty-state h3 {
-  color: #ffdbe4;
-}
-
-
-/* =========================================================
-   MODO AZUL (TOTALMENTE INTEGRADO)
+   MODO AZUL (ORIGINAL INTACTO Y PROLIJO)
 ========================================================= */
 body.dark-blue-mode,
 body.dark-blue-mode main.app,
@@ -973,22 +821,45 @@ body.dark-blue-mode .summary-card.main-card strong {
 }
 
 body.dark-blue-mode .modal-overlay {
-  background: rgba(2, 6, 15, 0.75) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  background: rgba(2, 6, 15, 0.85) !important;
 }
 
-body.dark-blue-mode .secondary-button,
-body.dark-blue-mode .primary-button,
-body.dark-blue-mode button:not(.action-button),
+body.dark-blue-mode input:not([type="radio"]),
 body.dark-blue-mode select,
-body.dark-blue-mode input[type="search"],
-body.dark-blue-mode input[type="date"],
-body.dark-blue-mode input[type="number"],
-body.dark-blue-mode input[type="text"],
-body.dark-blue-mode input[type="email"],
-body.dark-blue-mode input[type="password"],
-body.dark-blue-mode textarea {
+body.dark-blue-mode textarea,
+body.dark-blue-mode .money-input {
+  background-color: #070d1e !important;
+  color: #38bdf8 !important;
+  border: 1px solid #14244b !important;
+}
+
+body.dark-blue-mode .type-option span {
+  background-color: #070d1e !important;
+  border: 1px solid #14244b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode .type-option input:checked + span {
+  background-color: #10214a !important;
+  border-color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .close-modal {
+  background-color: #14244b !important;
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .modal-icon,
+body.dark-blue-mode .card-icon,
+body.dark-blue-mode .small-icon,
+body.dark-blue-mode .expense-icon {
+  background-color: #14244b !important;
+  color: #38bdf8 !important;
+}
+
+/* Botones en Modo Azul exactamente como estaban antes */
+body.dark-blue-mode .secondary-button,
+body.dark-blue-mode .primary-button {
   background-color: #14244b !important;
   color: #38bdf8 !important;
   border: 1px solid #1e3a8a !important;
@@ -1002,7 +873,7 @@ body.dark-blue-mode .primary-button:hover {
 
 
 /* =========================================================
-   MODO BLACK (IDÉNTICO AL MODO AZUL PERO EN ESCALA OLED Y BLUR)
+   MODO BLACK (COPIA EXACTA DE LA ESTRUCTURA DEL MODO AZUL)
 ========================================================= */
 body.black-mode {
   background-color: #000000 !important;
@@ -1024,6 +895,19 @@ body.black-mode dialog {
   color: #ffffff !important;
 }
 
+body.black-mode header.header {
+  padding: 28px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.black-mode .toolbar {
+  padding: 24px !important;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
 body.black-mode header.header .eyebrow,
 body.black-mode header.header h1,
 body.black-mode header.header p,
@@ -1036,38 +920,24 @@ body.black-mode .section-title span {
   color: #ffffff !important;
 }
 
-body.black-mode .secondary-button,
-body.black-mode .primary-button,
-body.black-mode button:not(.action-button),
-body.black-mode select,
-body.black-mode input[type="search"],
-body.black-mode input[type="date"],
-body.black-mode input[type="number"],
-body.black-mode input[type="text"],
-body.black-mode input[type="email"],
-body.black-mode input[type="password"],
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
+body.black-mode .summary-card.main-card strong {
   color: #ffffff !important;
-  border: 1px solid #333333 !important;
 }
 
-body.black-mode .secondary-button:hover,
-body.black-mode .primary-button:hover {
-  background-color: #262626 !important;
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-body.black-mode input::placeholder,
-body.black-mode textarea::placeholder {
-  color: #888888 !important;
-}
-
+/* Modal con desenfoque (blur) translúcido idéntico al modo azul */
 body.black-mode .modal-overlay {
   background: rgba(0, 0, 0, 0.65) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
+}
+
+body.black-mode input:not([type="radio"]),
+body.black-mode select,
+body.black-mode textarea,
+body.black-mode .money-input {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
 }
 
 body.black-mode .type-option span {
@@ -1094,23 +964,25 @@ body.black-mode .expense-icon {
   color: #ffffff !important;
 }
 
+/* Botones en Modo Black con idénticos efectos y transiciones */
+body.black-mode .secondary-button,
+body.black-mode .primary-button {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+body.black-mode .secondary-button:hover,
+body.black-mode .primary-button:hover {
+  background-color: #262626 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
-@media (max-width: 1024px) {
-  header.header {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .header-actions {
-    justify-content: flex-start !important;
-    margin-top: 15px !important;
-    max-width: 100% !important;
-  }
-}
-
 @media (max-width: 768px) {
   html, body {
     width: 100% !important;
@@ -1140,7 +1012,6 @@ body.black-mode .expense-icon {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
-    max-width: 100% !important;
     gap: 8px !important;
     margin-top: 15px !important;
     box-sizing: border-box !important;
@@ -1161,7 +1032,6 @@ body.black-mode .expense-icon {
     gap: 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    grid-template-columns: 1fr !important;
   }
 
   .summary-card {
