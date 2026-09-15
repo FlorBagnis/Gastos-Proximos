@@ -238,10 +238,12 @@ function setupThemeToggles() {
     document.body.classList.add("dark-mode");
     if (toggleThemeBtn) toggleThemeBtn.textContent = "☀️ Modo claro";
     if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
+    applyBlackModeInlineFixes(false);
   } else if (savedTheme === "blue") {
     document.body.classList.add("dark-blue-mode");
     if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "☀️ Modo claro";
     if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+    applyBlackModeInlineFixes(false);
   } else if (savedTheme === "black") {
     document.body.classList.add("black-mode");
     document.documentElement.classList.add("black-mode");
@@ -249,6 +251,7 @@ function setupThemeToggles() {
   } else {
     if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
     if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
+    applyBlackModeInlineFixes(false);
   }
 
   if (toggleThemeBtn) {
@@ -286,9 +289,9 @@ function setupThemeToggles() {
   }
 }
 
-// FUNCIÓN PARA CORREGIR TARJETAS BLANCAS Y FORZAR EL BLUR IDÉNTICO AL MODO AZUL
+// FUNCIÓN DE CORRECCIÓN DINÁMICA POR JS (TARJETAS + BOTONES HEADER)
 function applyBlackModeInlineFixes(isBlack) {
-  // Arreglar la tarjeta de balance blanca superior
+  // 1. Tarjetas de balance superiores
   const summaryCards = document.querySelectorAll(".summary-card, div[style*='background']");
   summaryCards.forEach(card => {
     if (isBlack) {
@@ -301,6 +304,31 @@ function applyBlackModeInlineFixes(isBlack) {
       card.style.backgroundColor = "";
       card.style.color = "";
       card.style.borderColor = "";
+    }
+  });
+
+  // 2. Botones de la cabecera / header (para forzar color y efectos en Modo Black)
+  const headerButtons = document.querySelectorAll(".header-actions button, .header-actions a");
+  headerButtons.forEach(btn => {
+    if (isBlack) {
+      btn.style.backgroundColor = "#1a1a1a";
+      btn.style.color = "#ffffff";
+      btn.style.borderColor = "#333333";
+      
+      btn.onmouseover = () => {
+        btn.style.backgroundColor = "#262626";
+        btn.style.borderColor = "#ffffff";
+      };
+      btn.onmouseout = () => {
+        btn.style.backgroundColor = "#1a1a1a";
+        btn.style.borderColor = "#333333";
+      };
+    } else {
+      btn.style.backgroundColor = "";
+      btn.style.color = "";
+      btn.style.borderColor = "";
+      btn.onmouseover = null;
+      btn.onmouseout = null;
     }
   });
 }
@@ -560,7 +588,6 @@ function mapCategoryToMensuales(category) {
 function render() {
   updateSummary();
   renderExpenses();
-  // Asegurar que las tarjetas nuevas también se pinten de negro si estamos en modo black
   if (document.body.classList.contains("black-mode")) {
     applyBlackModeInlineFixes(true);
   }
