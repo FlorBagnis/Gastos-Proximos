@@ -104,6 +104,47 @@
       color: #38bdf8 !important;
     }
 
+
+/* =========================================================
+       MODO BLACK: CORRECCIÓN DE TARJETAS Y BLUR
+    ========================================================= */
+    body.black-mode {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode header.header,
+    body.black-mode .toolbar,
+    body.black-mode .summary-card,
+    body.black-mode .summary-card.main-card,
+    body.black-mode .expense,
+    body.black-mode .auth-card,
+    body.black-mode .modal,
+    body.black-mode dialog {
+      background: #121212 !important;
+      background-color: #121212 !important;
+      border: 1px solid #262626 !important;
+      border-radius: 20px !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode .modal-overlay {
+      background: rgba(0, 0, 0, 0.65) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    body.black-mode input:not([type="radio"]),
+    body.black-mode select,
+    body.black-mode textarea,
+    body.black-mode .money-input {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      border: 1px solid #333333 !important;
+    }
+
+
+    
     /* FORZAR CONTENEDORES Y BOTONERA EN CELULARES */
     @media (max-width: 768px) {
       html, body {
