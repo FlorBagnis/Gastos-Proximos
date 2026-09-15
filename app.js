@@ -1,6 +1,6 @@
 /* ==========================================
    GASTOS PRÓXIMOS
-   INTEGRACIÓN BIDIRECCIONAL CON MENSUALES + DÓLARES + TRES TEMAS + ALERTAS + CSV + BUSCADOR
+   INTEGRACIÓN BIDIRECCIONAL CON MENSUALES + DÓLARES + MODO BLACK + ALERTAS + CSV + BUSCADOR
 ========================================== */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -227,11 +227,13 @@ onAuthStateChanged(auth, user => {
   currentUser = user;
 
   const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
-  document.body.classList.remove("dark-mode", "dark-blue-mode");
+  document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
   } else if (savedTheme === "blue") {
     document.body.classList.add("dark-blue-mode");
+  } else if (savedTheme === "black") {
+    document.body.classList.add("black-mode");
   }
 
   if (!user) {
@@ -258,10 +260,11 @@ onAuthStateChanged(auth, user => {
 });
 
 
-// GESTIÓN DE TRES TEMAS (CLARO, OSCURO Y AZUL)
+// GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
 function setupThemeToggles() {
   const toggleThemeBtn = $("toggleThemeBtn");
   const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
+  const blackThemeBtn = $("btnBlackMode");
   const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
 
   if (savedTheme === "dark") {
@@ -278,7 +281,7 @@ function setupThemeToggles() {
   if (toggleThemeBtn) {
     toggleThemeBtn.onclick = () => {
       const isDark = document.body.classList.toggle("dark-mode");
-      document.body.classList.remove("dark-blue-mode");
+      document.body.classList.remove("dark-blue-mode", "black-mode");
       localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
       toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
       if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
@@ -288,10 +291,18 @@ function setupThemeToggles() {
   if (toggleBlueThemeBtn) {
     toggleBlueThemeBtn.onclick = () => {
       const isBlue = document.body.classList.toggle("dark-blue-mode");
-      document.body.classList.remove("dark-mode");
+      document.body.classList.remove("dark-mode", "black-mode");
       localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
       toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
       if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+    };
+  }
+
+  if (blackThemeBtn) {
+    blackThemeBtn.onclick = () => {
+      const isBlack = document.body.classList.toggle("black-mode");
+      document.body.classList.remove("dark-mode", "dark-blue-mode");
+      localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
     };
   }
 }
@@ -876,7 +887,7 @@ $("csvBtn")?.addEventListener("click", () => {
 
 
 // ==========================================
-// EXPORTAR REPORTE A PDF (USA CDN GLOBAL)
+// EXPORTAR REPORTE A PDF (SOPORTE MODO BLACK)
 // ==========================================
 $("pdfBtn")?.addEventListener("click", () => {
   if (expenses.length === 0) {
@@ -894,10 +905,20 @@ $("pdfBtn")?.addEventListener("click", () => {
 
   const isDarkMode = document.body.classList.contains("dark-mode");
   const isBlueMode = document.body.classList.contains("dark-blue-mode");
+  const isBlackMode = document.body.classList.contains("black-mode");
 
   let pink, dark, light, headerBg, cardBorder, lineDivider, pageBgColor, footerColorGP;
 
-  if (isBlueMode) {
+  if (isBlackMode) {
+    pink = [255, 255, 255];
+    dark = [241, 245, 249];
+    light = [18, 18, 18];
+    headerBg = [10, 10, 10];
+    cardBorder = [40, 40, 40];
+    lineDivider = [30, 30, 30];
+    pageBgColor = [0, 0, 0];
+    footerColorGP = [150, 150, 150];
+  } else if (isBlueMode) {
     pink = [56, 189, 248];
     dark = [241, 245, 249];
     light = [15, 28, 63];
@@ -992,7 +1013,11 @@ $("pdfBtn")?.addEventListener("click", () => {
   });
 
   let y = 76;
-  pdf.setFillColor(...pink);
+  if (isBlackMode) {
+    pdf.setFillColor(30, 30, 30);
+  } else {
+    pdf.setFillColor(...pink);
+  }
   pdf.rect(15, y, 180, 7, "F");
 
   pdf.setTextColor(255, 255, 255);
