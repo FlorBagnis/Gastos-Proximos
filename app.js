@@ -223,18 +223,63 @@ $("logoutBtn").addEventListener("click", async () => {
   }
 });
 
-onAuthStateChanged(auth, user => {
-  currentUser = user;
 
+// GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
+function setupThemeToggles() {
+  const toggleThemeBtn = $("toggleThemeBtn");
+  const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
+  const blackThemeBtn = $("btnBlackMode");
   const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
+
   document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
+
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
+    if (toggleThemeBtn) toggleThemeBtn.textContent = "☀️ Modo claro";
+    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
   } else if (savedTheme === "blue") {
     document.body.classList.add("dark-blue-mode");
+    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "☀️ Modo claro";
+    if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
   } else if (savedTheme === "black") {
     document.body.classList.add("black-mode");
+  } else {
+    if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
   }
+
+  if (toggleThemeBtn) {
+    toggleThemeBtn.onclick = () => {
+      const isDark = document.body.classList.toggle("dark-mode");
+      document.body.classList.remove("dark-blue-mode", "black-mode");
+      localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
+      toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
+      if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
+    };
+  }
+
+  if (toggleBlueThemeBtn) {
+    toggleBlueThemeBtn.onclick = () => {
+      const isBlue = document.body.classList.toggle("dark-blue-mode");
+      document.body.classList.remove("dark-mode", "black-mode");
+      localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
+      toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
+      if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+    };
+  }
+
+  if (blackThemeBtn) {
+    blackThemeBtn.onclick = () => {
+      const isBlack = document.body.classList.toggle("black-mode");
+      document.body.classList.remove("dark-mode", "dark-blue-mode");
+      localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
+    };
+  }
+}
+
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  setupThemeToggles();
 
   if (!user) {
     stopFirestoreSync();
@@ -253,125 +298,11 @@ onAuthStateChanged(auth, user => {
 
   setDefaultDate();
   setupAmountsToggle();
-  setupThemeToggles();
   setupCurrencyIndicator();
   fetchDolarRate();
   startFirestoreSync();
 });
 
-
-
-/* ==========================================
-   GESTIÓN DE TEMAS CON FORZADO ABSOLUTO (BLACK OLED + BLUR)
-========================================== */
-function applyForcedBlackStyles(isBlack) {
-  let styleTag = document.getElementById("forced-black-styles");
-  if (isBlack) {
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = "forced-black-styles";
-      document.head.appendChild(styleTag);
-    }
-    styleTag.innerHTML = `
-      html.black-mode, body.black-mode, body.black-mode main, body.black-mode #appContent {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-      }
-      body.black-mode header,
-      body.black-mode .expense,
-      body.black-mode article,
-      body.black-mode div[class*="card"],
-      body.black-mode section,
-      body.black-mode .summary-card,
-      body.black-mode .modal,
-      body.black-mode .modal-content,
-      body.black-mode .modal-box,
-      body.black-mode dialog {
-        background-color: #121212 !important;
-        color: #ffffff !important;
-        border: 1px solid #262626 !important;
-      }
-      body.black-mode h1, body.black-mode h2, body.black-mode h3, 
-      body.black-mode p, body.black-mode span, body.black-mode strong, 
-      body.black-mode label, body.black-mode small {
-        color: #ffffff !important;
-      }
-      body.black-mode dialog::backdrop,
-      body.black-mode .modal-backdrop,
-      body.black-mode .backdrop,
-      body.black-mode .modal.show {
-        background-color: rgba(0, 0, 0, 0.8) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-      }
-      body.black-mode input, body.black-mode select, body.black-mode textarea, body.black-mode .type-selector {
-        background-color: #1a1a1a !important;
-        color: #ffffff !important;
-        border: 1px solid #333333 !important;
-      }
-    `;
-  } else {
-    if (styleTag) styleTag.remove();
-  }
-}
-
-function initThemeSystem() {
-  const toggleThemeBtn = $("toggleThemeBtn");
-  const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
-  const blackThemeBtn = $("btnBlackMode");
-  
-  const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
-  document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
-  document.documentElement.classList.remove("black-mode");
-  
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark-mode");
-    if (toggleThemeBtn) toggleThemeBtn.textContent = "☀️ Modo claro";
-    applyForcedBlackStyles(false);
-  } else if (savedTheme === "blue") {
-    document.body.classList.add("dark-blue-mode");
-    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "☀️ Modo claro";
-    applyForcedBlackStyles(false);
-  } else if (savedTheme === "black") {
-    document.body.classList.add("black-mode");
-    document.documentElement.classList.add("black-mode");
-    applyForcedBlackStyles(true);
-  }
-
-  if (toggleThemeBtn) {
-    toggleThemeBtn.onclick = () => {
-      const isDark = document.body.classList.toggle("dark-mode");
-      document.body.classList.remove("dark-blue-mode", "black-mode");
-      document.documentElement.classList.remove("black-mode");
-      localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
-      toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
-      if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
-      applyForcedBlackStyles(false);
-    };
-  }
-
-  if (toggleBlueThemeBtn) {
-    toggleBlueThemeBtn.onclick = () => {
-      const isBlue = document.body.classList.toggle("dark-blue-mode");
-      document.body.classList.remove("dark-mode", "black-mode");
-      document.documentElement.classList.remove("black-mode");
-      localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
-      toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
-      if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
-      applyForcedBlackStyles(false);
-    };
-  }
-
-  if (blackThemeBtn) {
-    blackThemeBtn.onclick = () => {
-      const isBlack = document.body.classList.toggle("black-mode");
-      document.documentElement.classList.toggle("black-mode", isBlack);
-      document.body.classList.remove("dark-mode", "dark-blue-mode");
-      localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
-      applyForcedBlackStyles(isBlack);
-    };
-  }
-}
 
 // SÍMBOLO DINÁMICO SEGÚN SELECTOR
 function setupCurrencyIndicator() {
@@ -1162,82 +1093,3 @@ if (togglePasswordBtn && authPasswordInput) {
     togglePasswordBtn.textContent = isPassword ? '🌸' : '🔒';
   });
 }
-
-
-
-/* ==========================================
-   GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
-========================================== */
-function initThemeSystem() {
-  const toggleThemeBtn = $("toggleThemeBtn");
-  const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
-  const blackThemeBtn = $("btnBlackMode");
-  
-  const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
-  document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
-  
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark-mode");
-    if (toggleThemeBtn) toggleThemeBtn.textContent = "☀️ Modo claro";
-  } else if (savedTheme === "blue") {
-    document.body.classList.add("dark-blue-mode");
-    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "☀️ Modo claro";
-  } else if (savedTheme === "black") {
-    document.body.classList.add("black-mode");
-  }
-
-  if (toggleThemeBtn) {
-    toggleThemeBtn.onclick = () => {
-      const isDark = document.body.classList.toggle("dark-mode");
-      document.body.classList.remove("dark-blue-mode", "black-mode");
-      localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
-      toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
-      if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
-    };
-  }
-
-  if (toggleBlueThemeBtn) {
-    toggleBlueThemeBtn.onclick = () => {
-      const isBlue = document.body.classList.toggle("dark-blue-mode");
-      document.body.classList.remove("dark-mode", "black-mode");
-      localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
-      toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
-      if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
-    };
-  }
-
-  if (blackThemeBtn) {
-    blackThemeBtn.onclick = () => {
-      const isBlack = document.body.classList.toggle("black-mode");
-      document.body.classList.remove("dark-mode", "dark-blue-mode");
-      localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
-    };
-  }
-}
-
-// Ejecutar al cargar la auth o al iniciar la página
-onAuthStateChanged(auth, user => {
-  currentUser = user;
-  initThemeSystem();
-
-  if (!user) {
-    stopFirestoreSync();
-    expenses = [];
-    $("authSection").classList.remove("hidden");
-    $("appContent").classList.add("hidden");
-    $("userEmail").textContent = "";
-    $("authForm").reset();
-    updateAuthInterface();
-    return;
-  }
-
-  $("authSection").classList.add("hidden");
-  $("appContent").classList.remove("hidden");
-  $("userEmail").textContent = user.email || "";
-
-  setDefaultDate();
-  setupAmountsToggle();
-  setupCurrencyIndicator();
-  fetchDolarRate();
-  startFirestoreSync();
-});
