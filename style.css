@@ -2007,3 +2007,91 @@ body.black-mode textarea {
   color: #ffffff !important;
   border: 1px solid #333333 !important;
 }
+
+
+/* =========================================================
+   MODO BLACK: PANTALLA OLED TOTAL Y BLUR DE MODAL IDÉNTICO
+========================================================= */
+
+/* 1. Forzar negro OLED puro en la raíz y en todo el cuerpo de la app */
+html.black-mode,
+html.black-mode body,
+body.black-mode {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* 2. Forzar negro en los contenedores principales y wrappers */
+body.black-mode main,
+body.black-mode .app-container,
+body.black-mode #appContent {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 3. Tarjetas, cabeceras y bloques de la app en gris OLED profundo */
+body.black-mode header,
+body.black-mode .expense,
+body.black-mode article,
+body.black-mode div[class*="card"],
+body.black-mode section,
+body.black-mode .summary-card,
+body.black-mode #emptyState {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+}
+
+/* 4. Textos, títulos y etiquetas en blanco */
+body.black-mode h1,
+body.black-mode h2,
+body.black-mode h3,
+body.black-mode p,
+body.black-mode span,
+body.black-mode strong,
+body.black-mode label,
+body.black-mode small {
+  color: #ffffff !important;
+}
+
+/* 5. EFECTO BLUR OSCURO TRANSLÚCIDO IDÉNTICO AL MODO AZUL */
+body.black-mode .modal {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 6. Caja interna del modal en negro OLED */
+body.black-mode .modal-content,
+body.black-mode .modal-box,
+body.black-mode dialog {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 7. Matar el recuadro blanco del selector de tipo (Gasto próximo / Deuda) */
+body.black-mode .modal label,
+body.black-mode .modal div[style*="background"],
+body.black-mode .modal input[type="radio"] + label,
+body.black-mode .type-selector,
+body.black-mode .modal fieldset,
+body.black-mode .modal label[style*="background"],
+body.black-mode label[style*="background-color"] {
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+/* 8. Inputs y campos de texto oscuros */
+body.black-mode input,
+body.black-mode select,
+body.black-mode textarea {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
