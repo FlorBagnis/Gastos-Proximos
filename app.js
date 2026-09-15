@@ -225,6 +225,7 @@ $("logoutBtn").addEventListener("click", async () => {
 
 
 // GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
+// GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
 function setupThemeToggles() {
   const toggleThemeBtn = $("toggleThemeBtn");
   const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
@@ -232,6 +233,7 @@ function setupThemeToggles() {
   const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
 
   document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
+  document.documentElement.classList.remove("black-mode");
 
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
@@ -243,6 +245,7 @@ function setupThemeToggles() {
     if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
   } else if (savedTheme === "black") {
     document.body.classList.add("black-mode");
+    document.documentElement.classList.add("black-mode");
   } else {
     if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
     if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
@@ -252,6 +255,7 @@ function setupThemeToggles() {
     toggleThemeBtn.onclick = () => {
       const isDark = document.body.classList.toggle("dark-mode");
       document.body.classList.remove("dark-blue-mode", "black-mode");
+      document.documentElement.classList.remove("black-mode");
       localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
       toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
       if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
@@ -262,6 +266,7 @@ function setupThemeToggles() {
     toggleBlueThemeBtn.onclick = () => {
       const isBlue = document.body.classList.toggle("dark-blue-mode");
       document.body.classList.remove("dark-mode", "black-mode");
+      document.documentElement.classList.remove("black-mode");
       localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
       toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
       if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
@@ -271,11 +276,14 @@ function setupThemeToggles() {
   if (blackThemeBtn) {
     blackThemeBtn.onclick = () => {
       const isBlack = document.body.classList.toggle("black-mode");
+      document.documentElement.classList.toggle("black-mode", isBlack);
       document.body.classList.remove("dark-mode", "dark-blue-mode");
       localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
     };
   }
 }
+
+
 
 onAuthStateChanged(auth, user => {
   currentUser = user;
