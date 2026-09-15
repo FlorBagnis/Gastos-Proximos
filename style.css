@@ -2276,3 +2276,48 @@ body.black-mode textarea {
   border: 1px solid #333333 !important;
 } 
 
+
+
+/* =========================================================
+   SOLUCIÓN DEFINITIVA MODO BLACK: TARJETAS Y BLUR DE MODAL
+========================================================= */
+
+/* 1. Forzar la primera tarjeta de balance blanca a gris OLED profundo */
+body.black-mode .summary-card:first-child,
+body.black-mode div[style*="background: white"],
+body.black-mode div[style*="background:#fff"],
+body.black-mode div[style*="background: #fff"],
+body.black-mode .card:first-child,
+body.black-mode .total-card {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+}
+
+/* 2. Forzar blur translúcido exacto al abrir la solapa / modal */
+body.black-mode .modal,
+body.black-mode dialog {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* 3. Asegurar que la caja del contenido del modal sea negra OLED */
+body.black-mode .modal > div,
+body.black-mode .modal-content,
+body.black-mode .modal-box {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 4. Selector de tipo (Gasto próximo / Deuda) completamente oscuro */
+body.black-mode .modal label[style],
+body.black-mode .modal div[style*="background"],
+body.black-mode .type-selector,
+body.black-mode .modal fieldset {
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+  color: #ffffff !important;
+}
