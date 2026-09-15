@@ -13,232 +13,265 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* =========================================================
-       MODO AZUL Y CORRECCIÓN MÓVIL ABSOLUTA
-    ========================================================= */
-    body.dark-blue-mode,
-    body.dark-blue-mode main.app,
-    body.dark-blue-mode dialog {
-      background-color: #070d1e !important;
-      color: #f1f5f9 !important;
+    <style>
+  /* =========================================================
+     MODO AZUL Y MODO BLACK (ESTILOS UNIFICADOS)
+  ========================================================= */
+  body.dark-blue-mode,
+  body.dark-blue-mode main.app,
+  body.dark-blue-mode dialog {
+    background-color: #070d1e !important;
+    color: #f1f5f9 !important;
+  }
+
+  body.dark-blue-mode header.header,
+  body.dark-blue-mode .toolbar,
+  body.dark-blue-mode .summary-card,
+  body.dark-blue-mode .summary-card.main-card,
+  body.dark-blue-mode .expense,
+  body.dark-blue-mode .auth-card,
+  body.dark-blue-mode .modal,
+  body.dark-blue-mode dialog {
+    background: #0f1c3f !important;
+    background-color: #0f1c3f !important;
+    border: 1px solid #14244b !important;
+    border-radius: 20px !important;
+    color: #f1f5f9 !important;
+  }
+
+  body.dark-blue-mode header.header {
+    padding: 28px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  body.dark-blue-mode .toolbar {
+    padding: 24px !important;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  body.dark-blue-mode header.header .eyebrow,
+  body.dark-blue-mode header.header h1,
+  body.dark-blue-mode header.header p,
+  body.dark-blue-mode .summary-card.main-card strong,
+  body.dark-blue-mode .modal-header h2,
+  body.dark-blue-mode .modal-header p,
+  body.dark-blue-mode .form-group label,
+  body.dark-blue-mode .section-title h2,
+  body.dark-blue-mode .section-title span {
+    color: #f1f5f9 !important;
+  }
+
+  body.dark-blue-mode .summary-card.main-card strong {
+    color: #38bdf8 !important;
+  }
+
+  body.dark-blue-mode .modal-overlay {
+    background: rgba(2, 6, 15, 0.85) !important;
+  }
+
+  body.dark-blue-mode input:not([type="radio"]),
+  body.dark-blue-mode select,
+  body.dark-blue-mode textarea,
+  body.dark-blue-mode .money-input {
+    background-color: #070d1e !important;
+    color: #38bdf8 !important;
+    border: 1px solid #14244b !important;
+  }
+
+  body.dark-blue-mode .type-option span {
+    background-color: #070d1e !important;
+    border: 1px solid #14244b !important;
+    color: #f1f5f9 !important;
+  }
+
+  body.dark-blue-mode .type-option input:checked + span {
+    background-color: #10214a !important;
+    border-color: #38bdf8 !important;
+  }
+
+  body.dark-blue-mode .close-modal {
+    background-color: #14244b !important;
+    color: #38bdf8 !important;
+  }
+
+  body.dark-blue-mode .modal-icon,
+  body.dark-blue-mode .card-icon,
+  body.dark-blue-mode .small-icon,
+  body.dark-blue-mode .expense-icon {
+    background-color: #14244b !important;
+    color: #38bdf8 !important;
+  }
+
+
+  /* =========================================================
+     MODO BLACK DEFINITIVO (TARJETAS, OLED Y BLUR DE MODAL)
+  ========================================================= */
+  body.black-mode {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  body.black-mode header.header,
+  body.black-mode .toolbar,
+  body.black-mode .summary-card,
+  body.black-mode .summary-card.main-card,
+  body.black-mode .expense,
+  body.black-mode .auth-card,
+  body.black-mode .modal,
+  body.black-mode dialog {
+    background: #121212 !important;
+    background-color: #121212 !important;
+    border: 1px solid #262626 !important;
+    border-radius: 20px !important;
+    color: #ffffff !important;
+  }
+
+  body.black-mode .summary-card.main-card strong,
+  body.black-mode header.header h1,
+  body.black-mode .modal-header h2,
+  body.black-mode .form-group label {
+    color: #ffffff !important;
+  }
+
+  body.black-mode .modal-overlay {
+    background: rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  body.black-mode input:not([type="radio"]),
+  body.black-mode select,
+  body.black-mode textarea,
+  body.black-mode .money-input {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #333333 !important;
+  }
+
+  body.black-mode .type-option span {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333333 !important;
+    color: #ffffff !important;
+  }
+
+  body.black-mode .type-option input:checked + span {
+    background-color: #262626 !important;
+    border-color: #ffffff !important;
+  }
+
+  body.black-mode .close-modal {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+
+  body.black-mode .modal-icon,
+  body.black-mode .card-icon,
+  body.black-mode .small-icon,
+  body.black-mode .expense-icon {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+
+
+  /* =========================================================
+     CORRECCIÓN RESPONSIVE PARA MÓVILES
+  ========================================================= */
+  @media (max-width: 768px) {
+    html, body {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0 !important;
+      padding: 4px !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode header.header,
-    body.dark-blue-mode .toolbar,
-    body.dark-blue-mode .summary-card,
-    body.dark-blue-mode .summary-card.main-card,
-    body.dark-blue-mode .expense,
-    body.dark-blue-mode .auth-card,
-    body.dark-blue-mode .modal,
-    body.dark-blue-mode dialog {
-      background: #0f1c3f !important;
-      background-color: #0f1c3f !important;
-      border: 1px solid #14244b !important;
-      border-radius: 20px !important;
-      color: #f1f5f9 !important;
+    .app {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode header.header {
-      padding: 28px !important;
-      margin-bottom: 24px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    header.header {
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 14px !important;
     }
 
-    body.dark-blue-mode .toolbar {
-      padding: 24px !important;
-      margin-top: 24px !important;
-      margin-bottom: 24px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    .header-actions {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      gap: 8px !important;
+      margin-top: 15px !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode header.header .eyebrow,
-    body.dark-blue-mode header.header h1,
-    body.dark-blue-mode header.header p,
-    body.dark-blue-mode .summary-card.main-card strong,
-    body.dark-blue-mode .modal-header h2,
-    body.dark-blue-mode .modal-header p,
-    body.dark-blue-mode .form-group label,
-    body.dark-blue-mode .section-title h2,
-    body.dark-blue-mode .section-title span {
-      color: #f1f5f9 !important;
+    .header-actions > * {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      text-align: center !important;
+      margin: 0 !important;
     }
 
-    body.dark-blue-mode .summary-card.main-card strong {
-      color: #38bdf8 !important;
+    .summary-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode .modal-overlay {
-      background: rgba(2, 6, 15, 0.85) !important;
+    .summary-card {
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode input:not([type="radio"]),
-    body.dark-blue-mode select,
-    body.dark-blue-mode textarea,
-    body.dark-blue-mode .money-input {
-      background-color: #070d1e !important;
-      color: #38bdf8 !important;
-      border: 1px solid #14244b !important;
+    .toolbar {
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 14px !important;
     }
 
-    body.dark-blue-mode .type-option span {
-      background-color: #070d1e !important;
-      border: 1px solid #14244b !important;
-      color: #f1f5f9 !important;
+    .toolbar input[type="search"] {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 10px !important;
     }
 
-    body.dark-blue-mode .type-option input:checked + span {
-      background-color: #10214a !important;
-      border-color: #38bdf8 !important;
+    .filters {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 6px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode .close-modal {
-      background-color: #14244b !important;
-      color: #38bdf8 !important;
+    .filters button {
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    body.dark-blue-mode .modal-icon,
-    body.dark-blue-mode .card-icon,
-    body.dark-blue-mode .small-icon,
-    body.dark-blue-mode .expense-icon {
-      background-color: #14244b !important;
-      color: #38bdf8 !important;
+    .expense {
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-
-/* =========================================================
-       MODO BLACK: CORRECCIÓN DE TARJETAS Y BLUR
-    ========================================================= */
-    body.black-mode {
-      background-color: #000000 !important;
-      color: #ffffff !important;
+    .modal {
+      width: 95% !important;
+      max-height: 85vh !important;
+      box-sizing: border-box !important;
     }
-
-    body.black-mode header.header,
-    body.black-mode .toolbar,
-    body.black-mode .summary-card,
-    body.black-mode .summary-card.main-card,
-    body.black-mode .expense,
-    body.black-mode .auth-card,
-    body.black-mode .modal,
-    body.black-mode dialog {
-      background: #121212 !important;
-      background-color: #121212 !important;
-      border: 1px solid #262626 !important;
-      border-radius: 20px !important;
-      color: #ffffff !important;
-    }
-
-    body.black-mode .modal-overlay {
-      background: rgba(0, 0, 0, 0.65) !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
-    }
-
-    body.black-mode input:not([type="radio"]),
-    body.black-mode select,
-    body.black-mode textarea,
-    body.black-mode .money-input {
-      background-color: #1a1a1a !important;
-      color: #ffffff !important;
-      border: 1px solid #333333 !important;
-    }
-
-
-    
-    /* FORZAR CONTENEDORES Y BOTONERA EN CELULARES */
-    @media (max-width: 768px) {
-      html, body {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: hidden !important;
-        margin: 0 !important;
-        padding: 4px !important;
-        box-sizing: border-box !important;
-      }
-
-      .app {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-      }
-
-      header.header {
-        display: block !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 14px !important;
-      }
-
-      .header-actions {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        gap: 8px !important;
-        margin-top: 15px !important;
-        box-sizing: border-box !important;
-      }
-
-      .header-actions > * {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-        text-align: center !important;
-        margin: 0 !important;
-      }
-
-      .summary-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .summary-card {
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .toolbar {
-        display: block !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 14px !important;
-      }
-
-      .toolbar input[type="search"] {
-        width: 100% !important;
-        box-sizing: border-box !important;
-        margin-bottom: 10px !important;
-      }
-
-      .filters {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 6px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .filters button {
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .expense {
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .modal {
-        width: 95% !important;
-        max-height: 85vh !important;
-        box-sizing: border-box !important;
-      }
-    }
+  }
   </style>
 </head>
 <body>
