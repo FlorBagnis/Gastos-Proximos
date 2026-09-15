@@ -1,6 +1,6 @@
 /* ==========================================
    GASTOS PRÓXIMOS
-   ESTILO ROSA Y MODOS OSCUROS TOTALES
+   ESTILO ROSA · RESPONSIVE + MODOS OSCURO, AZUL & BLACK
 ========================================== */
 
 * {
@@ -767,7 +767,159 @@ body.amounts-hidden .expense-amount strong::after {
 
 
 /* =========================================================
-   MODO AZUL (FONDO DE PANTALLA COMPLETO Y AZUL)
+   MODO OSCURO (ORIGINAL BORRAVINO / BORDÓ)
+========================================================= */
+body.dark-mode {
+  background: #140e13 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .auth-card,
+body.dark-mode .summary-card,
+body.dark-mode .expense,
+body.dark-mode .modal,
+body.dark-mode .empty-state {
+  background: #211620 !important;
+  border-color: #3b2334 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .main-card {
+  background: linear-gradient(135deg, #2b1825, #211620) !important;
+}
+
+body.dark-mode .header h1 {
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .header p,
+body.dark-mode .user-email {
+  color: #e5a7be !important;
+}
+
+body.dark-mode .eyebrow {
+  color: #ff9db4 !important;
+}
+
+body.dark-mode .summary-card span,
+body.dark-mode .section-title span,
+body.dark-mode .expense-info p,
+body.dark-mode .expense-date,
+body.dark-mode .auth-subtitle,
+body.dark-mode .modal-header p,
+body.dark-mode .helper,
+body.dark-mode footer {
+  color: #b893a4 !important;
+}
+
+body.dark-mode .expense-date strong {
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .card-icon,
+body.dark-mode .small-icon,
+body.dark-mode .expense-icon,
+body.dark-mode .modal-icon,
+body.dark-mode .auth-logo {
+  background: #331d2b !important;
+  color: #ff9db4 !important;
+}
+
+body.dark-mode .close-modal {
+  background: #2b1c2a !important;
+  color: #e5a7be !important;
+}
+
+body.dark-mode .close-modal:hover {
+  background: #3d233a !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .money-input {
+  background: #170f16 !important;
+  border-color: #3b2334 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .money-input span {
+  color: #ff9db4 !important;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+  border-color: var(--pink) !important;
+  box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.2) !important;
+}
+
+body.dark-mode .secondary-button {
+  background: #211620 !important;
+  color: #ff9db4 !important;
+  border-color: #592e47 !important;
+}
+
+body.dark-mode .secondary-button:hover {
+  background: #331d2b !important;
+  border-color: #e85d9e !important;
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .filter {
+  background: #211620 !important;
+  border-color: #3b2334 !important;
+  color: #b893a4 !important;
+}
+
+body.dark-mode .filter:hover {
+  border-color: #592e47 !important;
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .filter.active {
+  background: var(--pink) !important;
+  border-color: var(--pink) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .action-button {
+  background: #2b1c2a !important;
+  border-color: #592e47 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .action-button:hover {
+  background: #3d233a !important;
+}
+
+body.dark-mode .type-option span {
+  border-color: #3b2334 !important;
+  background: #191118 !important;
+}
+
+body.dark-mode .type-option input:checked + span {
+  border-color: var(--pink) !important;
+  background: #301726 !important;
+}
+
+body.dark-mode .type-option small {
+  color: #b893a4 !important;
+}
+
+body.dark-mode .badge.debt {
+  background: #3d1b2e !important;
+  color: #ffb0c2 !important;
+}
+
+body.dark-mode .empty-state h3 {
+  color: #ffdbe4 !important;
+}
+
+
+/* =========================================================
+   MODO AZUL (FONDO COMPLETO Y AZUL)
 ========================================================= */
 body.dark-blue-mode {
   background: #070d1e !important;
