@@ -1722,3 +1722,45 @@ body.black-mode strong,
 body.black-mode label {
   color: #ffffff !important;
 }
+
+
+
+
+
+/* =========================================================
+   MODO BLACK: GASTOS PRÓXIMOS (ESTILO DEFINITIVO)
+========================================================= */
+body.black-mode {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode header,
+body.black-mode .expense,
+body.black-mode article,
+body.black-mode div[class*="card"],
+body.black-mode section,
+body.black-mode .summary-card {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border-color: #262626 !important;
+}
+
+body.black-mode h1,
+body.black-mode h2,
+body.black-mode h3,
+body.black-mode p,
+body.black-mode span,
+body.black-mode strong,
+body.black-mode label {
+  color: #ffffff !important;
+}
+
+body.black-mode input,
+body.black-mode select,
+body.black-mode textarea {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
