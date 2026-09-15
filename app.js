@@ -344,8 +344,24 @@ function openModal() {
   modal.classList.add("show");
 }
 
+
+// MODAL CON EFECTO BLUR FORZADO EN MODO BLACK
+function openModal() {
+  modal.classList.add("show");
+  
+  // Si estamos en modo black, forzamos un backdrop con blur oscuro instantáneo
+  if (document.body.classList.contains("black-mode")) {
+    modal.style.backgroundColor = "rgba(0, 0, 0, 0.75)";
+    modal.style.backdropFilter = "blur(10px)";
+    modal.style.webkitBackdropFilter = "blur(10px)";
+  }
+}
+
 function closeModal() {
   modal.classList.remove("show");
+  modal.style.backgroundColor = "";
+  modal.style.backdropFilter = "";
+  modal.style.webkitBackdropFilter = "";
   expenseForm.reset();
   $("expenseId").value = "";
   if ($("currency")) $("currency").value = "ARS";
