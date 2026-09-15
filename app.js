@@ -486,7 +486,6 @@ function getCategoryIcon(category) {
     transporte: "🚗",
     otros: "📦",
     gimnasio: "💪",
-    gym: "💪",
     agua: "💧"
   };
   return icons[key] || "📦";
@@ -504,7 +503,6 @@ function getCategoryName(category) {
     transporte: "Transporte",
     otros: "Otros",
     gimnasio: "Gimnasio",
-    gym: "Gimnasio",
     agua: "Agua"
   };
   return names[key] || "Otros";
@@ -522,7 +520,6 @@ function mapCategoryToMensuales(category) {
     deudas: "Otros",
     otros: "Otros",
     gimnasio: "Gimnasio",
-    gym: "Gimnasio",
     agua: "Agua"
   };
   return map[key] || "Otros";
