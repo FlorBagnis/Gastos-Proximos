@@ -338,11 +338,11 @@ function setupAmountsToggle() {
   };
 }
 
-
-// MODAL CON FORZADO DIRECTO DE MODO BLACK
+// MODAL LIMPIO
 function openModal() {
   modal.classList.add("show");
-  
+}
+
   // Si estamos en modo black, forzamos los estilos inline en los elementos difíciles
   if (document.body.classList.contains("black-mode")) {
     const modalContent = modal.querySelector(".modal-content, .modal-box, dialog") || modal.firstElementChild;
