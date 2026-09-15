@@ -767,12 +767,16 @@ body.amounts-hidden .expense-amount strong::after {
 
 
 /* =========================================================
-   MODO AZUL (ORIGINAL INTACTO Y PROLIJO)
+   MODO AZUL (FONDO COMPLETO Y BOTONES ORIGINALES)
 ========================================================= */
-body.dark-blue-mode,
+body.dark-blue-mode {
+  background-color: #070d1e !important;
+  color: #f1f5f9 !important;
+}
+
 body.dark-blue-mode main.app,
 body.dark-blue-mode dialog {
-  background-color: #070d1e !important;
+  background-color: transparent !important;
   color: #f1f5f9 !important;
 }
 
@@ -821,7 +825,9 @@ body.dark-blue-mode .summary-card.main-card strong {
 }
 
 body.dark-blue-mode .modal-overlay {
-  background: rgba(2, 6, 15, 0.85) !important;
+  background: rgba(2, 6, 15, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
 }
 
 body.dark-blue-mode input:not([type="radio"]),
@@ -857,7 +863,6 @@ body.dark-blue-mode .expense-icon {
   color: #38bdf8 !important;
 }
 
-/* Botones en Modo Azul exactamente como estaban antes */
 body.dark-blue-mode .secondary-button,
 body.dark-blue-mode .primary-button {
   background-color: #14244b !important;
@@ -873,10 +878,16 @@ body.dark-blue-mode .primary-button:hover {
 
 
 /* =========================================================
-   MODO BLACK (COPIA EXACTA DE LA ESTRUCTURA DEL MODO AZUL)
+   MODO BLACK (FONDO OLED COMPLETO Y BOTONES IDÉNTICOS)
 ========================================================= */
 body.black-mode {
   background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode main.app,
+body.black-mode dialog {
+  background-color: transparent !important;
   color: #ffffff !important;
 }
 
@@ -924,7 +935,6 @@ body.black-mode .summary-card.main-card strong {
   color: #ffffff !important;
 }
 
-/* Modal con desenfoque (blur) translúcido idéntico al modo azul */
 body.black-mode .modal-overlay {
   background: rgba(0, 0, 0, 0.65) !important;
   backdrop-filter: blur(10px) !important;
@@ -964,7 +974,6 @@ body.black-mode .expense-icon {
   color: #ffffff !important;
 }
 
-/* Botones en Modo Black con idénticos efectos y transiciones */
 body.black-mode .secondary-button,
 body.black-mode .primary-button {
   background-color: #1a1a1a !important;
