@@ -12,9 +12,30 @@
   <!-- Librería jsPDF para exportar archivos PDF sin errores -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
- <style>
+
+  <style>
   /* =========================================================
-     MODO AZUL Y MODO BLACK (ESTILOS UNIFICADOS)
+     ESTILOS GENERALES Y ALINEACIÓN DE BOTONES DEL HEADER
+  ========================================================= */
+  .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    max-width: 58% !important;
+    justify-content: flex-end !important;
+  }
+
+  @media (max-width: 1100px) {
+    .header-actions {
+      max-width: 100% !important;
+      justify-content: flex-start !important;
+    }
+  }
+
+
+  /* =========================================================
+     MODO AZUL (BOTONES, TARJETAS Y MODAL CON BLUR)
   ========================================================= */
   body.dark-blue-mode,
   body.dark-blue-mode main.app,
@@ -68,45 +89,36 @@
   }
 
   body.dark-blue-mode .modal-overlay {
-    background: rgba(2, 6, 15, 0.85) !important;
+    background: rgba(2, 6, 15, 0.75) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
   }
 
-  body.dark-blue-mode input:not([type="radio"]),
+  body.dark-blue-mode .secondary-button,
+  body.dark-blue-mode .primary-button,
+  body.dark-blue-mode button:not(.action-button),
   body.dark-blue-mode select,
-  body.dark-blue-mode textarea,
-  body.dark-blue-mode .money-input {
-    background-color: #070d1e !important;
-    color: #38bdf8 !important;
-    border: 1px solid #14244b !important;
-  }
-
-  body.dark-blue-mode .type-option span {
-    background-color: #070d1e !important;
-    border: 1px solid #14244b !important;
-    color: #f1f5f9 !important;
-  }
-
-  body.dark-blue-mode .type-option input:checked + span {
-    background-color: #10214a !important;
-    border-color: #38bdf8 !important;
-  }
-
-  body.dark-blue-mode .close-modal {
+  body.dark-blue-mode input[type="search"],
+  body.dark-blue-mode input[type="date"],
+  body.dark-blue-mode input[type="number"],
+  body.dark-blue-mode input[type="text"],
+  body.dark-blue-mode input[type="email"],
+  body.dark-blue-mode input[type="password"],
+  body.dark-blue-mode textarea {
     background-color: #14244b !important;
     color: #38bdf8 !important;
+    border: 1px solid #1e3a8a !important;
   }
 
-  body.dark-blue-mode .modal-icon,
-  body.dark-blue-mode .card-icon,
-  body.dark-blue-mode .small-icon,
-  body.dark-blue-mode .expense-icon {
-    background-color: #14244b !important;
-    color: #38bdf8 !important;
+  body.dark-blue-mode .secondary-button:hover,
+  body.dark-blue-mode .primary-button:hover {
+    background-color: #1e3a8a !important;
+    color: #ffffff !important;
   }
 
 
   /* =========================================================
-     MODO BLACK DEFINITIVO (TARJETAS, OLED Y BLUR DE MODAL)
+     MODO BLACK DEFINITIVO (EFECTO BLUR, TARJETAS Y BOTONES IDÉNTICOS)
   ========================================================= */
   body.black-mode {
     background-color: #000000 !important;
@@ -128,26 +140,52 @@
     color: #ffffff !important;
   }
 
-  body.black-mode .summary-card.main-card strong,
+  body.black-mode header.header .eyebrow,
   body.black-mode header.header h1,
+  body.black-mode header.header p,
+  body.black-mode .summary-card.main-card strong,
   body.black-mode .modal-header h2,
-  body.black-mode .form-group label {
+  body.black-mode .modal-header p,
+  body.black-mode .form-group label,
+  body.black-mode .section-title h2,
+  body.black-mode .section-title span {
     color: #ffffff !important;
   }
 
+  /* Botones del header y generales en Modo Black con efectos idénticos */
+  body.black-mode .secondary-button,
+  body.black-mode .primary-button,
+  body.black-mode button:not(.action-button),
+  body.black-mode select,
+  body.black-mode input[type="search"],
+  body.black-mode input[type="date"],
+  body.black-mode input[type="number"],
+  body.black-mode input[type="text"],
+  body.black-mode input[type="email"],
+  body.black-mode input[type="password"],
+  body.black-mode textarea {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #333333 !important;
+  }
+
+  body.black-mode .secondary-button:hover,
+  body.black-mode .primary-button:hover {
+    background-color: #262626 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+
+  body.black-mode input::placeholder,
+  body.black-mode textarea::placeholder {
+    color: #888888 !important;
+  }
+
+  /* EFECTO BLUR TRANSLÚCIDO OSCURO EN MODALES (IDÉNTICO AL MODO AZUL) */
   body.black-mode .modal-overlay {
     background: rgba(0, 0, 0, 0.65) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body.black-mode input:not([type="radio"]),
-  body.black-mode select,
-  body.black-mode textarea,
-  body.black-mode .money-input {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-    border: 1px solid #333333 !important;
   }
 
   body.black-mode .type-option span {
@@ -207,6 +245,7 @@
       display: flex !important;
       flex-direction: column !important;
       width: 100% !important;
+      max-width: 100% !important;
       gap: 8px !important;
       margin-top: 15px !important;
       box-sizing: border-box !important;
@@ -271,8 +310,7 @@
       box-sizing: border-box !important;
     }
   }
-   
-  </style>
+</style>
 </head>
 <body>
 
