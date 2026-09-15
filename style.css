@@ -1549,3 +1549,61 @@ body.dark-blue-mode .toolbar {
     }
   </style>
 
+
+
+
+/* =========================================================
+   MODO BLACK: GASTOS PRÓXIMOS (FONDO BLUR Y MODALES)
+========================================================= */
+
+/* 1. Fondo de los modales (backdrop) con efecto translúcido y blur */
+body.black-mode dialog::backdrop,
+body.black-mode .modal-backdrop,
+body.black-mode .backdrop,
+body.black-mode .modal.show {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* 2. Tarjeta principal del modal con un gris oscuro uniforme */
+body.black-mode .modal,
+body.black-mode .modal-content,
+body.black-mode .modal-box,
+body.black-mode div[class*="modal"],
+body.black-mode div[class*="popup"] {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* 3. Eliminar cajitas interiores oscuras para que el fondo sea fluido */
+body.black-mode .modal header,
+body.black-mode .modal [class*="header"] {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 4. Forzar que todo texto dentro de los modales sea blanco */
+body.black-mode .modal *,
+body.black-mode .modal-content * {
+  color: #ffffff !important;
+}
+
+/* 5. Botones limpios y bien integrados en los modales */
+body.black-mode .modal button {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+/* 6. Limpiar líneas rectas o bordes feos internos */
+body.black-mode .modal hr,
+body.black-mode .modal [style*="border-top"] {
+  display: none !important;
+  border: none !important;
+}
+
+
