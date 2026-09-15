@@ -1,6 +1,6 @@
 /* ==========================================
    GASTOS PRÓXIMOS
-   ESTILO ROSA · RESPONSIVE + MODO OSCURO
+   ESTILO ROSA · RESPONSIVE + MODO OSCURO & AZUL & BLACK
 ========================================== */
 
 * {
@@ -50,7 +50,7 @@ body {
   padding: 45px 0;
 }
 
-/* HEADER */
+/* HEADER Y ALINEACIÓN DE BOTONES */
 .header {
   display: flex;
   justify-content: space-between;
@@ -80,10 +80,12 @@ body {
 }
 
 .header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  max-width: 60% !important;
 }
 
 .user-email {
@@ -733,169 +735,40 @@ body.amounts-hidden .expense-amount strong::after {
   justify-content: flex-end;
 }
 
-/* RESPONSIVE */
-@media (max-width: 850px) {
-  .summary-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .main-card {
-    grid-column: span 2;
-  }
-
-  .expense {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .expense-date {
-    display: none;
-  }
-}
-
-@media (max-width: 650px) {
-  .app {
-    width: 94%;
-    padding: 28px 0;
-  }
-
-  .header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .header .primary-button {
-    width: 100%;
-  }
-
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .main-card {
-    grid-column: auto;
-  }
-
-  .toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .filters {
-    width: 100%;
-  }
-
-  .filter {
-    flex: 1;
-  }
-
-  .expense {
-    grid-template-columns: auto 1fr;
-  }
-
-  .expense-amount {
-    grid-column: 2;
-    text-align: left;
-  }
-
-  .actions {
-    grid-column: 2;
-  }
-
-  .form-row,
-  .type-options {
-    grid-template-columns: 1fr;
-  }
-
-  .modal {
-    padding: 23px;
-    border-radius: 20px;
-  }
-
-  body.amounts-hidden .expense-amount strong::after {
-    justify-content: flex-start;
-  }
-}
-
-/* ==========================================
-   BOTONERA HEADER ELEGANTE Y COMPACTA
-========================================== */
-
-.header-actions {
+/* PASSWORD WRAPPER */
+.password-wrap {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;
 }
 
-/* Botón a MENSUALES */
-.btn-nav-app {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #ffffff;
-  color: var(--pink-dark);
-  border: 1px solid var(--border);
-  padding: 10px 16px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none !important;
-  box-shadow: 0 4px 12px rgba(232, 93, 158, 0.06);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+.password-wrap input {
+  width: 100%;
+  padding-right: 42px;
 }
 
-.btn-nav-app:hover {
-  background: var(--pink-light);
-  border-color: var(--pink);
-  transform: translateY(-1px);
-}
-
-/* Grupo de botones utilitarios */
-.actions-group {
-  display: flex;
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 3px;
-  box-shadow: 0 4px 12px rgba(232, 93, 158, 0.05);
-}
-
-.icon-action-btn {
+.toggle-password {
+  position: absolute;
+  right: 10px;
   background: transparent;
   border: none;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9px;
   cursor: pointer;
-  font-size: 15px;
-  transition: all 0.15s ease;
+  font-size: 16px;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  transition: transform 0.15s ease;
 }
 
-.icon-action-btn:hover {
-  background: var(--pink-light);
-  transform: scale(1.08);
-}
-
-.icon-action-btn.logout:hover {
-  background: #fff0f2;
-}
-
-/* Botón principal + Agregar */
-.add-main-btn {
-  padding: 11px 20px;
-  border-radius: 12px;
-  white-space: nowrap;
+.toggle-password:hover {
+  transform: scale(1.1);
 }
 
 
-/* ==========================================
+/* =========================================================
    MODO OSCURO (Dark Aesthetic Pink)
-========================================== */
+========================================================= */
 body.dark-mode {
   background: #140e13;
   color: #fceef3;
@@ -982,27 +855,16 @@ body.dark-mode textarea:focus {
   box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.2);
 }
 
-body.dark-mode .secondary-button,
-body.dark-mode .btn-nav-app,
-body.dark-mode .actions-group {
+body.dark-mode .secondary-button {
   background: #211620;
   color: #ff9db4;
   border-color: #592e47;
 }
 
-body.dark-mode .secondary-button:hover,
-body.dark-mode .btn-nav-app:hover {
+body.dark-mode .secondary-button:hover {
   background: #331d2b;
   border-color: #e85d9e;
   color: #ffdbe4;
-}
-
-body.dark-mode .icon-action-btn:hover {
-  background: #331d2b;
-}
-
-body.dark-mode .icon-action-btn.logout:hover {
-  background: #3d1b24;
 }
 
 body.dark-mode .filter {
@@ -1055,47 +917,9 @@ body.dark-mode .empty-state h3 {
   color: #ffdbe4;
 }
 
-body.dark-mode.amounts-hidden #totalPending::after,
-body.dark-mode.amounts-hidden #nextSevenDays::after,
-body.dark-mode.amounts-hidden #thisMonth::after,
-body.dark-mode.amounts-hidden #totalDebts::after,
-body.dark-mode.amounts-hidden .expense-amount strong::after,
-body.dark-mode.amounts-hidden #amount::after {
-  color: #ff9db4 !important;
-  background-color: transparent;
-}
-
-.password-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.password-wrap input {
-  width: 100%;
-  padding-right: 42px;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 10px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 4px;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  transition: transform 0.15s ease;
-}
-
-.toggle-password:hover {
-  transform: scale(1.1);
-}
 
 /* =========================================================
-   MODO AZUL OSCURO TOTAL E INQUEBRANTABLE
+   MODO AZUL (TOTALMENTE INTEGRADO)
 ========================================================= */
 body.dark-blue-mode,
 body.dark-blue-mode main.app,
@@ -1105,24 +929,55 @@ body.dark-blue-mode dialog {
 }
 
 body.dark-blue-mode header.header,
-body.dark-blue-mode .summary-card,
-body.dark-blue-mode .panel,
 body.dark-blue-mode .toolbar,
+body.dark-blue-mode .summary-card,
+body.dark-blue-mode .summary-card.main-card,
 body.dark-blue-mode .expense,
 body.dark-blue-mode .auth-card,
+body.dark-blue-mode .modal,
 body.dark-blue-mode dialog {
+  background: #0f1c3f !important;
   background-color: #0f1c3f !important;
-  border-color: #14244b !important;
+  border: 1px solid #14244b !important;
+  border-radius: 20px !important;
   color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode header.header {
+  padding: 28px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-blue-mode .toolbar {
+  padding: 24px !important;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
 }
 
 body.dark-blue-mode header.header .eyebrow,
 body.dark-blue-mode header.header h1,
-body.dark-blue-mode header.header p {
+body.dark-blue-mode header.header p,
+body.dark-blue-mode .summary-card.main-card strong,
+body.dark-blue-mode .modal-header h2,
+body.dark-blue-mode .modal-header p,
+body.dark-blue-mode .form-group label,
+body.dark-blue-mode .section-title h2,
+body.dark-blue-mode .section-title span {
   color: #f1f5f9 !important;
 }
 
-/* Botones e Inputs en Modo Azul */
+body.dark-blue-mode .summary-card.main-card strong {
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .modal-overlay {
+  background: rgba(2, 6, 15, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
 body.dark-blue-mode .secondary-button,
 body.dark-blue-mode .primary-button,
 body.dark-blue-mode button:not(.action-button),
@@ -1145,1179 +1000,209 @@ body.dark-blue-mode .primary-button:hover {
   color: #ffffff !important;
 }
 
-body.dark-blue-mode input::placeholder,
-body.dark-blue-mode textarea::placeholder {
-  color: #8fa5ca !important;
-}
-
-/* Categorías y badges en Modo Azul */
-body.dark-blue-mode .badge {
-  background-color: #14244b !important;
-  color: #38bdf8 !important;
-  border-color: #1e3a8a !important;
-}
-
-/* FORZAR TARJETA PRINCIPAL Y RESTO DE ELEMENTOS EN MODO AZUL */
-body.dark-blue-mode .summary-card.main-card,
-body.dark-blue-mode .summary-card,
-body.dark-blue-mode .expense,
-body.dark-blue-mode .empty-state {
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .main-card strong {
-  color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .card-icon,
-body.dark-blue-mode .small-icon,
-body.dark-blue-mode .expense-icon {
-  background-color: #14244b !important;
-  color: #38bdf8 !important;
-}
-
 
 /* =========================================================
-   FORZAR MODO AZUL TOTAL E INQUEBRANTABLE (TARJETA Y MODAL)
+   MODO BLACK (IDÉNTICO AL MODO AZUL PERO EN ESCALA OLED Y BLUR)
 ========================================================= */
-
-/* 1. Tarjeta principal de la izquierda (Total pendiente) */
-body.dark-blue-mode .summary-card.main-card {
-  background: #0f1c3f !important;
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .summary-card.main-card strong {
-  color: #38bdf8 !important;
-}
-
-/* 2. Fondo general del Modal y su contenedor */
-body.dark-blue-mode .modal-overlay {
-  background: rgba(4, 8, 20, 0.75) !important;
-}
-
-body.dark-blue-mode .modal {
-  background-color: #0f1c3f !important;
-  border: 1px solid #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal-header h2,
-body.dark-blue-mode .modal-header p,
-body.dark-blue-mode .form-group label {
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .close-modal {
-  background: #14244b !important;
-  color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .modal-icon {
-  background-color: #14244b !important;
-  color: #38bdf8 !important;
-}
-
-/* 3. Opciones de selección de tipo (Gasto próximo / Deuda) dentro del modal */
-body.dark-blue-mode .type-option span {
-  background-color: #070d1e !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .type-option input:checked + span {
-  background-color: #10214a !important;
-  border-color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .type-option strong {
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .type-option small,
-body.dark-blue-mode .helper {
-  color: #8fa5ca !important;
-}
-
-
-/* =========================================================
-   FORZAR MODO AZUL ABSOLUTO EN EL MODAL Y SUS ELEMENTOS
-========================================================= */
-body.dark-blue-mode .modal-overlay {
-  background: rgba(2, 6, 15, 0.85) !important;
-}
-
-body.dark-blue-mode .modal,
-body.dark-blue-mode .modal * {
-  background-color: #0f1c3f !important;
-  color: #f1f5f9 !important;
-  border-color: #14244b !important;
-}
-
-body.dark-blue-mode .modal input,
-body.dark-blue-mode .modal select,
-body.dark-blue-mode .modal textarea,
-body.dark-blue-mode .modal .money-input {
-  background-color: #070d1e !important;
-  color: #38bdf8 !important;
-  border: 1px solid #14244b !important;
-}
-
-body.dark-blue-mode .modal .type-option span {
-  background-color: #070d1e !important;
-  border: 1px solid #14244b !important;
-}
-
-body.dark-blue-mode .modal .type-option input:checked + span {
-  background-color: #10214a !important;
-  border-color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .modal .close-modal {
-  background-color: #14244b !important;
-  color: #38bdf8 !important;
-}
-
-
-/* =========================================================
-   FORZADO SUPREMO MODO AZUL (CORRECCIÓN FINAL)
-========================================================= */
-
-/* 1. Fondo de toda la página y contenedores principales */
-body.dark-blue-mode {
-  background: #070d1e !important;
-  background-color: #070d1e !important;
-  color: #f1f5f9 !important;
-}
-
-/* 2. Forzar la tarjeta principal de la izquierda que se quedaba blanca */
-body.dark-blue-mode .summary-card.main-card {
-  background: #0f1c3f !important;
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .summary-card.main-card strong {
-  color: #38bdf8 !important;
-}
-
-/* 3. Forzar absolutamente todo el interior del modal para que no quede nada blanco */
-body.dark-blue-mode .modal {
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal *,
-body.dark-blue-mode .modal-header h2,
-body.dark-blue-mode .modal-header p,
-body.dark-blue-mode .form-group label {
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal input,
-body.dark-blue-mode .modal select,
-body.dark-blue-mode .modal textarea {
-  background-color: #070d1e !important;
-  color: #38bdf8 !important;
-  border-color: #14244b !important;
-}
-
-
-
-/* =========================================================
-   FORZADO SUPREMO MODO AZUL (CORRECCIÓN FINAL)
-========================================================= */
-
-body.dark-blue-mode {
-  background-color: #070d1e !important;
-  color: #f1f5f9 !important;
-}
-
-/* Forzar tarjeta principal de la izquierda */
-body.dark-blue-mode .summary-card.main-card {
-  background: #0f1c3f !important;
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .summary-card.main-card strong {
-  color: #38bdf8 !important;
-}
-
-/* Forzar modal entero y sus elementos internos */
-body.dark-blue-mode .modal {
-  background-color: #0f1c3f !important;
-  border-color: #14244b !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal *,
-body.dark-blue-mode .modal-header h2,
-body.dark-blue-mode .modal-header p,
-body.dark-blue-mode .form-group label {
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal input,
-body.dark-blue-mode .modal select,
-body.dark-blue-mode .modal textarea {
-  background-color: #070d1e !important;
-  color: #38bdf8 !important;
-  border-color: #14244b !important;
-}
-
-
-/* =========================================================
-   CORRECCIÓN FINAL OPCIONES DEL MODAL EN MODO AZUL
-========================================================= */
-body.dark-blue-mode .modal .type-option span,
-body.dark-blue-mode .modal .type-option span * {
-  background-color: transparent !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal .type-option input:checked + span,
-body.dark-blue-mode .modal .type-option input:checked + span * {
-  background-color: #10214a !important;
-  color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .modal .type-option span strong {
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode .modal .type-option input:checked + span strong {
-  color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .modal .type-option span small {
-  color: #8fa5ca !important;
-}
-
-/* =========================================================
-   SOLUCIÓN DEFINITIVA FRANJAS OPCIONES MODAL MODO AZUL
-========================================================= */
-body.dark-blue-mode .modal .type-option span,
-body.dark-blue-mode .modal .type-option span strong,
-body.dark-blue-mode .modal .type-option span small {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-body.dark-blue-mode .modal .type-option input:checked + span {
-  background-color: #10214a !important;
-  border-color: #38bdf8 !important;
-}
-
-body.dark-blue-mode .modal .type-option input:checked + span strong {
-  color: #38bdf8 !important;
-}
-
-/* =========================================================
-   CORRECCIÓN FINAL DISEÑO HEADER Y TOOLBAR (MODO AZUL)
-========================================================= */
-body.dark-blue-mode header.header {
-  border-radius: 16px !important;
-  margin-bottom: 24px !important;
-  border: 1px solid #14244b !important;
-}
-
-body.dark-blue-mode .toolbar {
-  border-radius: 16px !important;
-  margin-top: 10px !important;
-  margin-bottom: 20px !important;
-  border: 1px solid #14244b !important;
-  padding: 20px !important;
-}
-
-
-/* =========================================================
-   DISEÑO UNIFICADO DE TARJETAS FLOTANTES (MODO AZUL)
-========================================================= */
-body.dark-blue-mode header.header {
-  background: #0f1c3f !important;
-  background-color: #0f1c3f !important;
-  border: 1px solid #14244b !important;
-  border-radius: 20px !important;
-  padding: 24px !important;
-  margin-bottom: 24px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-}
-
-body.dark-blue-mode .toolbar {
-  background: #0f1c3f !important;
-  background-color: #0f1c3f !important;
-  border: 1px solid #14244b !important;
-  border-radius: 20px !important;
-  padding: 24px !important;
-  margin-top: 24px !important;
-  margin-bottom: 24px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-}
-
-
-
-<style>
-    /* =========================================================
-       CORRECCIÓN RESPONSIVE PARA MÓVILES
-    ========================================================= */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px !important;
-        overflow-x: hidden !important;
-      }
-
-      .app {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      header.header {
-        padding: 16px !important;
-        border-radius: 16px !important;
-      }
-
-      .header-actions {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        gap: 8px !important;
-        margin-top: 15px !important;
-      }
-
-      .header-actions button,
-      .header-actions a {
-        width: 100% !important;
-        justify-content: center !important;
-        text-align: center !important;
-      }
-
-      .summary-grid {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
-      }
-
-      .toolbar {
-        padding: 16px !important;
-        border-radius: 16px !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-
-      .toolbar > div {
-        width: 100% !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-
-      .toolbar input[type="search"] {
-        width: 100% !important;
-        min-width: 100% !important;
-      }
-
-      .filters {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 6px !important;
-      }
-
-      .filters button {
-        width: 100% !important;
-        text-align: center !important;
-      }
-
-      .modal {
-        width: 92% !important;
-        max-height: 85vh !important;
-        padding: 16px !important;
-        border-radius: 16px !important;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  </style>
-
-
-
-
-/* =========================================================
-   MODO BLACK: GASTOS PRÓXIMOS (FONDO BLUR Y MODALES)
-========================================================= */
-
-/* 1. Fondo de los modales (backdrop) con efecto translúcido y blur */
-body.black-mode dialog::backdrop,
-body.black-mode .modal-backdrop,
-body.black-mode .backdrop,
-body.black-mode .modal.show {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* 2. Tarjeta principal del modal con un gris oscuro uniforme */
-body.black-mode .modal,
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode div[class*="modal"],
-body.black-mode div[class*="popup"] {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
-}
-
-/* 3. Eliminar cajitas interiores oscuras para que el fondo sea fluido */
-body.black-mode .modal header,
-body.black-mode .modal [class*="header"] {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* 4. Forzar que todo texto dentro de los modales sea blanco */
-body.black-mode .modal *,
-body.black-mode .modal-content * {
-  color: #ffffff !important;
-}
-
-/* 5. Botones limpios y bien integrados en los modales */
-body.black-mode .modal button {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
-
-/* 6. Limpiar líneas rectas o bordes feos internos */
-body.black-mode .modal hr,
-body.black-mode .modal [style*="border-top"] {
-  display: none !important;
-  border: none !important;
-}
-
-
-/* =========================================================
-   ESTILOS COMPLETOS MODO BLACK - GASTOS PRÓXIMOS
-========================================================= */
-
-/* 1. Fondo general de la página en negro OLED puro */
 body.black-mode {
   background-color: #000000 !important;
   color: #ffffff !important;
 }
 
-/* 2. Tarjetas de balance, cabeceras y elementos de la lista */
-body.black-mode header,
+body.black-mode header.header,
+body.black-mode .toolbar,
 body.black-mode .summary-card,
+body.black-mode .summary-card.main-card,
 body.black-mode .expense,
-body.black-mode .card,
-body.black-mode div[class*="card"],
-body.black-mode section {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border-color: #262626 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* 3. Forzar que todos los textos, títulos y números sean blancos y legibles */
-body.black-mode h1, 
-body.black-mode h2, 
-body.black-mode h3, 
-body.black-mode p, 
-body.black-mode span, 
-body.black-mode strong,
-body.black-mode label {
-  color: #ffffff !important;
-}
-
-/* 4. Buscador y campos de entrada en tonos oscuros */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #181818 !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
-
-/* 5. Fondo con efecto blur y solapas/modales limpios en Modo Black */
-body.black-mode dialog::backdrop,
-body.black-mode .modal-backdrop,
-body.black-mode .backdrop,
-body.black-mode .modal.show {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
+body.black-mode .auth-card,
 body.black-mode .modal,
-body.black-mode .modal-content,
-body.black-mode .modal-box {
+body.black-mode dialog {
+  background: #121212 !important;
   background-color: #121212 !important;
-  color: #ffffff !important;
   border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
 }
 
-/* 6. Botones interactivos dentro de las vistas y modales */
-body.black-mode button,
+body.black-mode header.header .eyebrow,
+body.black-mode header.header h1,
+body.black-mode header.header p,
+body.black-mode .summary-card.main-card strong,
+body.black-mode .modal-header h2,
+body.black-mode .modal-header p,
+body.black-mode .form-group label,
+body.black-mode .section-title h2,
+body.black-mode .section-title span {
+  color: #ffffff !important;
+}
+
 body.black-mode .secondary-button,
-body.black-mode .filter {
+body.black-mode .primary-button,
+body.black-mode button:not(.action-button),
+body.black-mode select,
+body.black-mode input[type="search"],
+body.black-mode input[type="date"],
+body.black-mode input[type="number"],
+body.black-mode input[type="text"],
+body.black-mode input[type="email"],
+body.black-mode input[type="password"],
+body.black-mode textarea {
   background-color: #1a1a1a !important;
   color: #ffffff !important;
   border: 1px solid #333333 !important;
 }
 
-body.black-mode .filter.active {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-}
-
-
-
-
-
-/* Estilo estético para el botón de Modo Black en la barra */
-#btnBlackMode {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-}
-
-/* Activación absoluta del Modo Black en Gastos Próximos */
-body.black-mode {
-  background-color: #000000 !important;
+body.black-mode .secondary-button:hover,
+body.black-mode .primary-button:hover {
+  background-color: #262626 !important;
   color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border-color: #262626 !important;
+body.black-mode input::placeholder,
+body.black-mode textarea::placeholder {
+  color: #888888 !important;
 }
 
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label {
-  color: #ffffff !important;
-}
-
-
-
-
-
-/* =========================================================
-   MODO BLACK: GASTOS PRÓXIMOS (ESTILO DEFINITIVO)
-========================================================= */
-body.black-mode {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border-color: #262626 !important;
-}
-
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label {
-  color: #ffffff !important;
-}
-
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border-color: #333333 !important;
-}
-
-
-
-
-/* =========================================================
-   MODO BLACK DEFINITIVO: FONDO NEGRO OLED Y BLUR EN SOLAPAS
-========================================================= */
-
-/* 1. Fondo de toda la página y contenedores principales en negro puro OLED */
-body.black-mode,
-body.black-mode main,
-body.black-mode .app-container,
-body.black-mode #appContent {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* 2. Tarjetas de balance y bloques de gastos en gris muy oscuro OLED */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* 3. Forzar tipografías blancas en toda la vista */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
-
-/* 4. Efecto blur y fondo translúcido oscuro al abrir modales/solapas */
-body.black-mode dialog::backdrop,
-body.black-mode .modal-backdrop,
-body.black-mode .backdrop,
-body.black-mode .modal.show {
-  background-color: rgba(0, 0, 0, 0.75) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* 5. Solapas/modales limpios en negro OLED */
-body.black-mode .modal,
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
-}
-
-/* 6. Matar recuadros blancos molestos en selectores internos de los modales */
-body.black-mode .modal label[style],
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
-
-/* 7. Campos de texto, inputs y selects dentro de las solapas */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #181818 !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
-
-
-
-/* =========================================================
-   FORZADO ABSOLUTO MODO BLACK: GASTOS PRÓXIMOS (FONDO, BLUR Y MODAL)
-========================================================= */
-
-/* 1. Fondo de toda la app en negro OLED puro */
-body.black-mode,
-body.black-mode main,
-body.black-mode #appContent {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* 2. Tarjetas y contenedores principales en gris oscuro OLED */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-}
-
-/* 3. Forzar tipografías totalmente blancas y legibles */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
-
-/* 4. Efecto BLUR y transparencia oscura elegante en el fondo al abrir solapas */
-body.black-mode dialog::backdrop,
-body.black-mode .modal-backdrop,
-body.black-mode .backdrop,
-body.black-mode .modal.show {
-  background-color: rgba(0, 0, 0, 0.65) !important;
+body.black-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.65) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
 }
 
-/* 5. Estilo interno de las solapas/modales en negro OLED */
-body.black-mode .modal,
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
-}
-
-/* 6. Matar el recuadro blanco feo del selector de tipo (Gasto próximo / Deuda) */
-body.black-mode .modal label,
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset,
-body.black-mode .modal label[style*="background"] {
+body.black-mode .type-option span {
   background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
-
-/* 7. Inputs, selects y campos de texto oscuros dentro del modal */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
   border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .type-option input:checked + span {
+  background-color: #262626 !important;
+  border-color: #ffffff !important;
+}
+
+body.black-mode .close-modal {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .modal-icon,
+body.black-mode .card-icon,
+body.black-mode .small-icon,
+body.black-mode .expense-icon {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
 }
 
 
 /* =========================================================
-   MÉTODO QUIRÚRGICO MODO BLACK: GASTOS PRÓXIMOS
+   RESPONSIVE
 ========================================================= */
+@media (max-width: 1024px) {
+  header.header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
 
-/* 1. Fondo general de la app en negro OLED */
-body.black-mode,
-body.black-mode main,
-body.black-mode #appContent {
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  .header-actions {
+    justify-content: flex-start !important;
+    margin-top: 15px !important;
+    max-width: 100% !important;
+  }
 }
 
-/* 2. Todas las tarjetas de balances y contenedores de la app */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card,
-body.black-mode #emptyState {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8) !important;
-}
+@media (max-width: 768px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    box-sizing: border-box !important;
+  }
 
-/* 3. Textos y títulos generales en blanco */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
+  .app {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
 
-/* 4. Efecto Blur oscuro en el fondo al abrir solapas */
-body.black-mode dialog::backdrop,
-body.black-mode .modal-backdrop,
-body.black-mode .backdrop,
-body.black-mode .modal.show {
-  background-color: rgba(0, 0, 0, 0.75) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-}
+  header.header {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+  }
 
-/* 5. Ventana de la solapa / modal principal */
-body.black-mode .modal,
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
-}
+  .header-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 8px !important;
+    margin-top: 15px !important;
+    box-sizing: border-box !important;
+  }
 
-/* 6. Matar el recuadro blanco del selector de tipo (Gasto próximo / Deuda) */
-body.black-mode .modal label,
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset,
-body.black-mode .modal label[style*="background"],
-body.black-mode label[style*="background-color"] {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
+  .header-actions > * {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
 
-/* 7. Inputs y campos dentro del modal */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
+  .summary-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    grid-template-columns: 1fr !important;
+  }
 
+  .summary-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* =========================================================
-   MODO BLACK: PANTALLA OLED TOTAL Y BLUR DE MODAL IDÉNTICO
-========================================================= */
+  .toolbar {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+  }
 
-/* 1. Forzar negro OLED puro en la raíz y en todo el cuerpo de la app */
-html.black-mode,
-html.black-mode body,
-body.black-mode {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-  min-height: 100vh;
-  width: 100%;
-}
+  .toolbar input[type="search"] {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 10px !important;
+  }
 
-/* 2. Forzar negro en los contenedores principales y wrappers */
-body.black-mode main,
-body.black-mode .app-container,
-body.black-mode #appContent {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
+  .filters {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* 3. Tarjetas, cabeceras y bloques de la app en gris OLED profundo */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card,
-body.black-mode #emptyState {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-}
+  .filters button {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* 4. Textos, títulos y etiquetas en blanco */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
+  .expense {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* 5. EFECTO BLUR OSCURO TRANSLÚCIDO IDÉNTICO AL MODO AZUL */
-body.black-mode .modal {
-  background-color: rgba(0, 0, 0, 0.65) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-}
-
-/* 6. Caja interna del modal en negro OLED */
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
-}
-
-/* 7. Matar el recuadro blanco del selector de tipo (Gasto próximo / Deuda) */
-body.black-mode .modal label,
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset,
-body.black-mode .modal label[style*="background"],
-body.black-mode label[style*="background-color"] {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
-
-/* 8. Inputs y campos de texto oscuros */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
-
-
-/* =========================================================
-   FORZADO OLED TOTAL & BLUR IDÉNTICO AL MODO AZUL (DEFINITIVO)
-========================================================= */
-
-/* Forzar negro absoluto en la raíz, body y cualquier contenedor principal */
-html.black-mode,
-html.black-mode body,
-body.black-mode,
-body.black-mode div,
-body.black-mode main,
-body.black-mode section,
-body.black-mode header,
-body.black-mode footer {
-  background-color: transparent; /* Permite heredar el negro sin bloqueos */
-}
-
-html.black-mode,
-body.black-mode {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* Forzar negro en los wrappers principales de tu app */
-body.black-mode .app-container,
-body.black-mode #appContent,
-body.black-mode main,
-body.black-mode .container {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* Tarjetas y bloques en gris OLED profundo */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section.card,
-body.black-mode .summary-card,
-body.black-mode #emptyState {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-}
-
-/* Textos totalmente blancos */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
-
-/* BLUR TRANSLÚCIDO OSCURO IDÉNTICO AL MODO AZUL PARA LOS MODALES */
-body.black-mode .modal {
-  background-color: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-}
-
-/* Caja del modal en negro OLED */
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
-}
-
-/* Matar el recuadro blanco del selector de tipo (Gasto próximo / Deuda) */
-body.black-mode .modal label,
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset,
-body.black-mode .modal label[style*="background"],
-body.black-mode label[style*="background-color"] {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
-
-/* Inputs y selects oscuros */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-}
-
-
-/* =========================================================
-   MODO BLACK DEFINITIVO: FONDO OLED GLOBAL Y BLUR DE MODAL
-========================================================= */
-
-/* 1. Forzar negro OLED puro en la raíz y en todo el cuerpo de la app */
-html.black-mode,
-html.black-mode body,
-body.black-mode {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* 2. Contenedores y wrappers principales */
-body.black-mode main,
-body.black-mode .app-container,
-body.black-mode #appContent {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* 3. Tarjetas, cabeceras y bloques en gris OLED profundo */
-body.black-mode header,
-body.black-mode .expense,
-body.black-mode article,
-body.black-mode div[class*="card"],
-body.black-mode section,
-body.black-mode .summary-card,
-body.black-mode #emptyState {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-}
-
-/* 4. Textos, títulos y etiquetas en blanco */
-body.black-mode h1,
-body.black-mode h2,
-body.black-mode h3,
-body.black-mode p,
-body.black-mode span,
-body.black-mode strong,
-body.black-mode label,
-body.black-mode small {
-  color: #ffffff !important;
-}
-
-/* 5. EFECTO BLUR TRANSLÚCIDO IDÉNTICO AL MODO AZUL */
-body.black-mode .modal {
-  background-color: rgba(0, 0, 0, 0.65) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-}
-
-/* 6. Caja interna del modal en negro OLED */
-body.black-mode .modal-content,
-body.black-mode .modal-box,
-body.black-mode dialog {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
-}
-
-/* 7. Matar el recuadro blanco del selector de tipo (Gasto próximo / Deuda) */
-body.black-mode .modal label,
-body.black-mode .modal div[style*="background"],
-body.black-mode .modal input[type="radio"] + label,
-body.black-mode .type-selector,
-body.black-mode .modal fieldset,
-body.black-mode .modal label[style*="background"],
-body.black-mode label[style*="background-color"] {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
-}
-
-/* 8. Inputs y campos de texto oscuros */
-body.black-mode input,
-body.black-mode select,
-body.black-mode textarea {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #333333 !important;
-} 
-
-
-
-/* =========================================================
-   SOLUCIÓN DEFINITIVA MODO BLACK: TARJETAS Y BLUR DE MODAL
-========================================================= */
-
-/* 1. Forzar la primera tarjeta de balance blanca a gris OLED profundo */
-body.black-mode .summary-card:first-child,
-body.black-mode div[style*="background: white"],
-body.black-mode div[style*="background:#fff"],
-body.black-mode div[style*="background: #fff"],
-body.black-mode .card:first-child,
-body.black-mode .total-card {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-}
-
-/* 2. Forzar blur translúcido exacto al abrir la solapa / modal */
-body.black-mode .modal,
-body.black-mode dialog {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-}
-
-/* 3. Asegurar que la caja del contenido del modal sea negra OLED */
-body.black-mode .modal > div,
-body.black-mode .modal-content,
-body.black-mode .modal-box {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border: 1px solid #262626 !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95) !important;
-}
-
-/* 4. Selector de tipo (Gasto próximo / Deuda) completamente oscuro */
-body.black-mode .modal label[style],
-body.black-mode .modal div[style*="background"],
-body.black-mode .type-selector,
-body.black-mode .modal fieldset {
-  background-color: #1a1a1a !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
+  .modal {
+    width: 95% !important;
+    max-height: 85vh !important;
+    box-sizing: border-box !important;
+  }
 }
