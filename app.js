@@ -1097,3 +1097,82 @@ if (togglePasswordBtn && authPasswordInput) {
     togglePasswordBtn.textContent = isPassword ? '🌸' : '🔒';
   });
 }
+
+
+
+/* ==========================================
+   GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
+========================================== */
+function initThemeSystem() {
+  const toggleThemeBtn = $("toggleThemeBtn");
+  const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
+  const blackThemeBtn = $("btnBlackMode");
+  
+  const savedTheme = localStorage.getItem("mensual_theme_mode") || "light";
+  document.body.classList.remove("dark-mode", "dark-blue-mode", "black-mode");
+  
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    if (toggleThemeBtn) toggleThemeBtn.textContent = "☀️ Modo claro";
+  } else if (savedTheme === "blue") {
+    document.body.classList.add("dark-blue-mode");
+    if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "☀️ Modo claro";
+  } else if (savedTheme === "black") {
+    document.body.classList.add("black-mode");
+  }
+
+  if (toggleThemeBtn) {
+    toggleThemeBtn.onclick = () => {
+      const isDark = document.body.classList.toggle("dark-mode");
+      document.body.classList.remove("dark-blue-mode", "black-mode");
+      localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
+      toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
+      if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
+    };
+  }
+
+  if (toggleBlueThemeBtn) {
+    toggleBlueThemeBtn.onclick = () => {
+      const isBlue = document.body.classList.toggle("dark-blue-mode");
+      document.body.classList.remove("dark-mode", "black-mode");
+      localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
+      toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
+      if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+    };
+  }
+
+  if (blackThemeBtn) {
+    blackThemeBtn.onclick = () => {
+      const isBlack = document.body.classList.toggle("black-mode");
+      document.body.classList.remove("dark-mode", "dark-blue-mode");
+      localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
+    };
+  }
+}
+
+// Ejecutar al cargar la auth o al iniciar la página
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  initThemeSystem();
+
+  if (!user) {
+    stopFirestoreSync();
+    expenses = [];
+    $("authSection").classList.remove("hidden");
+    $("appContent").classList.add("hidden");
+    $("userEmail").textContent = "";
+    $("authForm").reset();
+    updateAuthInterface();
+    return;
+  }
+
+  $("authSection").classList.add("hidden");
+  $("appContent").classList.remove("hidden");
+  $("userEmail").textContent = user.email || "";
+
+  setDefaultDate();
+  setupAmountsToggle();
+  setupCurrencyIndicator();
+  fetchDolarRate();
+  startFirestoreSync();
+});
