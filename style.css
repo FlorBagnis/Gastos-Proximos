@@ -1682,3 +1682,43 @@ body.black-mode .filter.active {
   background-color: #ffffff !important;
   color: #000000 !important;
 }
+
+
+
+
+
+/* Estilo estético para el botón de Modo Black en la barra */
+#btnBlackMode {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Activación absoluta del Modo Black en Gastos Próximos */
+body.black-mode {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode header,
+body.black-mode .expense,
+body.black-mode article,
+body.black-mode div[class*="card"],
+body.black-mode section,
+body.black-mode .summary-card {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border-color: #262626 !important;
+}
+
+body.black-mode h1,
+body.black-mode h2,
+body.black-mode h3,
+body.black-mode p,
+body.black-mode span,
+body.black-mode strong,
+body.black-mode label {
+  color: #ffffff !important;
+}
