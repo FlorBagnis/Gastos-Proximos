@@ -338,28 +338,41 @@ function setupAmountsToggle() {
   };
 }
 
-// MODAL LIMPIO
+
+// MODAL
 function openModal() {
   modal.classList.add("show");
 }
 
-  // Si estamos en modo black, forzamos los estilos inline en los elementos difíciles
-  if (document.body.classList.contains("black-mode")) {
-    const modalContent = modal.querySelector(".modal-content, .modal-box, dialog") || modal.firstElementChild;
-    if (modalContent) {
-      modalContent.style.backgroundColor = "#121212";
-      modalContent.style.color = "#ffffff";
-      modalContent.style.borderColor = "#262626";
-    }
-    
-    // Forzar el fondo oscuro y texto blanco en los selectores de tipo (Gasto próximo / Deuda)
-    modal.querySelectorAll("label, div[style*='background'], fieldset, span, p, h3").forEach(el => {
-      el.style.backgroundColor = "#1a1a1a";
-      el.style.color = "#ffffff";
-      el.style.borderColor = "#333333";
-    });
+function closeModal() {
+  modal.classList.remove("show");
+  expenseForm.reset();
+  $("expenseId").value = "";
+  if ($("currency")) $("currency").value = "ARS";
+  if ($("currencySymbol")) $("currencySymbol").textContent = "$";
+  $("modalTitle").textContent = "Agregar registro";
+  setDefaultDate();
+}
+
+openModalBtn.addEventListener("click", openModal);
+emptyAddBtn.addEventListener("click", openModal);
+closeModalBtn.addEventListener("click", closeModal);
+
+modal.addEventListener("click", event => {
+  if (event.target === modal) closeModal();
+});
+
+function setDefaultDate() {
+  const dateInput = $("date");
+  if (!dateInput.value) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    dateInput.value = `${year}-${month}-${day}`;
   }
 }
+
 
 // GUARDAR / EDITAR
 expenseForm.addEventListener("submit", async event => {
