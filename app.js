@@ -339,13 +339,7 @@ function setupAmountsToggle() {
 }
 
 
-// MODAL
-function openModal() {
-  modal.classList.add("show");
-}
-
-
-// MODAL CON EFECTO BLUR FORZADO EN MODO BLACK
+// MODAL CON EFECTO BLUR FORZADO EN MODO BLACK (ÚNICA VERSIÓN)
 function openModal() {
   modal.classList.add("show");
   
