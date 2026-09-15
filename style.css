@@ -1845,3 +1845,83 @@ body.black-mode textarea {
   color: #ffffff !important;
   border: 1px solid #333333 !important;
 }
+
+
+
+/* =========================================================
+   FORZADO ABSOLUTO MODO BLACK: GASTOS PRÓXIMOS (FONDO, BLUR Y MODAL)
+========================================================= */
+
+/* 1. Fondo de toda la app en negro OLED puro */
+body.black-mode,
+body.black-mode main,
+body.black-mode #appContent {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 2. Tarjetas y contenedores principales en gris oscuro OLED */
+body.black-mode header,
+body.black-mode .expense,
+body.black-mode article,
+body.black-mode div[class*="card"],
+body.black-mode section,
+body.black-mode .summary-card {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+}
+
+/* 3. Forzar tipografías totalmente blancas y legibles */
+body.black-mode h1,
+body.black-mode h2,
+body.black-mode h3,
+body.black-mode p,
+body.black-mode span,
+body.black-mode strong,
+body.black-mode label,
+body.black-mode small {
+  color: #ffffff !important;
+}
+
+/* 4. Efecto BLUR y transparencia oscura elegante en el fondo al abrir solapas */
+body.black-mode dialog::backdrop,
+body.black-mode .modal-backdrop,
+body.black-mode .backdrop,
+body.black-mode .modal.show {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 5. Estilo interno de las solapas/modales en negro OLED */
+body.black-mode .modal,
+body.black-mode .modal-content,
+body.black-mode .modal-box,
+body.black-mode dialog {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* 6. Matar el recuadro blanco feo del selector de tipo (Gasto próximo / Deuda) */
+body.black-mode .modal label,
+body.black-mode .modal div[style*="background"],
+body.black-mode .modal input[type="radio"] + label,
+body.black-mode .type-selector,
+body.black-mode .modal fieldset,
+body.black-mode .modal label[style*="background"] {
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+/* 7. Inputs, selects y campos de texto oscuros dentro del modal */
+body.black-mode input,
+body.black-mode select,
+body.black-mode textarea {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
