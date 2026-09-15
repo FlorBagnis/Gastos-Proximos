@@ -1,6 +1,6 @@
 /* ==========================================
    GASTOS PRÓXIMOS
-   ESTILO ROSA · RESPONSIVE + MODO OSCURO & AZUL & BLACK
+   ESTILO ROSA Y MODOS OSCUROS TOTALES
 ========================================== */
 
 * {
@@ -767,16 +767,11 @@ body.amounts-hidden .expense-amount strong::after {
 
 
 /* =========================================================
-   MODO AZUL (FONDO COMPLETO Y BOTONES ORIGINALES)
+   MODO AZUL (FONDO DE PANTALLA COMPLETO Y AZUL)
 ========================================================= */
 body.dark-blue-mode {
+  background: #070d1e !important;
   background-color: #070d1e !important;
-  color: #f1f5f9 !important;
-}
-
-body.dark-blue-mode main.app,
-body.dark-blue-mode dialog {
-  background-color: transparent !important;
   color: #f1f5f9 !important;
 }
 
@@ -878,16 +873,11 @@ body.dark-blue-mode .primary-button:hover {
 
 
 /* =========================================================
-   MODO BLACK (FONDO OLED COMPLETO Y BOTONES IDÉNTICOS)
+   MODO BLACK (FONDO DE PANTALLA COMPLETO Y NEGRO OLED)
 ========================================================= */
 body.black-mode {
+  background: #000000 !important;
   background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-body.black-mode main.app,
-body.black-mode dialog {
-  background-color: transparent !important;
   color: #ffffff !important;
 }
 
