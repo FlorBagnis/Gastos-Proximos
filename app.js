@@ -224,8 +224,7 @@ $("logoutBtn").addEventListener("click", async () => {
 });
 
 
-// GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
-// GESTIÓN DE TEMAS (CLARO, OSCURO, AZUL Y BLACK)
+// GESTIÓN DE TEMAS CON APLICACIÓN DINÁMICA DE BLUR Y OLED
 function setupThemeToggles() {
   const toggleThemeBtn = $("toggleThemeBtn");
   const toggleBlueThemeBtn = $("toggleBlueThemeBtn");
@@ -246,6 +245,7 @@ function setupThemeToggles() {
   } else if (savedTheme === "black") {
     document.body.classList.add("black-mode");
     document.documentElement.classList.add("black-mode");
+    applyBlackModeInlineFixes(true);
   } else {
     if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
     if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
@@ -259,6 +259,7 @@ function setupThemeToggles() {
       localStorage.setItem("mensual_theme_mode", isDark ? "dark" : "light");
       toggleThemeBtn.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
       if (toggleBlueThemeBtn) toggleBlueThemeBtn.textContent = "💙 Modo Azul";
+      applyBlackModeInlineFixes(false);
     };
   }
 
@@ -270,6 +271,7 @@ function setupThemeToggles() {
       localStorage.setItem("mensual_theme_mode", isBlue ? "blue" : "light");
       toggleBlueThemeBtn.textContent = isBlue ? "☀️ Modo claro" : "💙 Modo Azul";
       if (toggleThemeBtn) toggleThemeBtn.textContent = "🌙 Modo oscuro";
+      applyBlackModeInlineFixes(false);
     };
   }
 
@@ -279,11 +281,29 @@ function setupThemeToggles() {
       document.documentElement.classList.toggle("black-mode", isBlack);
       document.body.classList.remove("dark-mode", "dark-blue-mode");
       localStorage.setItem("mensual_theme_mode", isBlack ? "black" : "light");
+      applyBlackModeInlineFixes(isBlack);
     };
   }
 }
 
-
+// FUNCIÓN PARA CORREGIR TARJETAS BLANCAS Y FORZAR EL BLUR IDÉNTICO AL MODO AZUL
+function applyBlackModeInlineFixes(isBlack) {
+  // Arreglar la tarjeta de balance blanca superior
+  const summaryCards = document.querySelectorAll(".summary-card, div[style*='background']");
+  summaryCards.forEach(card => {
+    if (isBlack) {
+      if (card.style.backgroundColor === "rgb(255, 255, 255)" || card.style.backgroundColor === "white" || !card.style.backgroundColor) {
+        card.style.backgroundColor = "#121212";
+        card.style.color = "#ffffff";
+        card.style.borderColor = "#262626";
+      }
+    } else {
+      card.style.backgroundColor = "";
+      card.style.color = "";
+      card.style.borderColor = "";
+    }
+  });
+}
 
 onAuthStateChanged(auth, user => {
   currentUser = user;
@@ -347,13 +367,12 @@ function setupAmountsToggle() {
 }
 
 
-// MODAL CON EFECTO BLUR FORZADO EN MODO BLACK (ÚNICA VERSIÓN)
+// MODAL CON BLUR EXACTO AL ABRIR
 function openModal() {
   modal.classList.add("show");
   
-  // Si estamos en modo black, forzamos un backdrop con blur oscuro instantáneo
   if (document.body.classList.contains("black-mode")) {
-    modal.style.backgroundColor = "rgba(0, 0, 0, 0.75)";
+    modal.style.backgroundColor = "rgba(0, 0, 0, 0.55)";
     modal.style.backdropFilter = "blur(10px)";
     modal.style.webkitBackdropFilter = "blur(10px)";
   }
@@ -494,6 +513,7 @@ function getCategoryIcon(category) {
     transporte: "🚗",
     otros: "📦",
     gimnasio: "💪",
+    gym: "💪",
     agua: "💧"
   };
   return icons[key] || "📦";
@@ -511,6 +531,7 @@ function getCategoryName(category) {
     transporte: "Transporte",
     otros: "Otros",
     gimnasio: "Gimnasio",
+    gym: "Gimnasio",
     agua: "Agua"
   };
   return names[key] || "Otros";
@@ -528,6 +549,7 @@ function mapCategoryToMensuales(category) {
     deudas: "Otros",
     otros: "Otros",
     gimnasio: "Gimnasio",
+    gym: "Gimnasio",
     agua: "Agua"
   };
   return map[key] || "Otros";
@@ -538,6 +560,10 @@ function mapCategoryToMensuales(category) {
 function render() {
   updateSummary();
   renderExpenses();
+  // Asegurar que las tarjetas nuevas también se pinten de negro si estamos en modo black
+  if (document.body.classList.contains("black-mode")) {
+    applyBlackModeInlineFixes(true);
+  }
 }
 
 function getFilteredExpenses() {
@@ -1093,7 +1119,7 @@ $("pdfBtn")?.addEventListener("click", () => {
   pdf.setTextColor(...footerColorGP);
   pdf.text("Gastos Próximos · Creado por Flor Bagnis", 15, 287);
 
-  pdf.save(`Gastos-Proximos-${new Date().toISOString().slice(0, 10)}.pdf`);
+  pdf.save(`Gastos-Proximos-${new Date().toISOString().slice(0, 10)}.csv`.replace(".csv", ".pdf"));
 });
 
 
