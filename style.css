@@ -1257,3 +1257,76 @@ body.dark-blue-mode .action-button:hover {
   color: #ffffff !important;
 }
 
+
+
+/* =========================================================
+   SCROLL RESPONSIVE PARA GASTOS PRÓXIMOS & DEUDAS
+========================================================= */
+
+/* Vista en PC: hasta ~15 filas visibles con scroll suave */
+.table-wrap,
+.table-container,
+.upcoming-table-container,
+.debts-table-container {
+  max-height: 620px !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain !important;
+  scroll-behavior: smooth !important;
+  border-radius: 12px;
+  display: block !important;
+}
+
+/* Vista en Celular: tamaño compacto adaptable */
+@media (max-width: 768px) {
+  .table-wrap,
+  .table-container,
+  .upcoming-table-container,
+  .debts-table-container {
+    max-height: 380px !important;
+  }
+}
+
+/* Encabezados de tabla pegados arriba */
+.table-wrap table thead,
+.table-wrap table thead th,
+.table-container table thead,
+.table-container table thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 5 !important;
+}
+
+/* Barra de desplazamiento estética */
+.table-wrap::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.table-wrap::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrap::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb {
+  background: #f29cb5;
+  border-radius: 10px;
+}
+
+/* Ajustes de scroll según el tema */
+body.dark-mode .table-wrap::-webkit-scrollbar-thumb,
+body.dark-mode .table-container::-webkit-scrollbar-thumb {
+  background: #6b3b4a;
+}
+body.dark-blue-mode .table-wrap::-webkit-scrollbar-thumb,
+body.dark-blue-mode .table-container::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+}
+body.black-mode .table-wrap::-webkit-scrollbar-thumb,
+body.black-mode .table-container::-webkit-scrollbar-thumb {
+  background: #333333;
+}
+
