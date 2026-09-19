@@ -429,14 +429,18 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  // Usuario conectado: ocultar login y mostrar app principal
+ // Usuario conectado: ocultar login y mostrar app principal
   if (authSec) {
     authSec.classList.add("hidden");
-    authSec.style.display = "none";
+    authSec.style.setProperty("display", "none", "important");
   }
   if (appCont) {
     appCont.classList.remove("hidden");
-    appCont.style.display = "block";
+    appCont.style.setProperty("display", "block", "important");
+    appCont.style.setProperty("visibility", "visible", "important");
+    appCont.style.setProperty("opacity", "1", "important");
+    appCont.style.setProperty("width", "100%", "important");
+    appCont.style.setProperty("min-height", "100vh", "important");
   }
   if ($("userEmail")) $("userEmail").textContent = user.email || "";
 
