@@ -9,326 +9,303 @@
   <meta name="format-detection" content="telephone=no">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Librería jsPDF para exportar archivos PDF sin errores -->
+  <!-- Librería jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-
-<style>
-  /* =========================================================
-     ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
-  ========================================================= */
-  header.header {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    gap: 20px !important;
-  }
-
-  .header-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-end !important;
-    flex: 1 !important;
-  }
-
-
-  /* =========================================================
-     MODO AZUL
-  ========================================================= */
-  body.dark-blue-mode,
-  body.dark-blue-mode main.app,
-  body.dark-blue-mode dialog {
-    background-color: #070d1e !important;
-    color: #f1f5f9 !important;
-  }
-
-  body.dark-blue-mode header.header,
-  body.dark-blue-mode .toolbar,
-  body.dark-blue-mode .summary-card,
-  body.dark-blue-mode .summary-card.main-card,
-  body.dark-blue-mode .expense,
-  body.dark-blue-mode .auth-card,
-  body.dark-blue-mode .modal,
-  body.dark-blue-mode dialog {
-    background: #0f1c3f !important;
-    background-color: #0f1c3f !important;
-    border: 1px solid #14244b !important;
-    border-radius: 20px !important;
-    color: #f1f5f9 !important;
-  }
-
-  body.dark-blue-mode header.header {
-    padding: 28px !important;
-    margin-bottom: 24px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-  }
-
-  body.dark-blue-mode .toolbar {
-    padding: 24px !important;
-    margin-top: 24px !important;
-    margin-bottom: 24px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-  }
-
-  body.dark-blue-mode header.header .eyebrow,
-  body.dark-blue-mode header.header h1,
-  body.dark-blue-mode header.header p,
-  body.dark-blue-mode .summary-card.main-card strong,
-  body.dark-blue-mode .modal-header h2,
-  body.dark-blue-mode .modal-header p,
-  body.dark-blue-mode .form-group label,
-  body.dark-blue-mode .section-title h2,
-  body.dark-blue-mode .section-title span {
-    color: #f1f5f9 !important;
-  }
-
-  body.dark-blue-mode .summary-card.main-card strong {
-    color: #38bdf8 !important;
-  }
-
-  body.dark-blue-mode .modal-overlay {
-    background: rgba(2, 6, 15, 0.75) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body.dark-blue-mode .secondary-button,
-  body.dark-blue-mode .primary-button,
-  body.dark-blue-mode button:not(.action-button),
-  body.dark-blue-mode select,
-  body.dark-blue-mode input[type="search"],
-  body.dark-blue-mode input[type="date"],
-  body.dark-blue-mode input[type="number"],
-  body.dark-blue-mode input[type="text"],
-  body.dark-blue-mode input[type="email"],
-  body.dark-blue-mode input[type="password"],
-  body.dark-blue-mode textarea {
-    background-color: #14244b !important;
-    color: #38bdf8 !important;
-    border: 1px solid #1e3a8a !important;
-  }
-
-  body.dark-blue-mode .secondary-button:hover,
-  body.dark-blue-mode .primary-button:hover {
-    background-color: #1e3a8a !important;
-    color: #ffffff !important;
-  }
-
-
-  /* =========================================================
-     MODO BLACK DEFINITIVO (EFECTO BLUR, TARJETAS Y BOTONES IDÉNTICOS)
-  ========================================================= */
-  body.black-mode {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-  }
-
-  body.black-mode header.header,
-  body.black-mode .toolbar,
-  body.black-mode .summary-card,
-  body.black-mode .summary-card.main-card,
-  body.black-mode .expense,
-  body.black-mode .auth-card,
-  body.black-mode .modal,
-  body.black-mode dialog {
-    background: #121212 !important;
-    background-color: #121212 !important;
-    border: 1px solid #262626 !important;
-    border-radius: 20px !important;
-    color: #ffffff !important;
-  }
-
-  body.black-mode header.header .eyebrow,
-  body.black-mode header.header h1,
-  body.black-mode header.header p,
-  body.black-mode .summary-card.main-card strong,
-  body.black-mode .modal-header h2,
-  body.black-mode .modal-header p,
-  body.black-mode .form-group label,
-  body.black-mode .section-title h2,
-  body.black-mode .section-title span {
-    color: #ffffff !important;
-  }
-
-  /* Botones del header y generales en Modo Black con efectos idénticos al azul */
-  body.black-mode .secondary-button,
-  body.black-mode .primary-button,
-  body.black-mode button:not(.action-button),
-  body.black-mode select,
-  body.black-mode input[type="search"],
-  body.black-mode input[type="date"],
-  body.black-mode input[type="number"],
-  body.black-mode input[type="text"],
-  body.black-mode input[type="email"],
-  body.black-mode input[type="password"],
-  body.black-mode textarea {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-    border: 1px solid #333333 !important;
-  }
-
-  body.black-mode .secondary-button:hover,
-  body.black-mode .primary-button:hover {
-    background-color: #262626 !important;
-    color: #ffffff !important;
-    border-color: #ffffff !important;
-  }
-
-  body.black-mode input::placeholder,
-  body.black-mode textarea::placeholder {
-    color: #888888 !important;
-  }
-
-  /* EFECTO BLUR TRANSLÚCIDO OSCURO EN MODALES (IDÉNTICO AL MODO AZUL) */
-  body.black-mode .modal-overlay {
-    background: rgba(0, 0, 0, 0.65) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body.black-mode .type-option span {
-    background-color: #1a1a1a !important;
-    border: 1px solid #333333 !important;
-    color: #ffffff !important;
-  }
-
-  body.black-mode .type-option input:checked + span {
-    background-color: #262626 !important;
-    border-color: #ffffff !important;
-  }
-
-  body.black-mode .close-modal {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-  }
-
-  body.black-mode .modal-icon,
-  body.black-mode .card-icon,
-  body.black-mode .small-icon,
-  body.black-mode .expense-icon {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-  }
-
-
-  /* =========================================================
-     CORRECCIÓN RESPONSIVE PARA MÓVILES
-  ========================================================= */
-  @media (max-width: 1024px) {
+  <style>
+    /* =========================================================
+       ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
+    ========================================================= */
     header.header {
-      flex-direction: column !important;
-      align-items: stretch !important;
-    }
-
-    .header-actions {
-      justify-content: flex-start !important;
-      margin-top: 15px !important;
-    }
-  }
-
-  @media (max-width: 768px) {
-    html, body {
-      width: 100% !important;
-      max-width: 100% !important;
-      overflow-x: hidden !important;
-      margin: 0 !important;
-      padding: 4px !important;
-      box-sizing: border-box !important;
-    }
-
-    .app {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      box-sizing: border-box !important;
-    }
-
-    header.header {
-      display: block !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-      padding: 14px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 20px !important;
     }
 
     .header-actions {
       display: flex !important;
-      flex-direction: column !important;
-      width: 100% !important;
+      align-items: center !important;
       gap: 8px !important;
-      margin-top: 15px !important;
-      box-sizing: border-box !important;
+      flex-wrap: wrap !important;
+      justify-content: flex-end !important;
+      flex: 1 !important;
     }
 
-    .header-actions > * {
-      display: block !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      box-sizing: border-box !important;
-      text-align: center !important;
-      margin: 0 !important;
+    /* =========================================================
+       MODO AZUL
+    ========================================================= */
+    body.dark-blue-mode,
+    body.dark-blue-mode main.app,
+    body.dark-blue-mode dialog {
+      background-color: #070d1e !important;
+      color: #f1f5f9 !important;
     }
 
-    .summary-grid {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 10px !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode header.header,
+    body.dark-blue-mode .toolbar,
+    body.dark-blue-mode .summary-card,
+    body.dark-blue-mode .summary-card.main-card,
+    body.dark-blue-mode .expense,
+    body.dark-blue-mode .auth-card,
+    body.dark-blue-mode .modal,
+    body.dark-blue-mode dialog {
+      background: #0f1c3f !important;
+      background-color: #0f1c3f !important;
+      border: 1px solid #14244b !important;
+      border-radius: 20px !important;
+      color: #f1f5f9 !important;
     }
 
-    .summary-card {
-      width: 100% !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode header.header {
+      padding: 28px !important;
+      margin-bottom: 24px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
     }
 
-    .toolbar {
-      display: block !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-      padding: 14px !important;
+    body.dark-blue-mode .toolbar {
+      padding: 24px !important;
+      margin-top: 24px !important;
+      margin-bottom: 24px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
     }
 
-    .toolbar input[type="search"] {
-      width: 100% !important;
-      box-sizing: border-box !important;
-      margin-bottom: 10px !important;
+    body.dark-blue-mode header.header .eyebrow,
+    body.dark-blue-mode header.header h1,
+    body.dark-blue-mode header.header p,
+    body.dark-blue-mode .summary-card.main-card strong,
+    body.dark-blue-mode .modal-header h2,
+    body.dark-blue-mode .modal-header p,
+    body.dark-blue-mode .form-group label,
+    body.dark-blue-mode .section-title h2,
+    body.dark-blue-mode .section-title span {
+      color: #f1f5f9 !important;
     }
 
-    .filters {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 6px !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode .summary-card.main-card strong {
+      color: #38bdf8 !important;
     }
 
-    .filters button {
-      width: 100% !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode .modal-overlay {
+      background: rgba(2, 6, 15, 0.75) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
     }
 
-    .expense {
-      width: 100% !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode .secondary-button,
+    body.dark-blue-mode .primary-button,
+    body.dark-blue-mode button:not(.action-button),
+    body.dark-blue-mode select,
+    body.dark-blue-mode input[type="search"],
+    body.dark-blue-mode input[type="date"],
+    body.dark-blue-mode input[type="number"],
+    body.dark-blue-mode input[type="text"],
+    body.dark-blue-mode input[type="email"],
+    body.dark-blue-mode input[type="password"],
+    body.dark-blue-mode textarea {
+      background-color: #14244b !important;
+      color: #38bdf8 !important;
+      border: 1px solid #1e3a8a !important;
     }
 
-    .modal {
-      width: 95% !important;
-      max-height: 85vh !important;
-      box-sizing: border-box !important;
+    body.dark-blue-mode .secondary-button:hover,
+    body.dark-blue-mode .primary-button:hover {
+      background-color: #1e3a8a !important;
+      color: #ffffff !important;
     }
-  }
-</style>
+
+    /* =========================================================
+       MODO BLACK DEFINITIVO
+    ========================================================= */
+    body.black-mode {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode header.header,
+    body.black-mode .toolbar,
+    body.black-mode .summary-card,
+    body.black-mode .summary-card.main-card,
+    body.black-mode .expense,
+    body.black-mode .auth-card,
+    body.black-mode .modal,
+    body.black-mode dialog {
+      background: #121212 !important;
+      background-color: #121212 !important;
+      border: 1px solid #262626 !important;
+      border-radius: 20px !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode header.header .eyebrow,
+    body.black-mode header.header h1,
+    body.black-mode header.header p,
+    body.black-mode .summary-card.main-card strong,
+    body.black-mode .modal-header h2,
+    body.black-mode .modal-header p,
+    body.black-mode .form-group label,
+    body.black-mode .section-title h2,
+    body.black-mode .section-title span {
+      color: #ffffff !important;
+    }
+
+    body.black-mode .secondary-button,
+    body.black-mode .primary-button,
+    body.black-mode button:not(.action-button),
+    body.black-mode select,
+    body.black-mode input[type="search"],
+    body.black-mode input[type="date"],
+    body.black-mode input[type="number"],
+    body.black-mode input[type="text"],
+    body.black-mode input[type="email"],
+    body.black-mode input[type="password"],
+    body.black-mode textarea {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      border: 1px solid #333333 !important;
+    }
+
+    body.black-mode .secondary-button:hover,
+    body.black-mode .primary-button:hover {
+      background-color: #262626 !important;
+      color: #ffffff !important;
+      border-color: #ffffff !important;
+    }
+
+    body.black-mode input::placeholder,
+    body.black-mode textarea::placeholder {
+      color: #888888 !important;
+    }
+
+    body.black-mode .modal-overlay {
+      background: rgba(0, 0, 0, 0.65) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    body.black-mode .type-option span {
+      background-color: #1a1a1a !important;
+      border: 1px solid #333333 !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode .type-option input:checked + span {
+      background-color: #262626 !important;
+      border-color: #ffffff !important;
+    }
+
+    body.black-mode .close-modal,
+    body.black-mode .modal-icon,
+    body.black-mode .card-icon,
+    body.black-mode .small-icon,
+    body.black-mode .expense-icon {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 1024px) {
+      header.header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .header-actions {
+        justify-content: flex-start !important;
+        margin-top: 15px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 4px !important;
+        box-sizing: border-box !important;
+      }
+      .app {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+      }
+      header.header {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px !important;
+      }
+      .header-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+        margin-top: 15px !important;
+        box-sizing: border-box !important;
+      }
+      .header-actions > * {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+        margin: 0 !important;
+      }
+      .summary-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .summary-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .toolbar {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px !important;
+      }
+      .toolbar input[type="search"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 10px !important;
+      }
+      .filters {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .filters button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .expense {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .modal {
+        width: 95% !important;
+        max-height: 85vh !important;
+        box-sizing: border-box !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <!-- ==============================
        AUTENTICACIÓN (LOGIN / REGISTRO)
   =============================== -->
-  <section id="authSection" class="auth-section hidden">
+  <section id="authSection" class="auth-section">
     <div class="auth-card">
       <div class="auth-logo">🌸</div>
       <span class="eyebrow">MI ORGANIZACIÓN 💗</span>
@@ -341,7 +318,7 @@
           <input id="authEmail" type="email" placeholder="tu@email.com" autocomplete="email" required>
         </label>
 
-       <label>
+        <label>
           Contraseña
           <div class="password-wrap">
             <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required>
@@ -353,7 +330,6 @@
           Iniciar sesión
         </button>
 
-        <!-- OLVIDASTE CONTRASEÑA LIMPIO -->
         <button type="button" id="forgotPasswordBtn" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; color: #ff78a0 !important; font-size: 0.85rem; cursor: pointer; text-decoration: underline; width: 100%; text-align: center; margin-top: 14px; padding: 4px;">
           ¿Olvidaste tu contraseña?
         </button>
@@ -361,15 +337,16 @@
 
       <p id="authMessage" class="auth-message"></p>
 
-      <!-- REGISTRATE LIMPIO -->
       <button id="authSwitchBtn" type="button" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; color: #ffffff !important; font-size: 0.9rem; cursor: pointer; width: 100%; text-align: center; margin-top: 12px; padding: 6px;">
         ¿No tenés una cuenta? Registrate
       </button>
+    </div>
+  </section>
 
   <!-- ==============================
        APLICACIÓN PRINCIPAL
   =============================== -->
-<div class="app hidden" id="appContent" style="width: 100%; max-width: 1200px; margin: 0 auto; min-height: 100vh;">
+  <div class="app hidden" id="appContent" style="width: 100%; max-width: 1200px; margin: 0 auto; min-height: 100vh;">
     <!-- HEADER -->
     <header class="header">
       <div>
@@ -393,7 +370,7 @@
 
         <button class="secondary-button" id="toggleThemeBtn" type="button">🌙 Modo oscuro</button>
         <button class="secondary-button" id="toggleBlueThemeBtn" type="button">💙 Modo Azul</button>
-       <button class="secondary-button" id="btnBlackMode" type="button">🖤 Modo Black</button>
+        <button class="secondary-button" id="btnBlackMode" type="button">🖤 Modo Black</button>
         <button class="secondary-button" id="toggleAmountsBtn" type="button">👁️ Ocultar montos</button>
         <button class="secondary-button" id="csvBtn" type="button">📊 CSV</button>
         <button class="secondary-button" id="pdfBtn" type="button">📄 PDF</button>
@@ -401,7 +378,6 @@
         <button class="secondary-button" id="logoutBtn" type="button">Cerrar sesión</button>
       </div>
     </header>
-
 
     <!-- RESUMEN -->
     <section class="summary-grid">
@@ -432,7 +408,6 @@
       </article>
     </section>
 
-
     <!-- FILTROS Y BÚSQUEDA -->
     <section class="toolbar">
       <div class="section-title">
@@ -457,7 +432,6 @@
       </div>
     </section>
 
-
     <!-- LISTA -->
     <main>
       <div id="expensesList" class="expenses-list"></div>
@@ -471,14 +445,11 @@
       </div>
     </main>
 
-
     <!-- FOOTER -->
     <footer>
       <p>Hecho con 💗 para organizar mejor mis gastos.</p>
     </footer>
-
   </div>
-
 
   <!-- MODAL -->
   <div class="modal-overlay" id="modal">
@@ -520,7 +491,7 @@
           </div>
         </div>
 
-        <!-- FECHA DE INICIO DE DEUDA (DINÁMICO) -->
+        <!-- FECHA DE INICIO DE DEUDA -->
         <div class="form-group" id="debtStartDateGroup" style="display: none;">
           <label for="startDate">¿Cuándo se originó esta deuda?</label>
           <input type="date" id="startDate">
@@ -532,12 +503,11 @@
           <input type="text" id="description" placeholder="Ej: Bidones de agua" required>
         </div>
 
-       <!-- CATEGORÍA CON GRUPOS -->
+        <!-- CATEGORÍA CON GRUPOS -->
         <div class="form-group">
           <label for="category">Categoría</label>
           <select id="category" required>
             <option value="" disabled selected>Seleccioná una categoría</option>
-
             <optgroup label="— Hogar y Servicios —">
               <option value="Alquiler">🏠 Alquiler</option>
               <option value="Hogar">🏠 Hogar</option>
@@ -545,7 +515,6 @@
               <option value="Servicios">💡 Servicios</option>
               <option value="Suscripciones">📱 Suscripciones</option>
             </optgroup>
-
             <optgroup label="— Diario y Personal —">
               <option value="Comida">🍔 Comida</option>
               <option value="Transporte">🚗 Transporte</option>
@@ -553,7 +522,6 @@
               <option value="Gimnasio">💪 Gimnasio</option>
               <option value="Mascotas">🐾 Mascotas</option>
             </optgroup>
-
             <optgroup label="— Negocio y Finanzas —">
               <option value="Local">🏬 Local</option>
               <option value="Mercadería">📦 Mercadería</option>
@@ -607,6 +575,5 @@
   </div>
 
   <script type="module" src="app.js"></script>
-
 </body>
 </html>
