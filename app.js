@@ -62,14 +62,6 @@ const totalDebts = $("totalDebts");
 const itemsCount = $("itemsCount");
 
 
-// REGISTRO DE SERVICE WORKER (PWA)
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(err => console.log("SW error:", err));
-  });
-}
-
-
 // UTILIDADES Y FORMATEO DE MONEDA IDÉNTICAS A MENSUALES
 function formatCurrencyInput(val) {
   let clean = String(val ?? "").replace(/[^\d,]/g, "");
@@ -400,6 +392,9 @@ onAuthStateChanged(auth, user => {
     if (authSec) {
       authSec.classList.remove("hidden");
       authSec.style.display = "flex";
+      authSec.style.justifyContent = "center";
+      authSec.style.alignItems = "center";
+      authSec.style.minHeight = "100vh";
     }
     if (appCont) {
       appCont.classList.add("hidden");
@@ -411,7 +406,7 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  // Usuario logueado: ocultar login y mostrar panel principal
+  // Usuario conectado
   if (authSec) {
     authSec.classList.add("hidden");
     authSec.style.display = "none";
