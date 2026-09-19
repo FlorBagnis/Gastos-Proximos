@@ -162,18 +162,30 @@ async function fetchDolarRate() {
 
 // AUTENTICACIÓN
 function setAuthMessage(message, success = false) {
-  $("authMessage").textContent = message;
-  $("authMessage").classList.toggle("success", success);
+  const authMsg = $("authMessage");
+  if (!authMsg) return;
+  authMsg.textContent = message;
+  authMsg.classList.toggle("success", success);
 }
 
 function updateAuthInterface() {
   const isLogin = authMode === "login";
-  $("authSubmitBtn").disabled = false;
-  $("authSubmitBtn").textContent = isLogin ? "Iniciar sesión" : "Crear cuenta";
-  $("authSwitchBtn").textContent = isLogin
-    ? "¿No tenés una cuenta? Registrate"
-    : "¿Ya tenés una cuenta? Iniciá sesión";
-  $("authPassword").autocomplete = isLogin ? "current-password" : "new-password";
+  const submitBtn = $("authSubmitBtn");
+  const switchBtn = $("authSwitchBtn");
+  const passInput = $("authPassword");
+
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = isLogin ? "Iniciar sesión" : "Crear cuenta";
+  }
+  if (switchBtn) {
+    switchBtn.textContent = isLogin
+      ? "¿No tenés una cuenta? Registrate"
+      : "¿Ya tenés una cuenta? Iniciá sesión";
+  }
+  if (passInput) {
+    passInput.autocomplete = isLogin ? "current-password" : "new-password";
+  }
   setAuthMessage("");
 }
 
@@ -193,15 +205,15 @@ function firebaseErrorMessage(error) {
   return messages[code] || `Error (${code || "desconocido"}). Volvé a intentar.`;
 }
 
-$("authSwitchBtn").addEventListener("click", () => {
+$("authSwitchBtn")?.addEventListener("click", () => {
   authMode = authMode === "login" ? "register" : "login";
   updateAuthInterface();
 });
 
-$("authForm").addEventListener("submit", async event => {
+$("authForm")?.addEventListener("submit", async event => {
   event.preventDefault();
-  const email = $("authEmail").value.trim();
-  const password = $("authPassword").value;
+  const email = $("authEmail")?.value.trim();
+  const password = $("authPassword")?.value;
 
   if (!email || !password) {
     setAuthMessage("Completá email y contraseña.");
@@ -209,8 +221,10 @@ $("authForm").addEventListener("submit", async event => {
   }
 
   const btn = $("authSubmitBtn");
-  btn.disabled = true;
-  btn.textContent = authMode === "login" ? "Ingresando..." : "Creando cuenta...";
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = authMode === "login" ? "Ingresando..." : "Creando cuenta...";
+  }
 
   try {
     if (authMode === "register") {
@@ -221,7 +235,7 @@ $("authForm").addEventListener("submit", async event => {
   } catch (error) {
     console.error("Firebase Auth Error:", error);
     setAuthMessage(firebaseErrorMessage(error));
-    btn.disabled = false;
+    if (btn) btn.disabled = false;
     updateAuthInterface();
   }
 });
@@ -258,7 +272,7 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-$("logoutBtn").addEventListener("click", async () => {
+$("logoutBtn")?.addEventListener("click", async () => {
   const confirmed = confirm("¿Querés cerrar sesión?");
   if (!confirmed) return;
 
@@ -379,6 +393,7 @@ function applyBlackModeInlineFixes(isBlack) {
   });
 }
 
+// ESTADO DE AUTENTICACIÓN
 onAuthStateChanged(auth, user => {
   currentUser = user;
   setupThemeToggles();
@@ -406,24 +421,29 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  // Usuario conectado
+  // Usuario conectado: mostrar aplicación inmediatamente
   if (authSec) {
     authSec.classList.add("hidden");
     authSec.style.display = "none";
   }
   if (appCont) {
     appCont.classList.remove("hidden");
-    appCont.style.display = "block";
+    appCont.style.display = ""; // restablece al valor original de style.css
   }
   if ($("userEmail")) $("userEmail").textContent = user.email || "";
 
-  setDefaultDate();
-  setupAmountsToggle();
-  setupCurrencyIndicator();
-  setupAmountFormatting();
-  fetchDolarRate();
-  startFirestoreSync();
+  try {
+    setDefaultDate();
+    setupAmountsToggle();
+    setupCurrencyIndicator();
+    setupAmountFormatting();
+    fetchDolarRate();
+    startFirestoreSync();
+  } catch (err) {
+    console.error("Error al inicializar elementos de la app:", err);
+  }
 });
+
 
 // SÍMBOLO DINÁMICO SEGÚN SELECTOR
 function setupCurrencyIndicator() {
@@ -477,6 +497,7 @@ function setupAmountsToggle() {
 
 // MODAL CON BLUR EXACTO AL ABRIR
 function openModal() {
+  if (!modal) return;
   modal.classList.add("show");
   
   if (document.body.classList.contains("black-mode")) {
@@ -487,29 +508,30 @@ function openModal() {
 }
 
 function closeModal() {
+  if (!modal) return;
   modal.classList.remove("show");
   modal.style.backgroundColor = "";
   modal.style.backdropFilter = "";
   modal.style.webkitBackdropFilter = "";
-  expenseForm.reset();
-  $("expenseId").value = "";
+  expenseForm?.reset();
+  if ($("expenseId")) $("expenseId").value = "";
   if ($("currency")) $("currency").value = "ARS";
   if ($("currencySymbol")) $("currencySymbol").textContent = "$";
-  $("modalTitle").textContent = "Agregar registro";
+  if ($("modalTitle")) $("modalTitle").textContent = "Agregar registro";
   setDefaultDate();
 }
 
-openModalBtn.addEventListener("click", openModal);
-emptyAddBtn.addEventListener("click", openModal);
-closeModalBtn.addEventListener("click", closeModal);
+openModalBtn?.addEventListener("click", openModal);
+emptyAddBtn?.addEventListener("click", openModal);
+closeModalBtn?.addEventListener("click", closeModal);
 
-modal.addEventListener("click", event => {
+modal?.addEventListener("click", event => {
   if (event.target === modal) closeModal();
 });
 
 function setDefaultDate() {
   const dateInput = $("date");
-  if (!dateInput.value) {
+  if (dateInput && !dateInput.value) {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -520,18 +542,19 @@ function setDefaultDate() {
 
 
 // GUARDAR / EDITAR
-expenseForm.addEventListener("submit", async event => {
+expenseForm?.addEventListener("submit", async event => {
   event.preventDefault();
 
-  const id = $("expenseId").value;
-  const type = document.querySelector('input[name="type"]:checked').value;
-  const description = $("description").value.trim();
-  const category = $("category").value;
+  const id = $("expenseId")?.value;
+  const typeEl = document.querySelector('input[name="type"]:checked');
+  const type = typeEl ? typeEl.value : "expense";
+  const description = $("description")?.value.trim() || "";
+  const category = $("category")?.value || "Otros";
   const currency = $("currency") ? $("currency").value : "ARS";
-  const quantity = Number($("quantity").value) || 1;
-  const date = $("date").value;
-  const notes = $("notes").value.trim();
-  const amount = parseCurrency($("amount").value);
+  const quantity = Number($("quantity")?.value) || 1;
+  const date = $("date")?.value || new Date().toISOString().slice(0, 10);
+  const notes = $("notes")?.value.trim() || "";
+  const amount = parseCurrency($("amount")?.value);
 
   const currentExpense = id ? expenses.find(e => e.id === id) : null;
 
@@ -561,7 +584,7 @@ expenseForm.addEventListener("submit", async event => {
 
 // FORMATEADORES & MAPEOS
 function formatMoney(value, currency = "ARS") {
-  if (value === null || value === undefined || isNaN(value)) return null;
+  if (value === null || value === undefined || isNaN(value)) return "$0";
   const isUSD = currency === "USD";
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -686,10 +709,14 @@ function mapCategoryToMensuales(category) {
 
 // RENDER
 function render() {
-  updateSummary();
-  renderExpenses();
-  if (document.body.classList.contains("black-mode")) {
-    applyBlackModeInlineFixes(true);
+  try {
+    updateSummary();
+    renderExpenses();
+    if (document.body.classList.contains("black-mode")) {
+      applyBlackModeInlineFixes(true);
+    }
+  } catch (err) {
+    console.error("Error en render:", err);
   }
 }
 
@@ -718,16 +745,17 @@ function getFilteredExpenses() {
 }
 
 function renderExpenses() {
+  if (!expensesList) return;
   const filtered = getFilteredExpenses();
   expensesList.innerHTML = "";
 
   if (filtered.length === 0) {
-    emptyState.style.display = "block";
+    if (emptyState) emptyState.style.display = "block";
     updateCounter(0);
     return;
   }
 
-  emptyState.style.display = "none";
+  if (emptyState) emptyState.style.display = "none";
   filtered.forEach(expense => {
     expensesList.appendChild(createExpenseElement(expense));
   });
@@ -743,7 +771,7 @@ function createExpenseElement(expense) {
   const category = getCategoryName(expense.category);
   const curr = expense.currency || "ARS";
 
-  const amountHTML = expense.amount === null
+  const amountHTML = expense.amount === null || expense.amount === undefined
     ? `<span class="no-amount">Monto pendiente</span>`
     : `<strong>${formatMoney(expense.amount, curr)}</strong>`;
 
@@ -759,8 +787,8 @@ function createExpenseElement(expense) {
     <div class="expense-icon">${icon}</div>
 
     <div class="expense-info">
-      <h3>${escapeHTML(expense.description)}</h3>
-      <p>${category} · Cantidad: ${expense.quantity}</p>
+      <h3>${escapeHTML(expense.description || "")}</h3>
+      <p>${category} · Cantidad: ${expense.quantity || 1}</p>
       ${expense.notes ? `<p>${escapeHTML(expense.notes)}</p>` : ""}
       <div style="margin-top: 4px;">
         <span class="badge ${statusClass}">${statusText}</span>
@@ -814,13 +842,15 @@ function editExpense(id) {
   const expense = expenses.find(item => item.id === id);
   if (!expense) return;
 
-  $("expenseId").value = expense.id;
-  $("description").value = expense.description;
-  $("category").value = expense.category;
+  if ($("expenseId")) $("expenseId").value = expense.id;
+  if ($("description")) $("description").value = expense.description || "";
+  if ($("category")) $("category").value = expense.category || "";
   
-  $("amount").value = (expense.amount !== null && expense.amount !== undefined)
-    ? formatCurrencyInput(String(expense.amount).replace(".", ","))
-    : "";
+  if ($("amount")) {
+    $("amount").value = (expense.amount !== null && expense.amount !== undefined)
+      ? formatCurrencyInput(String(expense.amount).replace(".", ","))
+      : "";
+  }
 
   if ($("currency")) {
     $("currency").value = expense.currency || "ARS";
@@ -828,14 +858,14 @@ function editExpense(id) {
       $("currencySymbol").textContent = expense.currency === "USD" ? "u$s" : "$";
     }
   }
-  $("quantity").value = expense.quantity;
-  $("date").value = expense.date;
-  $("notes").value = expense.notes || "";
+  if ($("quantity")) $("quantity").value = expense.quantity || 1;
+  if ($("date")) $("date").value = expense.date || "";
+  if ($("notes")) $("notes").value = expense.notes || "";
 
   const radio = document.querySelector(`input[name="type"][value="${expense.type}"]`);
   if (radio) radio.checked = true;
 
-  $("modalTitle").textContent = "Editar registro";
+  if ($("modalTitle")) $("modalTitle").textContent = "Editar registro";
   openModal();
 }
 
@@ -939,7 +969,7 @@ function updateSummary() {
     if (e.currency === "USD") totalPendingUSD += amt;
     else totalPendingARS += amt;
   });
-  totalPending.innerHTML = renderDualAmount(totalPendingARS, totalPendingUSD);
+  if (totalPending) totalPending.innerHTML = renderDualAmount(totalPendingARS, totalPendingUSD);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -959,7 +989,7 @@ function updateSummary() {
       if (e.currency === "USD") nextUSD += amt;
       else nextARS += amt;
     });
-  nextSevenDays.innerHTML = renderDualAmount(nextARS, nextUSD);
+  if (nextSevenDays) nextSevenDays.innerHTML = renderDualAmount(nextARS, nextUSD);
 
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
@@ -976,7 +1006,7 @@ function updateSummary() {
       if (e.currency === "USD") monthUSD += amt;
       else monthARS += amt;
     });
-  thisMonth.innerHTML = renderDualAmount(monthARS, monthUSD);
+  if (thisMonth) thisMonth.innerHTML = renderDualAmount(monthARS, monthUSD);
 
   let debtsARS = 0;
   let debtsUSD = 0;
@@ -987,11 +1017,13 @@ function updateSummary() {
       if (e.currency === "USD") debtsUSD += amt;
       else debtsARS += amt;
     });
-  totalDebts.innerHTML = renderDualAmount(debtsARS, debtsUSD);
+  if (totalDebts) totalDebts.innerHTML = renderDualAmount(debtsARS, debtsUSD);
 }
 
 function updateCounter(count) {
-  itemsCount.textContent = `${count} ${count === 1 ? "registro" : "registros"}`;
+  if (itemsCount) {
+    itemsCount.textContent = `${count} ${count === 1 ? "registro" : "registros"}`;
+  }
 }
 
 document.querySelectorAll(".filter").forEach(button => {
@@ -1033,7 +1065,7 @@ $("csvBtn")?.addEventListener("click", () => {
       getCategoryName(e.category),
       e.type === "debt" ? "Deuda" : "Gasto",
       e.paid ? "Pagado" : "Pendiente",
-      e.amount !== null ? e.amount : "",
+      e.amount !== null && e.amount !== undefined ? e.amount : "",
       e.currency || "ARS",
       e.quantity || 1,
       `"${(e.notes || "").replace(/"/g, '""')}"`
@@ -1210,7 +1242,7 @@ $("pdfBtn")?.addEventListener("click", () => {
 
     const state = expense.paid ? "Pagado" : expense.type === "debt" ? "Deuda" : "Pendiente";
     const curr = expense.currency || "ARS";
-    const amountStr = expense.amount !== null ? formatMoney(expense.amount, curr) : "A definir";
+    const amountStr = expense.amount !== null && expense.amount !== undefined ? formatMoney(expense.amount, curr) : "A definir";
 
     pdf.setTextColor(...dark);
     pdf.setFontSize(7);
