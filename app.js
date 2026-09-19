@@ -391,20 +391,36 @@ onAuthStateChanged(auth, user => {
   currentUser = user;
   setupThemeToggles();
 
+  const authSec = $("authSection");
+  const appCont = $("appContent");
+
   if (!user) {
     stopFirestoreSync();
     expenses = [];
-    $("authSection").classList.remove("hidden");
-    $("appContent").classList.add("hidden");
-    $("userEmail").textContent = "";
-    $("authForm").reset();
+    if (authSec) {
+      authSec.classList.remove("hidden");
+      authSec.style.display = "flex";
+    }
+    if (appCont) {
+      appCont.classList.add("hidden");
+      appCont.style.display = "none";
+    }
+    if ($("userEmail")) $("userEmail").textContent = "";
+    $("authForm")?.reset();
     updateAuthInterface();
     return;
   }
 
-  $("authSection").classList.add("hidden");
-  $("appContent").classList.remove("hidden");
-  $("userEmail").textContent = user.email || "";
+  // Usuario logueado: ocultar login y mostrar panel principal
+  if (authSec) {
+    authSec.classList.add("hidden");
+    authSec.style.display = "none";
+  }
+  if (appCont) {
+    appCont.classList.remove("hidden");
+    appCont.style.display = "block";
+  }
+  if ($("userEmail")) $("userEmail").textContent = user.email || "";
 
   setDefaultDate();
   setupAmountsToggle();
@@ -413,7 +429,6 @@ onAuthStateChanged(auth, user => {
   fetchDolarRate();
   startFirestoreSync();
 });
-
 
 // SÍMBOLO DINÁMICO SEGÚN SELECTOR
 function setupCurrencyIndicator() {
