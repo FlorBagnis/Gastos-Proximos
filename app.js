@@ -69,6 +69,29 @@ if ("serviceWorker" in navigator) {
 }
 
 
+// UTILIDADES DE FORMATEO DE MONEDA EN ENTRADA
+function formatCurrencyInput(val) {
+  let clean = String(val ?? "").replace(/[^\d,]/g, "");
+  const parts = clean.split(",");
+  if (parts.length > 2) {
+    clean = parts[0] + "," + parts.slice(1).join("");
+  }
+  const [integerPart, decimalPart] = clean.split(",");
+  const formattedInt = (integerPart || "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  if (decimalPart !== undefined) {
+    return `${formattedInt},${decimalPart.slice(0, 2)}`;
+  }
+  return formattedInt;
+}
+
+function parseCurrency(val) {
+  if (val === null || val === undefined || val === "") return null;
+  const cleanNumber = String(val).replace(/\./g, "").replace(",", ".");
+  const num = parseFloat(cleanNumber);
+  return isNaN(num) ? null : num;
+}
+
+
 // FIRESTORE SYNC
 function getExpensesCollectionRef() {
   if (!currentUser) return null;
@@ -291,7 +314,6 @@ function setupThemeToggles() {
 
 // FUNCIÓN DE CORRECCIÓN DINÁMICA POR JS (TARJETAS + BOTONES HEADER)
 function applyBlackModeInlineFixes(isBlack) {
-  // 1. Tarjetas de balance superiores
   const summaryCards = document.querySelectorAll(".summary-card, div[style*='background']");
   summaryCards.forEach(card => {
     if (isBlack) {
@@ -307,7 +329,6 @@ function applyBlackModeInlineFixes(isBlack) {
     }
   });
 
-  // 2. Botones de la cabecera / header (para forzar color y efectos en Modo Black)
   const headerButtons = document.querySelectorAll(".header-actions button, .header-actions a");
   headerButtons.forEach(btn => {
     if (isBlack) {
@@ -355,6 +376,7 @@ onAuthStateChanged(auth, user => {
   setDefaultDate();
   setupAmountsToggle();
   setupCurrencyIndicator();
+  setupAmountFormatting();
   fetchDolarRate();
   startFirestoreSync();
 });
@@ -368,6 +390,21 @@ function setupCurrencyIndicator() {
 
   curSelect.addEventListener("change", () => {
     curSymbol.textContent = curSelect.value === "USD" ? "u$s" : "$";
+  });
+}
+
+// FORMATEO EN VIVO EN EL INPUT DE MONTO
+function setupAmountFormatting() {
+  const amountInput = $("amount");
+  if (!amountInput) return;
+
+  amountInput.addEventListener("input", (e) => {
+    const start = e.target.selectionStart;
+    const prevLen = e.target.value.length;
+    e.target.value = formatCurrencyInput(e.target.value);
+    const newLen = e.target.value.length;
+    const pos = Math.max(0, start + (newLen - prevLen));
+    e.target.setSelectionRange(pos, pos);
   });
 }
 
@@ -447,12 +484,11 @@ expenseForm.addEventListener("submit", async event => {
   const type = document.querySelector('input[name="type"]:checked').value;
   const description = $("description").value.trim();
   const category = $("category").value;
-  const amountValue = $("amount").value;
   const currency = $("currency") ? $("currency").value : "ARS";
   const quantity = Number($("quantity").value) || 1;
   const date = $("date").value;
   const notes = $("notes").value.trim();
-  const amount = amountValue === "" ? null : Number(amountValue);
+  const amount = parseCurrency($("amount").value);
 
   const currentExpense = id ? expenses.find(e => e.id === id) : null;
 
@@ -535,6 +571,7 @@ function getCategoryIcon(category) {
     hogar: "🏠",
     servicios: "💡",
     comida: "🍔",
+    alimentos: "🍔",
     mascotas: "🐾",
     deudas: "💸",
     salud: "💊",
@@ -542,7 +579,13 @@ function getCategoryIcon(category) {
     otros: "📦",
     gimnasio: "💪",
     gym: "💪",
-    agua: "💧"
+    agua: "💧",
+    alquiler: "🏠",
+    local: "🏬",
+    mercadería: "📦",
+    mercaderia: "📦",
+    cuotas: "💳",
+    suscripciones: "📱"
   };
   return icons[key] || "📦";
 }
@@ -553,6 +596,7 @@ function getCategoryName(category) {
     hogar: "Hogar",
     servicios: "Servicios",
     comida: "Comida",
+    alimentos: "Alimentos",
     mascotas: "Mascotas",
     deudas: "Deudas",
     salud: "Salud",
@@ -560,7 +604,13 @@ function getCategoryName(category) {
     otros: "Otros",
     gimnasio: "Gimnasio",
     gym: "Gimnasio",
-    agua: "Agua"
+    agua: "Agua",
+    alquiler: "Alquiler",
+    local: "Local",
+    mercadería: "Mercadería",
+    mercaderia: "Mercadería",
+    cuotas: "Cuotas",
+    suscripciones: "Suscripciones"
   };
   return names[key] || "Otros";
 }
@@ -569,16 +619,23 @@ function mapCategoryToMensuales(category) {
   const key = String(category || "").toLowerCase();
   const map = {
     comida: "Alimentos",
+    alimentos: "Alimentos",
     transporte: "Transporte",
     hogar: "Hogar",
     servicios: "Servicios",
     salud: "Salud",
     mascotas: "Mascotas",
-    deudas: "Otros",
+    deudas: "Cuotas",
     otros: "Otros",
     gimnasio: "Gimnasio",
     gym: "Gimnasio",
-    agua: "Agua"
+    agua: "Agua",
+    alquiler: "Alquiler",
+    local: "Local",
+    mercadería: "Mercadería",
+    mercaderia: "Mercadería",
+    cuotas: "Cuotas",
+    suscripciones: "Suscripciones"
   };
   return map[key] || "Otros";
 }
@@ -717,7 +774,11 @@ function editExpense(id) {
   $("expenseId").value = expense.id;
   $("description").value = expense.description;
   $("category").value = expense.category;
-  $("amount").value = expense.amount === null ? "" : expense.amount;
+  
+  $("amount").value = (expense.amount !== null && expense.amount !== undefined)
+    ? formatCurrencyInput(String(expense.amount).replace(".", ","))
+    : "";
+
   if ($("currency")) {
     $("currency").value = expense.currency || "ARS";
     if ($("currencySymbol")) {
@@ -1150,7 +1211,7 @@ $("pdfBtn")?.addEventListener("click", () => {
 });
 
 
-// Mostrar / Ocultar contraseña
+// MOSTRAR / OCULTAR CONTRASEÑA
 const togglePasswordBtn = document.getElementById('togglePasswordBtn');
 const authPasswordInput = document.getElementById('authPassword');
 
