@@ -530,20 +530,35 @@
           <input type="text" id="description" placeholder="Ej: Bidones de agua" required>
         </div>
 
-        <!-- CATEGORÍA -->
+       <!-- CATEGORÍA CON GRUPOS -->
         <div class="form-group">
           <label for="category">Categoría</label>
-          <select id="category">
-            <option value="Hogar">🏠 Hogar</option>
-            <option value="Servicios">💡 Servicios</option>
-            <option value="Comida">🍔 Comida</option>
-            <option value="Mascotas">🐾 Mascotas</option>
-            <option value="Deudas">💸 Deudas</option>
-            <option value="Salud">💊 Salud</option>
-            <option value="Transporte">🚗 Transporte</option>
-            <option value="Otros">📦 Otros</option>
-            <option value="Gimnasio">💪 Gimnasio</option> 
-            <option value="Agua">💧 Agua</option>
+          <select id="category" required>
+            <option value="" disabled selected>Seleccioná una categoría</option>
+
+            <optgroup label="— Hogar y Servicios —">
+              <option value="Alquiler">🏠 Alquiler</option>
+              <option value="Hogar">🏠 Hogar</option>
+              <option value="Agua">💧 Agua</option>
+              <option value="Servicios">💡 Servicios</option>
+              <option value="Suscripciones">📱 Suscripciones</option>
+            </optgroup>
+
+            <optgroup label="— Diario y Personal —">
+              <option value="Comida">🍔 Comida</option>
+              <option value="Transporte">🚗 Transporte</option>
+              <option value="Salud">💊 Salud</option>
+              <option value="Gimnasio">💪 Gimnasio</option>
+              <option value="Mascotas">🐾 Mascotas</option>
+            </optgroup>
+
+            <optgroup label="— Negocio y Finanzas —">
+              <option value="Local">🏬 Local</option>
+              <option value="Mercadería">📦 Mercadería</option>
+              <option value="Deudas">💸 Deudas</option>
+              <option value="Cuotas">💳 Cuotas</option>
+              <option value="Otros">📦 Otros</option>
+            </optgroup>
           </select>
         </div>
 
