@@ -9,7 +9,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
   getFirestore,
@@ -69,7 +70,7 @@ if ("serviceWorker" in navigator) {
 }
 
 
-// UTILIDADES DE FORMATEO DE MONEDA EN ENTRADA
+// UTILIDADES Y FORMATEO DE MONEDA IDÉNTICAS A MENSUALES
 function formatCurrencyInput(val) {
   let clean = String(val ?? "").replace(/[^\d,]/g, "");
   const parts = clean.split(",");
@@ -233,6 +234,38 @@ $("authForm").addEventListener("submit", async event => {
   }
 });
 
+// RECUPERACIÓN DE CONTRASEÑA
+document.addEventListener("click", async (e) => {
+  if (e.target && e.target.id === "forgotPasswordBtn") {
+    const authEmailInput = $("authEmail");
+    const email = authEmailInput?.value.trim();
+
+    if (!email) {
+      setAuthMessage("Ingresá tu correo en el campo de arriba para enviarte el enlace.");
+      authEmailInput?.focus();
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setAuthMessage(`¡Listo! Te enviamos un correo a ${email} para restablecer tu contraseña.`, true);
+    } catch (error) {
+      console.error("Error al enviar email de recuperación:", error);
+      let errorMsg = "No se pudo enviar el correo de recuperación.";
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMsg = "No existe ninguna cuenta registrada con ese correo.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMsg = "El formato del correo electrónico no es válido.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMsg = "Demasiados intentos. Esperá unos minutos antes de volver a probar.";
+      }
+
+      setAuthMessage(errorMsg);
+    }
+  }
+});
+
 $("logoutBtn").addEventListener("click", async () => {
   const confirmed = confirm("¿Querés cerrar sesión?");
   if (!confirmed) return;
@@ -393,7 +426,7 @@ function setupCurrencyIndicator() {
   });
 }
 
-// FORMATEO EN VIVO EN EL INPUT DE MONTO
+// FORMATEO EN VIVO AL ESCRIBIR EN EL INPUT MONTO
 function setupAmountFormatting() {
   const amountInput = $("amount");
   if (!amountInput) return;
@@ -970,9 +1003,7 @@ function escapeHTML(value) {
 }
 
 
-// ==========================================
-// EXPORTAR A CSV (EXCEL / SHEETS)
-// ==========================================
+// EXPORTAR A CSV
 $("csvBtn")?.addEventListener("click", () => {
   if (expenses.length === 0) {
     alert("No hay registros para exportar.");
@@ -1011,9 +1042,7 @@ $("csvBtn")?.addEventListener("click", () => {
 });
 
 
-// ==========================================
-// EXPORTAR REPORTE A PDF (SOPORTE MODO BLACK)
-// ==========================================
+// EXPORTAR PDF
 $("pdfBtn")?.addEventListener("click", () => {
   if (expenses.length === 0) {
     alert("No hay registros para exportar.");
