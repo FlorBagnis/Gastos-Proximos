@@ -36,6 +36,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Exponer auth globalmente para depurar en consola
+window.auth = auth;
+
 let currentUser = null;
 let expenses = [];
 let currentFilter = "all";
@@ -215,6 +218,8 @@ $("authForm")?.addEventListener("submit", async event => {
   const email = $("authEmail")?.value.trim();
   const password = $("authPassword")?.value;
 
+  console.log("Intentando procesar autenticación:", email, "Modo:", authMode);
+
   if (!email || !password) {
     setAuthMessage("Completá email y contraseña.");
     return;
@@ -228,9 +233,11 @@ $("authForm")?.addEventListener("submit", async event => {
 
   try {
     if (authMode === "register") {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("Cuenta creada con éxito:", res.user);
     } else {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Sesión iniciada con éxito:", res.user);
     }
   } catch (error) {
     console.error("Firebase Auth Error:", error);
@@ -351,7 +358,7 @@ function setupThemeToggles() {
   }
 }
 
-// FUNCIÓN DE CORRECCIÓN DINÁMICA POR JS (TARJETAS + BOTONES HEADER)
+// CORRECCIÓN DINÁMICA POR JS (TARJETAS + BOTONES HEADER)
 function applyBlackModeInlineFixes(isBlack) {
   const summaryCards = document.querySelectorAll(".summary-card, div[style*='background']");
   summaryCards.forEach(card => {
@@ -396,6 +403,7 @@ function applyBlackModeInlineFixes(isBlack) {
 // ESTADO DE AUTENTICACIÓN
 onAuthStateChanged(auth, user => {
   currentUser = user;
+  console.log("onAuthStateChanged disparado. Usuario:", user ? user.email : "Sin sesión");
   setupThemeToggles();
 
   const authSec = $("authSection");
@@ -421,14 +429,14 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  // Usuario conectado: mostrar aplicación inmediatamente
+  // Usuario conectado: ocultar login y mostrar app principal
   if (authSec) {
     authSec.classList.add("hidden");
     authSec.style.display = "none";
   }
   if (appCont) {
     appCont.classList.remove("hidden");
-    appCont.style.display = ""; // restablece al valor original de style.css
+    appCont.style.display = "block";
   }
   if ($("userEmail")) $("userEmail").textContent = user.email || "";
 
