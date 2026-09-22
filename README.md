@@ -89,6 +89,19 @@ Generación de reportes descargables en formato PDF mediante la librería **jsPD
 
 ---
 
+  ### 🎯 Objetivo del proyecto
+
+El objetivo principal es aplicar la estructuración lógica de datos temporales (fechas, plazos y vencimientos) y la gestión de flujos transaccionales, fundamentales para perfiles de:
+
+* **Technical Support Specialist**
+* **Support Analyst**
+* **Customer Experience & Operations**
+* **Financial Services / FinTech Customer Support**
+
+El desarrollo se enfoca en comprender cómo se modela el ciclo de vida de un pago o deuda, la validación estricta de estados (pendiente, pagado, vencido), y la interacción continua entre los formularios de captura, la lógica de cálculo en **JavaScript** y el almacenamiento dinámico en **Firebase**.
+
+---
+
 ## 🗄️ Estructura de Datos en Firestore
 
 Los registros se encuentran estructurados bajo el `UID` de cada usuario:
@@ -123,6 +136,10 @@ gastos-proximos/
 
 **Florencia Bagnis**
 
-* 💼 [LinkedIn](https://www.linkedin.com/in/florencia-bagnis-5043aa152/)
+* 💼 [LinkedIn](https://www.linkedin.com/in/florencia-bagnis)
 * 💻 [Portfolio](https://florbagnis.github.io/Portfolio-FlorBagnis/)
 * 📧 [florenciasoledadbagnis@gmail.com](mailto:florenciasoledadbagnis@gmail.com)
+
+<br>
+
+> 🌸 Módulo integrado desarrollado para la previsión de vencimientos, gestión de pagos y seguimiento de deudas, enfocado en **JavaScript**, persistencia y sincronización con **Firebase**, diseño de interfaces claras en **HTML5/CSS3** y adaptabilidad **responsive**.
