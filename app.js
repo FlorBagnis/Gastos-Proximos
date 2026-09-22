@@ -1305,3 +1305,33 @@ if (togglePasswordBtn && authPasswordInput) {
     togglePasswordBtn.textContent = isPassword ? '🌸' : '🔒';
   });
 }
+
+
+// ==========================================
+// MOSTRAR / OCULTAR LISTA DE REGISTROS
+// ==========================================
+const toggleExpensesBtn = document.getElementById('toggleExpensesBtn');
+const expensesContainer = document.getElementById('expensesList');
+
+if (toggleExpensesBtn && expensesContainer) {
+  // 1. Recordar si el usuario lo dejó oculto anteriormente
+  const isHidden = localStorage.getItem('expensesListHidden') === 'true';
+  if (isHidden) {
+    expensesContainer.classList.add('expenses-hidden');
+    toggleExpensesBtn.textContent = '👁️ Mostrar lista';
+  }
+
+  // 2. Alternar visibilidad al hacer clic
+  toggleExpensesBtn.addEventListener('click', () => {
+    expensesContainer.classList.toggle('expenses-hidden');
+    const currentlyHidden = expensesContainer.classList.contains('expenses-hidden');
+
+    toggleExpensesBtn.textContent = currentlyHidden
+      ? '👁️ Mostrar lista'
+      : '👁️ Ocultar lista';
+
+    localStorage.setItem('expensesListHidden', currentlyHidden);
+  });
+}
+
+
