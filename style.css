@@ -1317,3 +1317,9 @@ body.dark-blue-mode .action-button:hover {
   background: #f29cb5;
   border-radius: 10px;
 }
+
+
+/* Ocultar lista/tabla de gastos */
+.expenses-hidden {
+  display: none !important;
+}
