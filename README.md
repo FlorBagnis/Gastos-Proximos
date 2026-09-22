@@ -6,6 +6,12 @@
 
 > **Gastos Próximos** es una aplicación web minimalista e intuitiva para registrar, recordar y organizar compromisos de pago futuros, deudas pendientes y compras planificadas. Se integra en tiempo real con **[MENSUALES](https://github.com/florbagnis/Mensuales)** bajo el mismo ecosistema financiero.
 
+<p align="center">
+  <a href="https://gastos-proximos.vercel.app/">
+    <img src="https://img.shields.io/badge/Demo_en_Vivo-Abrir_Herramienta-ff69b4?style=for-the-badge&logo=vercel&logoColor=white" alt="Demo en Vivo" />
+  </a>
+</p>
+
 ---
 
 ## ✨ Funcionalidades
