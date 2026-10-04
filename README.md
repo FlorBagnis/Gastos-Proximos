@@ -137,6 +137,16 @@ gastos-proximos/
 └── README.md        <- Documentación técnica
 
 ```
+---
+
+¿Te sirvió? Dejale una ⭐ al repo.
+
+---
+
+## 📄 Licencia
+
+Distribuido bajo licencia MIT. Ver el archivo `LICENSE`.
+
 
 👩‍💻 Autora
 
