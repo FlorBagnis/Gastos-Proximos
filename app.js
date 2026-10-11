@@ -414,6 +414,7 @@ onAuthStateChanged(auth, user => {
 
   if (!user) {
     stopFirestoreSync();
+    stopRecurrentes();
     expenses = [];
     if (authSec) {
       authSec.classList.remove("hidden");
@@ -454,6 +455,7 @@ onAuthStateChanged(auth, user => {
     setupAmountFormatting();
     fetchDolarRate();
     startFirestoreSync();
+    startRecurrentes();
   } catch (err) {
     console.error("Error al inicializar elementos de la app:", err);
   }
@@ -1333,4 +1335,500 @@ if (toggleExpensesBtn && expensesContainer) {
 
     localStorage.setItem('expensesListHidden', currentlyHidden);
   });
+}
+
+
+/* =========================================================
+   GASTOS RECURRENTES (suscripciones, servicios, impuestos...)
+   Colección compartida entre las dos apps: users/{uid}/recurrentes
+   Cada documento:
+   { descripcion, categoria, diaVence, monto, currency, avisar, activo,
+     pagos: { "2026-10": { fecha, monto, mensualId } } }
+========================================================= */
+
+const REC_GRUPOS = ["Internet", "Suscripciones", "Servicios", "Impuestos", "Alquiler", "Otros"];
+const REC_ICONOS = { Internet: "🌐", Suscripciones: "📱", Servicios: "💡", Impuestos: "🏛️", Alquiler: "🏠", Otros: "📦" };
+const REC_DIAS_POR_VENCER = 3;
+const REC_KW_INTERNET = /\b(internet|wifi|fibertel|flow|telecentro|iplan)\b/;
+const REC_KW_IMPUESTOS = /\b(impuestos?|monotributo|arba|afip|agip|abl|patente|inmobiliario|ganancias|iva|rentas)\b/;
+
+let recItems = [];
+let recUnsub = null;
+let recTimer = null;
+
+
+/* ---------- Lógica de fechas y estados ---------- */
+
+function recNormalizar(s) {
+  return String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function recEsc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+}
+
+function recGrupoDe(rec) {
+  const cat = String(rec.categoria || "").trim();
+  if (cat === "Internet" || cat === "Impuestos") return cat;
+  const desc = recNormalizar(rec.descripcion);
+  if (REC_KW_INTERNET.test(desc)) return "Internet";
+  if (REC_KW_IMPUESTOS.test(desc)) return "Impuestos";
+  return REC_GRUPOS.includes(cat) ? cat : "Otros";
+}
+
+function recCategoriaMensual(rec) {
+  const map = { Internet: "Servicios", Suscripciones: "Suscripciones", Servicios: "Servicios", Impuestos: "Otros", Alquiler: "Alquiler", Otros: "Otros" };
+  return map[recGrupoDe(rec)] || "Otros";
+}
+
+function recDiaEfectivo(diaVence, hoy) {
+  const ultimo = new Date(hoy.y, hoy.m, 0).getDate();
+  return Math.min(Math.max(Number(diaVence) || 1, 1), ultimo);
+}
+
+function recDiasMensual(diaVence, hoy) {
+  const venc = new Date(hoy.y, hoy.m - 1, recDiaEfectivo(diaVence, hoy));
+  return Math.round((venc - hoy.date) / 86400000);
+}
+
+function recEstado(rec, hoy) {
+  const pago = rec.pagos && rec.pagos[hoy.mes];
+  if (pago) {
+    const f = pago.fecha ? ` el ${pago.fecha.slice(8, 10)}/${pago.fecha.slice(5, 7)}` : "";
+    return { clase: "paid", texto: `✅ Pagado${f}`, dias: null, pagado: true };
+  }
+  const dias = recDiasMensual(rec.diaVence, hoy);
+  if (dias < 0) return { clase: "late", texto: `⚠️ Vencido hace ${-dias} ${dias === -1 ? "día" : "días"}`, dias, pagado: false };
+  if (dias === 0) return { clase: "soon", texto: "🌸 Vence hoy", dias, pagado: false };
+  if (dias === 1) return { clase: "soon", texto: "🌸 Vence mañana", dias, pagado: false };
+  if (dias <= REC_DIAS_POR_VENCER) return { clase: "soon", texto: `🌸 Vence en ${dias} días`, dias, pagado: false };
+  return { clase: "wait", texto: `⏳ Vence el ${recDiaEfectivo(rec.diaVence, hoy)}`, dias, pagado: false };
+}
+
+function recMoney(value, currency = "ARS") {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: currency === "USD" ? "USD" : "ARS",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }).format(Number(value || 0));
+}
+
+function recParse(val) {
+  if (val === null || val === undefined || String(val).trim() === "") return null;
+  const n = parseFloat(String(val).replace(/\./g, "").replace(",", "."));
+  return isNaN(n) ? null : n;
+}
+
+
+/* ---------- Firestore ---------- */
+
+function recPayload(rec) {
+  return {
+    descripcion: String(rec.descripcion || "").trim(),
+    categoria: rec.categoria || "Otros",
+    diaVence: Number(rec.diaVence) || 1,
+    monto: rec.monto === null || rec.monto === undefined || isNaN(rec.monto) ? null : Number(rec.monto),
+    currency: rec.currency || "ARS",
+    avisar: rec.avisar !== false,
+    activo: rec.activo !== false,
+    pagos: rec.pagos || {},
+    createdAt: rec.createdAt || new Date().toISOString()
+  };
+}
+
+async function recGuardar(rec) {
+  if (!currentUser) return;
+  await setDoc(doc(db, "users", currentUser.uid, "recurrentes", rec.id), recPayload(rec));
+}
+
+async function recPagar(id) {
+  const rec = recItems.find(r => r.id === id);
+  if (!rec || !currentUser) return;
+  const hoy = hoyAR();
+
+  let monto = rec.monto;
+  if (!monto || monto <= 0) {
+    const txt = prompt(`¿Cuánto pagaste de "${rec.descripcion}"?`, "");
+    if (txt === null) return;
+    monto = recParse(txt);
+    if (!monto || monto <= 0) { alert("Ingresá un monto válido."); return; }
+  }
+
+  const mensualId = `rec-${rec.id}-${hoy.mes}`;
+  const pagos = { ...(rec.pagos || {}), [hoy.mes]: { fecha: hoy.iso, monto, mensualId } };
+
+  try {
+    await recGuardar({ ...rec, pagos });
+
+    // Lo suma como gasto en MENSUALES
+    const monthRef = doc(db, "users", currentUser.uid, "months", hoy.mes);
+    const snap = await getDoc(monthRef);
+    let monthData = { budget: 0, expenses: [] };
+    if (snap.exists()) {
+      monthData = snap.data();
+      if (!Array.isArray(monthData.expenses)) monthData.expenses = [];
+    }
+    monthData.expenses = monthData.expenses.filter(e => e.id !== mensualId);
+    monthData.expenses.push({
+      id: mensualId,
+      date: hoy.iso,
+      description: rec.descripcion,
+      category: recCategoriaMensual(rec),
+      amount: Number(monto),
+      currency: rec.currency || "ARS"
+    });
+    await setDoc(monthRef, monthData, { merge: true });
+  } catch (err) {
+    console.error("Error al registrar pago recurrente:", err);
+    alert("No se pudo registrar el pago. Revisá tu conexión e intentá de nuevo.");
+  }
+}
+
+async function recDeshacerPago(id) {
+  const rec = recItems.find(r => r.id === id);
+  if (!rec || !currentUser) return;
+  const hoy = hoyAR();
+  const pago = rec.pagos && rec.pagos[hoy.mes];
+  if (!pago) return;
+  if (!confirm(`¿Volver "${rec.descripcion}" a pendiente y quitarlo de MENSUALES?`)) return;
+
+  const pagos = { ...rec.pagos };
+  delete pagos[hoy.mes];
+  const mensualId = pago.mensualId || `rec-${rec.id}-${hoy.mes}`;
+
+  try {
+    await recGuardar({ ...rec, pagos });
+    const monthRef = doc(db, "users", currentUser.uid, "months", hoy.mes);
+    const snap = await getDoc(monthRef);
+    if (snap.exists()) {
+      const monthData = snap.data();
+      if (Array.isArray(monthData.expenses)) {
+        monthData.expenses = monthData.expenses.filter(e => e.id !== mensualId);
+        await setDoc(monthRef, monthData, { merge: true });
+      }
+    }
+  } catch (err) {
+    console.error("Error al deshacer pago recurrente:", err);
+    alert("No se pudo deshacer el pago.");
+  }
+}
+
+async function recEliminar(id) {
+  const rec = recItems.find(r => r.id === id);
+  if (!rec || !currentUser) return;
+  if (!confirm(`¿Eliminar el recurrente "${rec.descripcion}"? Los pagos ya cargados en MENSUALES no se borran.`)) return;
+  try {
+    await deleteDoc(doc(db, "users", currentUser.uid, "recurrentes", id));
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo eliminar.");
+  }
+}
+
+
+/* ---------- Interfaz ---------- */
+
+function recAbrirDialog(rec = null) {
+  const dlg = document.getElementById("recDialog");
+  if (!dlg) return;
+  document.getElementById("recFId").value = rec ? rec.id : "";
+  document.getElementById("recFDesc").value = rec ? rec.descripcion || "" : "";
+  document.getElementById("recFGrupo").value = rec ? recGrupoDe(rec) : "Suscripciones";
+  document.getElementById("recFDia").value = rec ? rec.diaVence : hoyAR().d;
+  document.getElementById("recFMonto").value = rec && rec.monto ? formatCurrencyInput(String(rec.monto).replace(".", ",")) : "";
+  document.getElementById("recFMoneda").value = rec ? rec.currency || "ARS" : "ARS";
+  document.getElementById("recFAvisar").checked = rec ? rec.avisar !== false : true;
+  document.getElementById("recDialogTitle").textContent = rec ? "Editar recurrente" : "Agregar recurrente";
+  dlg.showModal();
+}
+
+async function recSubmitForm(e) {
+  e.preventDefault();
+  const id = document.getElementById("recFId").value;
+  const descripcion = document.getElementById("recFDesc").value.trim();
+  const dia = Number(document.getElementById("recFDia").value);
+  if (!descripcion) { alert("Escribí un nombre (ej: Netflix, Fibertel, Monotributo)."); return; }
+  if (!dia || dia < 1 || dia > 31) { alert("El día de vencimiento tiene que estar entre 1 y 31."); return; }
+
+  const existente = id ? recItems.find(r => r.id === id) : null;
+  const rec = {
+    id: id || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `rec-${Date.now()}-${Math.random().toString(36).slice(2)}`),
+    descripcion,
+    categoria: document.getElementById("recFGrupo").value,
+    diaVence: dia,
+    monto: recParse(document.getElementById("recFMonto").value),
+    currency: document.getElementById("recFMoneda").value,
+    avisar: document.getElementById("recFAvisar").checked,
+    activo: true,
+    pagos: existente ? existente.pagos || {} : {},
+    createdAt: existente ? existente.createdAt : new Date().toISOString()
+  };
+
+  try {
+    await recGuardar(rec);
+    document.getElementById("recDialog").close();
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo guardar el recurrente.");
+  }
+}
+
+function recItemHTML(rec, hoy) {
+  const est = recEstado(rec, hoy);
+  const pago = rec.pagos && rec.pagos[hoy.mes];
+  const montoMostrado = pago && pago.monto ? pago.monto : rec.monto;
+  const montoTxt = montoMostrado ? recMoney(montoMostrado, rec.currency) : "Monto a definir";
+  const mail = rec.avisar === false ? "" : " · 📧";
+  return `
+    <div class="rec-item">
+      <div class="rec-info">
+        <span class="rec-name">${recEsc(rec.descripcion)}</span>
+        <span class="rec-meta">Día ${recDiaEfectivo(rec.diaVence, hoy)} · <span class="rec-amount">${montoTxt}</span>${mail}</span>
+      </div>
+      <span class="rec-badge ${est.clase}">${est.texto}</span>
+      <div class="rec-actions">
+        ${est.pagado
+          ? `<button type="button" class="rec-icon" data-act="unpay" data-id="${rec.id}" title="Deshacer pago">↩</button>`
+          : `<button type="button" class="rec-icon pay" data-act="pay" data-id="${rec.id}" title="Marcar como pagado">✓</button>`}
+        <button type="button" class="rec-icon" data-act="edit" data-id="${rec.id}" title="Editar">✏️</button>
+        <button type="button" class="rec-icon" data-act="delete" data-id="${rec.id}" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+}
+
+function recRender() {
+  const lista = document.getElementById("recList");
+  if (!lista) return;
+  const hoy = hoyAR();
+  const activos = recItems.filter(r => r.activo !== false);
+
+  // Cartel de aviso
+  const pendientes = activos.filter(r => !recEstado(r, hoy).pagado);
+  let vencidos = 0, porVencer = 0;
+  pendientes.forEach(r => {
+    const d = recEstado(r, hoy).dias;
+    if (d < 0) vencidos++;
+    else if (d <= REC_DIAS_POR_VENCER) porVencer++;
+  });
+  const partes = [];
+  if (vencidos) partes.push(`⚠️ ${vencidos} ${vencidos === 1 ? "vencido" : "vencidos"}`);
+  if (porVencer) partes.push(`🌸 ${porVencer} por vencer (${REC_DIAS_POR_VENCER} días)`);
+  const banner = document.getElementById("recBanner");
+  if (banner) {
+    banner.textContent = partes.join(" · ");
+    banner.style.display = partes.length ? "block" : "none";
+    banner.className = "rec-banner" + (vencidos ? " late" : " soon");
+  }
+
+  // Resumen
+  let faltaARS = 0, faltaUSD = 0;
+  pendientes.forEach(r => {
+    if (!r.monto) return;
+    if (r.currency === "USD") faltaUSD += Number(r.monto);
+    else faltaARS += Number(r.monto);
+  });
+  const resumen = document.getElementById("recResumen");
+  if (resumen) {
+    if (!activos.length) {
+      resumen.textContent = "";
+    } else {
+      const falta = [faltaARS > 0 ? recMoney(faltaARS) : "", faltaUSD > 0 ? recMoney(faltaUSD, "USD") : ""].filter(Boolean).join(" + ") || "$0";
+      resumen.innerHTML = `Pagados: <b>${activos.length - pendientes.length} de ${activos.length}</b> · Falta pagar: <b class="rec-amount">${falta}</b>`;
+    }
+  }
+
+  // Lista agrupada
+  if (!activos.length) {
+    lista.innerHTML = `<div class="rec-empty">Todavía no cargaste recurrentes.<br>Agregá Netflix, Fibertel, el alquiler, el monotributo… y te aviso antes de que venzan.</div>`;
+    return;
+  }
+
+  let html = "";
+  REC_GRUPOS.forEach(g => {
+    const items = activos.filter(r => recGrupoDe(r) === g);
+    if (!items.length) return;
+    items.sort((a, b) => {
+      const ea = recEstado(a, hoy), eb = recEstado(b, hoy);
+      if (ea.pagado !== eb.pagado) return ea.pagado ? 1 : -1;
+      return (ea.dias ?? 0) - (eb.dias ?? 0);
+    });
+    html += `<div class="rec-group"><h4>${REC_ICONOS[g]} ${g}</h4>${items.map(r => recItemHTML(r, hoy)).join("")}</div>`;
+  });
+  lista.innerHTML = html;
+}
+
+function recMontarUI() {
+  if (document.getElementById("recSection")) return;
+
+  const style = document.createElement("style");
+  style.id = "recStyles";
+  style.textContent = `
+    .rec-panel{margin:1.5rem 0;padding:20px;border-radius:20px;border:1px solid rgba(128,128,128,.25);background:rgba(128,128,128,.06);color:inherit;box-sizing:border-box}
+    .rec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .rec-head h2{margin:0;font-size:1.15rem}
+    .rec-head p{margin:2px 0 0;font-size:.8rem;opacity:.75}
+    .rec-head-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .rec-btn{background:#fbc4d4;color:#5a2337;border:1px solid #f29cb5;border-radius:12px;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer}
+    .rec-btn.ghost{background:transparent;color:inherit;border:1px solid rgba(128,128,128,.4)}
+    .rec-banner{display:none;margin:8px 0;padding:10px 14px;border-radius:12px;font-weight:700;font-size:.9rem}
+    .rec-banner.late{background:rgba(220,50,60,.15);color:#d32f2f}
+    .rec-banner.soon{background:rgba(240,140,30,.18);color:#c26a00}
+    .rec-resumen{font-size:.85rem;margin:6px 0 10px;opacity:.9}
+    .rec-group h4{margin:14px 0 6px;font-size:.85rem;letter-spacing:.3px;opacity:.85}
+    .rec-item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 12px;margin-bottom:6px;border-radius:14px;border:1px solid rgba(128,128,128,.2);background:rgba(128,128,128,.07)}
+    .rec-info{display:flex;flex-direction:column;min-width:0}
+    .rec-name{font-weight:700;overflow:hidden;text-overflow:ellipsis}
+    .rec-meta{font-size:.78rem;opacity:.75}
+    .rec-badge{font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+    .rec-badge.paid{background:rgba(34,160,90,.15);color:#1f8a4c}
+    .rec-badge.soon{background:rgba(240,140,30,.18);color:#c26a00}
+    .rec-badge.late{background:rgba(220,50,60,.15);color:#d32f2f}
+    .rec-badge.wait{background:rgba(128,128,128,.15)}
+    body:is(.dark-mode,.dark-blue-mode,.black-mode) .rec-badge.paid{color:#6fdc9a}
+    body:is(.dark-mode,.dark-blue-mode,.black-mode) .rec-badge.soon,body:is(.dark-mode,.dark-blue-mode,.black-mode) .rec-banner.soon{color:#ffb454}
+    body:is(.dark-mode,.dark-blue-mode,.black-mode) .rec-badge.late,body:is(.dark-mode,.dark-blue-mode,.black-mode) .rec-banner.late{color:#ff8a8f}
+    .rec-actions{display:flex;gap:4px}
+    .rec-icon{width:32px;height:32px;border-radius:50%;border:1px solid rgba(128,128,128,.3);background:transparent;color:inherit;cursor:pointer;font-size:14px;display:grid;place-items:center;padding:0}
+    .rec-icon.pay{background:rgba(34,160,90,.18);border-color:rgba(34,160,90,.5)}
+    .rec-empty{text-align:center;padding:20px 10px;opacity:.75;font-size:.9rem}
+    .rec-collapsed .rec-body{display:none}
+    body.amounts-hidden .rec-amount{filter:blur(6px);user-select:none}
+    @media (max-width:600px){.rec-item{grid-template-columns:1fr auto}.rec-badge{grid-column:1;justify-self:start}.rec-actions{grid-row:1;grid-column:2}}
+    .rec-dialog{--rec-bg:#fff;--rec-fg:#333;--rec-line:#e5d3da;border:1px solid var(--rec-line);border-radius:22px;padding:24px;max-width:420px;width:92%;background:var(--rec-bg);color:var(--rec-fg)}
+    body.dark-mode .rec-dialog{--rec-bg:#2a161d;--rec-fg:#ffb6c1;--rec-line:#4e2b37}
+    body.dark-blue-mode .rec-dialog{--rec-bg:#0f1c3f;--rec-fg:#f1f5f9;--rec-line:#1e3a8a}
+    body.black-mode .rec-dialog{--rec-bg:#121212;--rec-fg:#fff;--rec-line:#333}
+    .rec-dialog::backdrop{background:rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+    .rec-dialog h3{margin:0 0 14px}
+    .rec-dialog label{display:grid;gap:5px;font-size:.78rem;font-weight:700;margin-bottom:12px}
+    .rec-dialog input[type=text],.rec-dialog input[type=number],.rec-dialog select{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1px solid var(--rec-line);background:transparent;color:var(--rec-fg);font:inherit;font-size:.9rem}
+    .rec-dialog select option{color:#333}
+    .rec-row{display:grid;grid-template-columns:1fr 110px;gap:10px}
+    .rec-check{display:flex!important;grid-template-columns:none!important;align-items:center;gap:8px!important;font-weight:600!important}
+    .rec-check input{width:auto}
+    .rec-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+  `;
+  document.head.appendChild(style);
+
+  const section = document.createElement("section");
+  section.id = "recSection";
+  section.className = "rec-panel";
+  section.innerHTML = `
+    <div class="rec-head">
+      <div>
+        <h2>🔁 Gastos recurrentes</h2>
+        <p>Suscripciones, servicios, impuestos y todo lo que se paga todos los meses. Te avisamos por mail antes de que venzan.</p>
+      </div>
+      <div class="rec-head-btns">
+        <button type="button" class="rec-btn" id="recAddBtn">＋ Agregar recurrente</button>
+        <button type="button" class="rec-btn ghost" id="recToggleBtn">▲ Ocultar</button>
+      </div>
+    </div>
+    <div class="rec-body">
+      <div id="recBanner" class="rec-banner"></div>
+      <div id="recResumen" class="rec-resumen"></div>
+      <div id="recList"></div>
+    </div>
+    <dialog id="recDialog" class="rec-dialog">
+      <form id="recForm">
+        <h3 id="recDialogTitle">Agregar recurrente</h3>
+        <input type="hidden" id="recFId">
+        <label>Nombre
+          <input type="text" id="recFDesc" placeholder="Ej: Netflix, Fibertel, Monotributo" maxlength="80" required>
+        </label>
+        <label>Grupo
+          <select id="recFGrupo">${REC_GRUPOS.map(g => `<option value="${g}">${REC_ICONOS[g]} ${g}</option>`).join("")}</select>
+        </label>
+        <div class="rec-row">
+          <label>Monto (opcional)
+            <input type="text" id="recFMonto" inputmode="decimal" placeholder="0,00">
+          </label>
+          <label>Moneda
+            <select id="recFMoneda"><option value="ARS">ARS ($)</option><option value="USD">USD (u$s)</option></select>
+          </label>
+        </div>
+        <label>Día del mes en que vence
+          <input type="number" id="recFDia" min="1" max="31" value="10">
+        </label>
+        <label class="rec-check"><input type="checkbox" id="recFAvisar" checked> 📧 Avisarme por mail antes de que venza</label>
+        <div class="rec-dialog-actions">
+          <button type="button" class="rec-btn ghost" id="recCancelBtn">Cancelar</button>
+          <button type="submit" class="rec-btn">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+  `;
+
+  // Ubicación: en Mensuales antes de "Gastos del mes"; en Próximos después del resumen
+  const tabla = document.getElementById("tableContentWrapper");
+  const panelGastos = tabla ? tabla.closest(".panel") : null;
+  const resumenGrid = document.querySelector(".summary-grid");
+  if (panelGastos && panelGastos.parentNode) {
+    panelGastos.parentNode.insertBefore(section, panelGastos);
+  } else if (resumenGrid) {
+    resumenGrid.insertAdjacentElement("afterend", section);
+  } else {
+    (document.getElementById("appContent") || document.body).appendChild(section);
+  }
+
+  // Eventos
+  document.getElementById("recAddBtn").addEventListener("click", () => recAbrirDialog());
+  document.getElementById("recCancelBtn").addEventListener("click", () => document.getElementById("recDialog").close());
+  document.getElementById("recForm").addEventListener("submit", recSubmitForm);
+  document.getElementById("recFMonto").addEventListener("input", e => {
+    const start = e.target.selectionStart;
+    const prevLen = e.target.value.length;
+    e.target.value = formatCurrencyInput(e.target.value);
+    const pos = Math.max(0, start + (e.target.value.length - prevLen));
+    e.target.setSelectionRange(pos, pos);
+  });
+  document.getElementById("recList").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.act === "pay") recPagar(id);
+    if (btn.dataset.act === "unpay") recDeshacerPago(id);
+    if (btn.dataset.act === "edit") recAbrirDialog(recItems.find(r => r.id === id));
+    if (btn.dataset.act === "delete") recEliminar(id);
+  });
+
+  // Ocultar / mostrar (recuerda la elección)
+  const toggleBtn = document.getElementById("recToggleBtn");
+  let colapsado = false;
+  try { colapsado = localStorage.getItem("recurrentes_collapsed") === "true"; } catch (e) {}
+  const aplicarColapso = () => {
+    section.classList.toggle("rec-collapsed", colapsado);
+    toggleBtn.textContent = colapsado ? "▼ Mostrar" : "▲ Ocultar";
+  };
+  aplicarColapso();
+  toggleBtn.addEventListener("click", () => {
+    colapsado = !colapsado;
+    try { localStorage.setItem("recurrentes_collapsed", colapsado); } catch (e) {}
+    aplicarColapso();
+  });
+
+  // Que los estados cambien solos a las 00:00 hora argentina
+  if (!recTimer) recTimer = setInterval(recRender, 60000);
+}
+
+function startRecurrentes() {
+  stopRecurrentes();
+  if (!currentUser) return;
+  recMontarUI();
+  recUnsub = onSnapshot(
+    collection(db, "users", currentUser.uid, "recurrentes"),
+    snapshot => {
+      recItems = [];
+      snapshot.forEach(d => recItems.push({ id: d.id, ...d.data() }));
+      recRender();
+    },
+    err => console.error("Error al sincronizar recurrentes:", err)
+  );
+}
+
+function stopRecurrentes() {
+  if (typeof recUnsub === "function") { recUnsub(); recUnsub = null; }
+  recItems = [];
+  recRender();
 }
