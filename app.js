@@ -22,6 +22,14 @@ import {
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+/* Hoy en Argentina. El día cambia a las 00:00 hora argentina. */
+function hoyAR(now = new Date()) {
+  const [y, m, d] = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Argentina/Buenos_Aires" })
+    .format(now).split("-").map(Number);
+  const pad = n => String(n).padStart(2, "0");
+  return { y, m, d, date: new Date(y, m - 1, d), iso: `${y}-${pad(m)}-${pad(d)}`, mes: `${y}-${pad(m)}` };
+}
+
 // Credenciales del proyecto unificado
 const firebaseConfig = {
   apiKey: "AIzaSyBGGfMzmGfRH614IT5wwG2kZOtUDBd16ok",
@@ -128,7 +136,7 @@ async function saveExpenseToFirestore(item) {
     amount: item.amount === null || isNaN(item.amount) ? null : Number(item.amount),
     currency: item.currency || "ARS",
     quantity: Number(item.quantity) || 1,
-    date: item.date || new Date().toISOString().slice(0, 10),
+    date: item.date || hoyAR().iso,
     notes: item.notes || "",
     paid: Boolean(item.paid),
     createdAt: item.createdAt || new Date().toISOString()
@@ -218,8 +226,6 @@ $("authForm")?.addEventListener("submit", async event => {
   const email = $("authEmail")?.value.trim();
   const password = $("authPassword")?.value;
 
-  console.log("Intentando procesar autenticación:", email, "Modo:", authMode);
-
   if (!email || !password) {
     setAuthMessage("Completá email y contraseña.");
     return;
@@ -233,11 +239,9 @@ $("authForm")?.addEventListener("submit", async event => {
 
   try {
     if (authMode === "register") {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("Cuenta creada con éxito:", res.user);
+      await createUserWithEmailAndPassword(auth, email, password);
     } else {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log("Sesión iniciada con éxito:", res.user);
+      await signInWithEmailAndPassword(auth, email, password);
     }
   } catch (error) {
     console.error("Firebase Auth Error:", error);
@@ -265,7 +269,7 @@ document.addEventListener("click", async (e) => {
     } catch (error) {
       console.error("Error al enviar email de recuperación:", error);
       let errorMsg = "No se pudo enviar el correo de recuperación.";
-      
+
       if (error.code === 'auth/user-not-found') {
         errorMsg = "No existe ninguna cuenta registrada con ese correo.";
       } else if (error.code === 'auth/invalid-email') {
@@ -381,7 +385,7 @@ function applyBlackModeInlineFixes(isBlack) {
       btn.style.backgroundColor = "#1a1a1a";
       btn.style.color = "#ffffff";
       btn.style.borderColor = "#333333";
-      
+
       btn.onmouseover = () => {
         btn.style.backgroundColor = "#262626";
         btn.style.borderColor = "#ffffff";
@@ -403,7 +407,6 @@ function applyBlackModeInlineFixes(isBlack) {
 // ESTADO DE AUTENTICACIÓN
 onAuthStateChanged(auth, user => {
   currentUser = user;
-  console.log("onAuthStateChanged disparado. Usuario:", user ? user.email : "Sin sesión");
   setupThemeToggles();
 
   const authSec = $("authSection");
@@ -429,7 +432,7 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
- // Usuario conectado: ocultar login y mostrar app principal
+  // Usuario conectado: ocultar login y mostrar app principal
   if (authSec) {
     authSec.classList.add("hidden");
     authSec.style.setProperty("display", "none", "important");
@@ -511,7 +514,7 @@ function setupAmountsToggle() {
 function openModal() {
   if (!modal) return;
   modal.classList.add("show");
-  
+
   if (document.body.classList.contains("black-mode")) {
     modal.style.backgroundColor = "rgba(0, 0, 0, 0.55)";
     modal.style.backdropFilter = "blur(10px)";
@@ -544,11 +547,7 @@ modal?.addEventListener("click", event => {
 function setDefaultDate() {
   const dateInput = $("date");
   if (dateInput && !dateInput.value) {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    dateInput.value = `${year}-${month}-${day}`;
+    dateInput.value = hoyAR().iso;
   }
 }
 
@@ -564,7 +563,7 @@ expenseForm?.addEventListener("submit", async event => {
   const category = $("category")?.value || "Otros";
   const currency = $("currency") ? $("currency").value : "ARS";
   const quantity = Number($("quantity")?.value) || 1;
-  const date = $("date")?.value || new Date().toISOString().slice(0, 10);
+  const date = $("date")?.value || hoyAR().iso;
   const notes = $("notes")?.value.trim() || "";
   const amount = parseCurrency($("amount")?.value);
 
@@ -583,6 +582,10 @@ expenseForm?.addEventListener("submit", async event => {
     paid: currentExpense ? currentExpense.paid : false,
     createdAt: currentExpense ? currentExpense.createdAt : new Date().toISOString()
   };
+
+  // Conservar el vínculo con MENSUALES al editar
+  if (currentExpense?.linkedMensualId) item.linkedMensualId = currentExpense.linkedMensualId;
+  if (currentExpense?.linkedMonthKey) item.linkedMonthKey = currentExpense.linkedMonthKey;
 
   try {
     await saveExpenseToFirestore(item);
@@ -626,8 +629,7 @@ function formatDate(dateString) {
 
 function getDueAlert(dateString, isPaid) {
   if (isPaid || !dateString) return null;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = hoyAR().date;
   const target = new Date(`${dateString}T00:00:00`);
   const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
 
@@ -745,7 +747,7 @@ function getFilteredExpenses() {
 
   if (searchQuery.trim() !== "") {
     const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(e => 
+    filtered = filtered.filter(e =>
       (e.description || "").toLowerCase().includes(q) ||
       (e.notes || "").toLowerCase().includes(q) ||
       getCategoryName(e.category).toLowerCase().includes(q)
@@ -791,8 +793,8 @@ function createExpenseElement(expense) {
   const statusText = expense.paid ? "Pagado" : expense.type === "debt" ? "Deuda" : "Pendiente";
 
   const dueAlert = getDueAlert(expense.date, expense.paid);
-  const alertHTML = dueAlert 
-    ? `<span class="badge" style="${dueAlert.style}; margin-left: 6px; font-weight: bold;">${dueAlert.text}</span>` 
+  const alertHTML = dueAlert
+    ? `<span class="badge" style="${dueAlert.style}; margin-left: 6px; font-weight: bold;">${dueAlert.text}</span>`
     : "";
 
   article.innerHTML = `
@@ -857,7 +859,7 @@ function editExpense(id) {
   if ($("expenseId")) $("expenseId").value = expense.id;
   if ($("description")) $("description").value = expense.description || "";
   if ($("category")) $("category").value = expense.category || "";
-  
+
   if ($("amount")) {
     $("amount").value = (expense.amount !== null && expense.amount !== undefined)
       ? formatCurrencyInput(String(expense.amount).replace(".", ","))
@@ -890,7 +892,7 @@ async function markAsPaid(id) {
     return;
   }
 
-  const payDate = expense.date || new Date().toISOString().slice(0, 10);
+  const payDate = expense.date || hoyAR().iso;
   const monthKey = payDate.slice(0, 7);
   const mensualId = `gp-${expense.id}`;
 
@@ -934,7 +936,7 @@ async function markAsUnpaid(id) {
   const expense = expenses.find(item => item.id === id);
   if (!expense) return;
 
-  const payDate = expense.date || new Date().toISOString().slice(0, 10);
+  const payDate = expense.date || hoyAR().iso;
   const monthKey = expense.linkedMonthKey || payDate.slice(0, 7);
   const mensualId = expense.linkedMensualId || `gp-${expense.id}`;
 
@@ -983,8 +985,7 @@ function updateSummary() {
   });
   if (totalPending) totalPending.innerHTML = renderDualAmount(totalPendingARS, totalPendingUSD);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = hoyAR().date;
 
   const sevenDays = new Date(today);
   sevenDays.setDate(sevenDays.getDate() + 7);
@@ -1089,7 +1090,7 @@ $("csvBtn")?.addEventListener("click", () => {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", `Gastos-Proximos-${new Date().toISOString().slice(0, 10)}.csv`);
+  link.setAttribute("download", `Gastos-Proximos-${hoyAR().iso}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1168,7 +1169,7 @@ $("pdfBtn")?.addEventListener("click", () => {
   pdf.setFont("helvetica", "bold");
   pdf.text("AGENDA DE GASTOS PROXIMOS", 21, 26);
 
-  const todayStr = new Date().toLocaleDateString("es-AR", {
+  const todayStr = hoyAR().date.toLocaleDateString("es-AR", {
     day: "2-digit",
     month: "long",
     year: "numeric"
@@ -1290,7 +1291,7 @@ $("pdfBtn")?.addEventListener("click", () => {
   pdf.setTextColor(...footerColorGP);
   pdf.text("Gastos Próximos · Creado por Flor Bagnis", 15, 287);
 
-  pdf.save(`Gastos-Proximos-${new Date().toISOString().slice(0, 10)}.csv`.replace(".csv", ".pdf"));
+  pdf.save(`Gastos-Proximos-${hoyAR().iso}.pdf`);
 });
 
 
@@ -1318,7 +1319,7 @@ if (toggleExpensesBtn && expensesContainer) {
   const isHidden = localStorage.getItem('expensesListHidden') === 'true';
   if (isHidden) {
     expensesContainer.classList.add('expenses-hidden');
-    toggleExpensesBtn.textContent = '👁️ Mostrar lista';
+    toggleExpensesBtn.textContent = '👁️ Mostrar registros';
   }
 
   // 2. Alternar visibilidad al hacer clic
@@ -1327,11 +1328,9 @@ if (toggleExpensesBtn && expensesContainer) {
     const currentlyHidden = expensesContainer.classList.contains('expenses-hidden');
 
     toggleExpensesBtn.textContent = currentlyHidden
-      ? '👁️ Mostrar lista'
-      : '👁️ Ocultar lista';
+      ? '👁️ Mostrar registros'
+      : '👁️ Ocultar registros';
 
     localStorage.setItem('expensesListHidden', currentlyHidden);
   });
 }
-
-
