@@ -1191,7 +1191,7 @@ $("pdfBtn")?.addEventListener("click", () => {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ unit: "mm", format: "a4" });
 
-  const isDarkMode = document.body.classList.contains("dark-mode");
+const isDarkMode = document.body.classList.contains("dark-mode");
   const isBlueMode = document.body.classList.contains("dark-blue-mode");
   const isBlackMode = document.body.classList.contains("black-mode");
 
@@ -1199,31 +1199,31 @@ $("pdfBtn")?.addEventListener("click", () => {
 
   if (isBlackMode) {
     pink = [255, 255, 255];
-    dark = [241, 245, 249];
-    light = [18, 18, 18];
-    headerBg = [10, 10, 10];
-    cardBorder = [40, 40, 40];
-    lineDivider = [30, 30, 30];
+    dark = [255, 255, 255];
+    light = [26, 26, 26];
+    headerBg = [18, 18, 18];
+    cardBorder = [51, 51, 51];
+    lineDivider = [40, 40, 40];
     pageBgColor = [0, 0, 0];
-    footerColorGP = [150, 150, 150];
+    footerColorGP = [179, 179, 179];
   } else if (isBlueMode) {
     pink = [56, 189, 248];
-    dark = [241, 245, 249];
-    light = [15, 28, 63];
-    headerBg = [7, 13, 30];
-    cardBorder = [30, 53, 109];
-    lineDivider = [20, 36, 75];
+    dark = [234, 244, 255];
+    light = [20, 36, 75];
+    headerBg = [15, 28, 63];
+    cardBorder = [30, 58, 138];
+    lineDivider = [20, 40, 90];
     pageBgColor = [7, 13, 30];
-    footerColorGP = [143, 165, 202];
+    footerColorGP = [167, 189, 217];
   } else if (isDarkMode) {
-    pink = [255, 120, 160];
-    dark = [240, 240, 240];
-    light = [45, 35, 40];
-    headerBg = [55, 30, 45];
-    cardBorder = [80, 45, 60];
-    lineDivider = [50, 35, 42];
-    pageBgColor = [25, 20, 25];
-    footerColorGP = [200, 150, 170];
+    pink = [232, 93, 158];
+    dark = [252, 238, 243];
+    light = [51, 29, 43];
+    headerBg = [33, 22, 32];
+    cardBorder = [73, 51, 67];
+    lineDivider = [55, 38, 50];
+    pageBgColor = [20, 14, 19];
+    footerColorGP = [184, 147, 164];
   } else {
     pink = [232, 93, 158];
     dark = [51, 41, 52];
@@ -1232,7 +1232,7 @@ $("pdfBtn")?.addEventListener("click", () => {
     cardBorder = [240, 223, 232];
     lineDivider = [245, 230, 238];
     pageBgColor = null;
-    footerColorGP = [160, 140, 150];
+    footerColorGP = [139, 125, 134];
   }
 
   if (pageBgColor) {
