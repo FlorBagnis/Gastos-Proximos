@@ -1574,3 +1574,47 @@ body .toolbar {
   margin-bottom: 24px !important;
   box-shadow: var(--app-shadow) !important;
 }
+
+
+
+
+/* =========================================================
+   CORRECCIÓN DE MONTOS OCULTOS (PUNTOS) EN TODOS LOS MODOS
+========================================================= */
+
+body.amounts-hidden .rec-amount,
+body.amounts-hidden .expense-amount strong,
+body.amounts-hidden #totalPending,
+body.amounts-hidden #nextSevenDays,
+body.amounts-hidden #thisMonth,
+body.amounts-hidden #totalDebts,
+body.amounts-hidden #amount {
+  color: transparent !important;
+  position: relative;
+  user-select: none;
+}
+
+body.amounts-hidden .rec-amount::after,
+body.amounts-hidden .expense-amount strong::after,
+body.amounts-hidden #totalPending::after,
+body.amounts-hidden #nextSevenDays::after,
+body.amounts-hidden #thisMonth::after,
+body.amounts-hidden #totalDebts::after,
+body.amounts-hidden #amount::after {
+  content: "••••••";
+  color: var(--app-accent) !important;
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+body.amounts-hidden .expense-amount strong::after,
+body.amounts-hidden .rec-amount::after {
+  justify-content: flex-end;
+}
