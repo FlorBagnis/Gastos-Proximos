@@ -1326,7 +1326,7 @@ body.dark-blue-mode .action-button:hover {
 
 
 /* =========================================================
-   GASTOS PRÓXIMOS — UNIFICACIÓN REAL DE LOS CUATRO TEMAS
+   GASTOS PRÓXIMOS — CORRECCIÓN DE HEADER Y ESTILOS
 ========================================================= */
 
 /* 1. MODO CLARO (Default) */
@@ -1422,6 +1422,23 @@ body footer {
   color: var(--app-muted) !important;
 }
 
+/* HEADER LIMPIO (SIN CAJA SÓLIDA EN MODO CLARO Y OSCURO) */
+body:not(.dark-blue-mode):not(.black-mode) header.header {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* En Modo Azul y Modo Black el header se mantiene como tarjeta integrada */
+body.dark-blue-mode header.header,
+body.black-mode header.header {
+  background-color: var(--app-card) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
 /* TARJETAS, MODALES Y CONTENEDORES */
 body .auth-card,
 body .summary-card,
@@ -1429,7 +1446,6 @@ body .expense,
 body .modal,
 body .empty-state,
 body .rec-panel,
-body header.header,
 body .toolbar {
   background-color: var(--app-card) !important;
   color: var(--app-text) !important;
@@ -1543,4 +1559,3 @@ body .rec-item:hover {
   border-color: var(--app-accent) !important;
   background-color: var(--app-accent-soft) !important;
 }
-
