@@ -1328,70 +1328,69 @@ body.dark-blue-mode .action-button:hover {
 
 
 /* =========================================================
-   ESTILOS KAWAI / ROSITA PARA GASTOS RECURRENTES
+   ESTILO UNIFICADO PARA LOS ITEMS DE GASTOS RECURRENTES (LOS 4 MODOS)
 ========================================================= */
-.rec-panel {
-  margin: 1.5rem 0;
-  padding: 22px;
-  border-radius: 24px;
-  border: 1px solid var(--border, #f2cfdf);
-  background: var(--white, #fff);
-  box-shadow: 0 4px 20px rgba(90, 35, 55, 0.06);
-  box-sizing: border-box;
-}
 
-.rec-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.rec-head h2 {
-  margin: 0;
-  font-size: 1.15rem;
-  color: var(--pink, #e85d9e);
-  font-weight: 800;
-}
-
-.rec-head p {
-  margin: 2px 0 0;
-  font-size: .8rem;
-  color: var(--muted, #8b7d86);
-}
-
+/* 1. MODO CLARO (Por defecto) */
 .rec-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  margin-bottom: 8px;
-  border-radius: 16px;
-  border: 1px solid var(--border, #f0dfe8);
-  background: var(--pink-light, #fff0f7);
+  background-color: var(--card, #ffffff) !important;
+  border: 1px solid var(--line, #f0dfe8) !important;
+  color: var(--text, #332934) !important;
 }
 
-.rec-badge {
-  font-size: .75rem;
-  font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
+.rec-item .rec-name {
+  color: var(--text, #332934) !important;
 }
 
-.rec-badge.paid { background: rgba(34, 160, 90, 0.15); color: #1f8a4c; }
-.rec-badge.soon { background: #fff0f5; color: #c26a00; border: 1px solid #fad2e1; }
-.rec-badge.late { background: rgba(211, 47, 47, 0.12); color: #d32f2f; }
+.rec-item .rec-meta {
+  color: var(--muted, #8b7d86) !important;
+}
 
-/* Adaptación a Modo Oscuro, Azul y Black */
-body.dark-mode .rec-panel { background: #211620 !important; border-color: #3b2334 !important; }
-body.dark-mode .rec-item { background: #1f1015 !important; border-color: #4e2b37 !important; color: #ffdbe4 !important; }
 
-body.dark-blue-mode .rec-panel { background: #0f1c3f !important; border-color: #14244b !important; color: #f1f5f9 !important; }
-body.dark-blue-mode .rec-item { background: #070d1e !important; border-color: #14244b !important; color: #f1f5f9 !important; }
+/* 2. MODO OSCURO (Dark Pink) */
+body.dark-mode .rec-item {
+  background-color: var(--card, #2d1422) !important;
+  border-color: var(--line, #4a2138) !important;
+  color: var(--text, #fdf2f6) !important;
+}
 
-body.black-mode .rec-panel { background: #121212 !important; border-color: #262626 !important; color: #ffffff !important; }
-body.black-mode .rec-item { background: #1a1a1a !important; border-color: #333333 !important; color: #ffffff !important; }
+body.dark-mode .rec-item .rec-name {
+  color: var(--text, #fdf2f6) !important;
+}
+
+body.dark-mode .rec-item .rec-meta {
+  color: var(--muted, #b892a4) !important;
+}
+
+
+/* 3. MODO AZUL OSCURO */
+body.dark-blue-mode .rec-item {
+  background-color: var(--card, #0f1c3f) !important;
+  border-color: var(--line, #14244b) !important;
+  color: var(--text, #f1f5f9) !important;
+}
+
+body.dark-blue-mode .rec-item .rec-name {
+  color: var(--text, #f1f5f9) !important;
+}
+
+body.dark-blue-mode .rec-item .rec-meta {
+  color: var(--muted, #8fa5ca) !important;
+}
+
+
+/* 4. MODO BLACK (OLED) */
+body.black-mode .rec-item {
+  background-color: #141417 !important;
+  border-color: #222227 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .rec-item .rec-name {
+  color: #ffffff !important;
+}
+
+body.black-mode .rec-item .rec-meta {
+  color: #8b8f97 !important;
+}
 
