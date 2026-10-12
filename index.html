@@ -16,6 +16,10 @@
     /* =========================================================
        ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
     ========================================================= */
+    <style>
+    /* =========================================================
+        ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
+    ========================================================= */
     header.header {
       display: flex !important;
       justify-content: space-between !important;
@@ -33,7 +37,46 @@
     }
 
     /* =========================================================
-       MODO AZUL
+        MODO OSCURO ESTÁNDAR (🌙)
+    ========================================================= */
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-mode header.header,
+    body.dark-mode .toolbar,
+    body.dark-mode .summary-card,
+    body.dark-mode .summary-card.main-card,
+    body.dark-mode .expense,
+    body.dark-mode .auth-card,
+    body.dark-mode .modal,
+    body.dark-mode dialog {
+      background: #1e1e1e !important;
+      background-color: #1e1e1e !important;
+      border: 1px solid #2d2d2d !important;
+      border-radius: 20px !important;
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .secondary-button,
+    body.dark-mode .primary-button,
+    body.dark-mode button:not(.action-button),
+    body.dark-mode select,
+    body.dark-mode input[type="search"],
+    body.dark-mode input[type="date"],
+    body.dark-mode input[type="number"],
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="email"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea {
+      background-color: #2d2d2d !important;
+      color: #ff78a0 !important;
+      border: 1px solid #3d3d3d !important;
+    }
+
+    /* =========================================================
+        MODO AZUL (💙)
     ========================================================= */
     body.dark-blue-mode,
     body.dark-blue-mode main.app,
@@ -70,18 +113,6 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
     }
 
-    body.dark-blue-mode header.header .eyebrow,
-    body.dark-blue-mode header.header h1,
-    body.dark-blue-mode header.header p,
-    body.dark-blue-mode .summary-card.main-card strong,
-    body.dark-blue-mode .modal-header h2,
-    body.dark-blue-mode .modal-header p,
-    body.dark-blue-mode .form-group label,
-    body.dark-blue-mode .section-title h2,
-    body.dark-blue-mode .section-title span {
-      color: #f1f5f9 !important;
-    }
-
     body.dark-blue-mode .summary-card.main-card strong {
       color: #38bdf8 !important;
     }
@@ -115,7 +146,7 @@
     }
 
     /* =========================================================
-       MODO BLACK DEFINITIVO
+        MODO BLACK DEFINITIVO (🖤)
     ========================================================= */
     body.black-mode {
       background-color: #000000 !important;
@@ -134,18 +165,6 @@
       background-color: #121212 !important;
       border: 1px solid #262626 !important;
       border-radius: 20px !important;
-      color: #ffffff !important;
-    }
-
-    body.black-mode header.header .eyebrow,
-    body.black-mode header.header h1,
-    body.black-mode header.header p,
-    body.black-mode .summary-card.main-card strong,
-    body.black-mode .modal-header h2,
-    body.black-mode .modal-header p,
-    body.black-mode .form-group label,
-    body.black-mode .section-title h2,
-    body.black-mode .section-title span {
       color: #ffffff !important;
     }
 
@@ -172,39 +191,8 @@
       border-color: #ffffff !important;
     }
 
-    body.black-mode input::placeholder,
-    body.black-mode textarea::placeholder {
-      color: #888888 !important;
-    }
-
-    body.black-mode .modal-overlay {
-      background: rgba(0, 0, 0, 0.65) !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
-    }
-
-    body.black-mode .type-option span {
-      background-color: #1a1a1a !important;
-      border: 1px solid #333333 !important;
-      color: #ffffff !important;
-    }
-
-    body.black-mode .type-option input:checked + span {
-      background-color: #262626 !important;
-      border-color: #ffffff !important;
-    }
-
-    body.black-mode .close-modal,
-    body.black-mode .modal-icon,
-    body.black-mode .card-icon,
-    body.black-mode .small-icon,
-    body.black-mode .expense-icon {
-      background-color: #1a1a1a !important;
-      color: #ffffff !important;
-    }
-
     /* =========================================================
-       RESPONSIVE
+        RESPONSIVE
     ========================================================= */
     @media (max-width: 1024px) {
       header.header {
@@ -258,7 +246,6 @@
       .summary-grid {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
         width: 100% !important;
         box-sizing: border-box !important;
       }
@@ -268,36 +255,9 @@
       }
       .toolbar {
         display: block !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 14px !important;
-      }
-      .toolbar input[type="search"] {
-        width: 100% !important;
-        box-sizing: border-box !important;
-        margin-bottom: 10px !important;
-      }
-      .filters {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 6px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-      .filters button {
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-      .expense {
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-      .modal {
-        width: 95% !important;
-        max-height: 85vh !important;
-        box-sizing: border-box !important;
       }
     }
+    
   </style>
 </head>
 <body>
