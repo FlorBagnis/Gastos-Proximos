@@ -1325,86 +1325,13 @@ body.dark-blue-mode .action-button:hover {
 }
 
 
-
-
-/* =========================================================
-   ESTILO UNIFICADO PARA LOS ITEMS DE GASTOS RECURRENTES (LOS 4 MODOS)
-========================================================= */
-
-/* 1. MODO CLARO (Por defecto) */
-.rec-item {
-  background-color: var(--card, #ffffff) !important;
-  border: 1px solid var(--line, #f0dfe8) !important;
-  color: var(--text, #332934) !important;
-}
-
-.rec-item .rec-name {
-  color: var(--text, #332934) !important;
-}
-
-.rec-item .rec-meta {
-  color: var(--muted, #8b7d86) !important;
-}
-
-
-/* 2. MODO OSCURO (Dark Pink) */
-body.dark-mode .rec-item {
-  background-color: var(--card, #2d1422) !important;
-  border-color: var(--line, #4a2138) !important;
-  color: var(--text, #fdf2f6) !important;
-}
-
-body.dark-mode .rec-item .rec-name {
-  color: var(--text, #fdf2f6) !important;
-}
-
-body.dark-mode .rec-item .rec-meta {
-  color: var(--muted, #b892a4) !important;
-}
-
-
-/* 3. MODO AZUL OSCURO */
-body.dark-blue-mode .rec-item {
-  background-color: var(--card, #0f1c3f) !important;
-  border-color: var(--line, #14244b) !important;
-  color: var(--text, #f1f5f9) !important;
-}
-
-body.dark-blue-mode .rec-item .rec-name {
-  color: var(--text, #f1f5f9) !important;
-}
-
-body.dark-blue-mode .rec-item .rec-meta {
-  color: var(--muted, #8fa5ca) !important;
-}
-
-
-/* 4. MODO BLACK (OLED) */
-body.black-mode .rec-item {
-  background-color: #141417 !important;
-  border-color: #222227 !important;
-  color: #ffffff !important;
-}
-
-body.black-mode .rec-item .rec-name {
-  color: #ffffff !important;
-}
-
-body.black-mode .rec-item .rec-meta {
-  color: #8b8f97 !important;
-}
-
-
-
 /* =========================================================
    GASTOS PRÓXIMOS — UNIFICACIÓN REAL DE LOS CUATRO TEMAS
-   Pegar al final de style.css
 ========================================================= */
 
-/* 1. MODO CLARO */
+/* 1. MODO CLARO (Default) */
 :root {
   color-scheme: light;
-
   --app-bg: #fff9fc;
   --app-card: #ffffff;
   --app-field: #fffafd;
@@ -1416,23 +1343,11 @@ body.black-mode .rec-item .rec-meta {
   --app-accent-soft: #fff0f7;
   --app-accent-text: #ffffff;
   --app-shadow: 0 10px 30px rgba(180, 90, 130, 0.08);
-
-  --pink: var(--app-accent);
-  --pink-dark: var(--app-accent-hover);
-  --pink-light: var(--app-accent-soft);
-  --pink-soft: #ffe3f0;
-  --text: var(--app-text);
-  --muted: var(--app-muted);
-  --background: var(--app-bg);
-  --white: var(--app-card);
-  --border: var(--app-border);
-  --shadow: var(--app-shadow);
 }
 
-/* 2. MODO OSCURO — BORDÓ Y ROSA */
+/* 2. MODO OSCURO (Bordó / Borravino) */
 body.dark-mode {
   color-scheme: dark;
-
   --app-bg: #140e13;
   --app-card: #211620;
   --app-field: #170f16;
@@ -1444,78 +1359,42 @@ body.dark-mode {
   --app-accent-soft: #331d2b;
   --app-accent-text: #ffffff;
   --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
-
-  --pink: var(--app-accent);
-  --pink-dark: var(--app-accent-hover);
-  --pink-light: var(--app-accent-soft);
-  --pink-soft: #331d2b;
-  --text: var(--app-text);
-  --muted: var(--app-muted);
-  --background: var(--app-bg);
-  --white: var(--app-card);
-  --border: var(--app-border);
-  --shadow: var(--app-shadow);
 }
 
-/* 3. MODO BLACK — NEGRO OLED */
+/* 3. MODO BLACK (OLED Puro) */
 body.black-mode {
   color-scheme: dark;
-
   --app-bg: #000000;
   --app-card: #121212;
   --app-field: #080808;
   --app-text: #ffffff;
   --app-muted: #b3b3b3;
-  --app-border: #333333;
+  --app-border: #262626;
   --app-accent: #ffffff;
   --app-accent-hover: #d9d9d9;
-  --app-accent-soft: #262626;
+  --app-accent-soft: #1a1a1a;
   --app-accent-text: #000000;
   --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-
-  --pink: var(--app-accent);
-  --pink-dark: var(--app-accent-hover);
-  --pink-light: var(--app-accent-soft);
-  --pink-soft: #1a1a1a;
-  --text: var(--app-text);
-  --muted: var(--app-muted);
-  --background: var(--app-bg);
-  --white: var(--app-card);
-  --border: var(--app-border);
-  --shadow: var(--app-shadow);
 }
 
-/* 4. MODO AZUL — MARINO Y CELESTE */
+/* 4. MODO AZUL (Marino y Celeste) */
 body.dark-blue-mode {
   color-scheme: dark;
-
   --app-bg: #070d1e;
   --app-card: #0f1c3f;
   --app-field: #0a1530;
   --app-text: #eaf4ff;
   --app-muted: #a7bdd9;
-  --app-border: #24385e;
+  --app-border: #1e3a8a;
   --app-accent: #38bdf8;
   --app-accent-hover: #7dd3fc;
   --app-accent-soft: #14244b;
   --app-accent-text: #07111f;
   --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-
-  --pink: var(--app-accent);
-  --pink-dark: var(--app-accent-hover);
-  --pink-light: var(--app-accent-soft);
-  --pink-soft: #14244b;
-  --text: var(--app-text);
-  --muted: var(--app-muted);
-  --background: var(--app-bg);
-  --white: var(--app-card);
-  --border: var(--app-border);
-  --shadow: var(--app-shadow);
 }
 
-/* FONDO Y TEXTO GENERAL */
+/* APLICACIÓN GENERAL DE VARIABLES */
 body {
-  background: var(--app-bg) !important;
   background-color: var(--app-bg) !important;
   color: var(--app-text) !important;
 }
@@ -1527,7 +1406,7 @@ body .summary-card strong,
 body .modal-header h2,
 body .auth-card h1,
 body .empty-state h3 {
-  color: var(--app-text);
+  color: var(--app-text) !important;
 }
 
 body .header p,
@@ -1540,44 +1419,26 @@ body .auth-subtitle,
 body .modal-header p,
 body .helper,
 body footer {
-  color: var(--app-muted);
+  color: var(--app-muted) !important;
 }
 
-/* TARJETAS Y SUPERFICIES */
+/* TARJETAS, MODALES Y CONTENEDORES */
 body .auth-card,
 body .summary-card,
 body .expense,
 body .modal,
-body .empty-state {
-  background: var(--app-card) !important;
+body .empty-state,
+body .rec-panel,
+body header.header,
+body .toolbar {
+  background-color: var(--app-card) !important;
   color: var(--app-text) !important;
   border-color: var(--app-border) !important;
-  box-shadow: var(--app-shadow);
+  box-shadow: var(--app-shadow) !important;
 }
 
-/* El encabezado y la barra conservan el diseño claro,
-   pero se integran con las tarjetas en los temas oscuros. */
-body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode) .header,
-body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode) .toolbar {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-
-body.dark-mode .header,
-body.dark-mode .toolbar,
-body.dark-blue-mode .header,
-body.dark-blue-mode .toolbar,
-body.black-mode .header,
-body.black-mode .toolbar {
-  background: var(--app-card) !important;
-  color: var(--app-text) !important;
-  border-color: var(--app-border) !important;
-}
-
-/* TARJETA PRINCIPAL */
 body .main-card {
-  background: var(--app-accent-soft) !important;
+  background-color: var(--app-accent-soft) !important;
   border-color: var(--app-border) !important;
 }
 
@@ -1585,21 +1446,21 @@ body .main-card strong {
   color: var(--app-accent) !important;
 }
 
-/* ÍCONOS */
+/* ÍCONOS Y BADGES */
 body .card-icon,
 body .small-icon,
 body .expense-icon,
 body .modal-icon,
 body .auth-logo {
-  background: var(--app-accent-soft) !important;
+  background-color: var(--app-accent-soft) !important;
   color: var(--app-accent) !important;
 }
 
-/* BOTONES PRINCIPALES */
+/* BOTONES */
 body .primary-button,
 body .save-button,
 body .auth-submit {
-  background: var(--app-accent) !important;
+  background-color: var(--app-accent) !important;
   color: var(--app-accent-text) !important;
   border-color: var(--app-accent) !important;
 }
@@ -1607,84 +1468,45 @@ body .auth-submit {
 body .primary-button:hover,
 body .save-button:hover,
 body .auth-submit:hover {
-  background: var(--app-accent-hover) !important;
-  border-color: var(--app-accent-hover) !important;
+  background-color: var(--app-accent-hover) !important;
 }
 
-body .secondary-button {
-  background: var(--app-card) !important;
-  color: var(--app-accent) !important;
+body .secondary-button,
+body .filter,
+body .action-button {
+  background-color: var(--app-card) !important;
+  color: var(--app-text) !important;
   border-color: var(--app-border) !important;
 }
 
-body .secondary-button:hover {
-  background: var(--app-accent-soft) !important;
-  color: var(--app-accent) !important;
-  border-color: var(--app-accent) !important;
-}
-
-/* FILTROS */
-body .filter {
-  background: var(--app-card) !important;
-  color: var(--app-muted) !important;
-  border-color: var(--app-border) !important;
-}
-
-body .filter:hover {
+body .secondary-button:hover,
+body .filter:hover,
+body .action-button:hover {
+  background-color: var(--app-accent-soft) !important;
   border-color: var(--app-accent) !important;
   color: var(--app-accent) !important;
 }
 
 body .filter.active {
-  background: var(--app-accent) !important;
+  background-color: var(--app-accent) !important;
   border-color: var(--app-accent) !important;
   color: var(--app-accent-text) !important;
 }
 
-/* BOTONES DE ACCIÓN */
-body .action-button {
-  background: var(--app-field) !important;
-  border-color: var(--app-border) !important;
-}
-
-body .action-button:hover {
-  background: var(--app-accent-soft) !important;
-  border-color: var(--app-accent) !important;
-}
-
-body .action-button.pay {
-  color: var(--green) !important;
-}
-
-body .action-button.unpay {
-  color: #e67e22 !important;
-}
-
-body .action-button.delete {
-  color: var(--red) !important;
-}
-
-/* CAMPOS Y SELECTORES */
+/* INPUTS Y FORMULARIOS */
 body input:not([type="radio"]):not([type="checkbox"]),
 body select,
 body textarea,
 body .money-input {
-  background: var(--app-field) !important;
+  background-color: var(--app-field) !important;
   color: var(--app-text) !important;
   border-color: var(--app-border) !important;
-}
-
-body input::placeholder,
-body textarea::placeholder {
-  color: var(--app-muted) !important;
-  opacity: 0.8;
 }
 
 body input:focus,
 body select:focus,
 body textarea:focus {
   border-color: var(--app-accent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-accent) 20%, transparent) !important;
 }
 
 body .money-input span {
@@ -1692,44 +1514,21 @@ body .money-input span {
 }
 
 body .type-option span {
-  background: var(--app-field) !important;
+  background-color: var(--app-field) !important;
   color: var(--app-text) !important;
   border-color: var(--app-border) !important;
 }
 
 body .type-option input:checked + span {
-  background: var(--app-accent-soft) !important;
+  background-color: var(--app-accent-soft) !important;
   border-color: var(--app-accent) !important;
 }
 
-body .type-option small {
-  color: var(--app-muted) !important;
-}
-
-/* MODAL Y CIERRE */
-body .close-modal {
-  background: var(--app-accent-soft) !important;
-  color: var(--app-accent) !important;
-}
-
-body .modal-overlay {
-  background: rgba(40, 20, 35, 0.35);
-}
-
-body.dark-mode .modal-overlay {
-  background: rgba(0, 0, 0, 0.65) !important;
-}
-
-body.dark-blue-mode .modal-overlay,
-body.black-mode .modal-overlay {
-  background: rgba(0, 0, 0, 0.75) !important;
-}
-
-/* GASTOS RECURRENTES */
+/* GASTOS RECURRENTES ITEMS */
 body .rec-item {
-  background: var(--app-card) !important;
-  color: var(--app-text) !important;
+  background-color: var(--app-field) !important;
   border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
 }
 
 body .rec-item .rec-name {
@@ -1742,51 +1541,6 @@ body .rec-item .rec-meta {
 
 body .rec-item:hover {
   border-color: var(--app-accent) !important;
+  background-color: var(--app-accent-soft) !important;
 }
 
-/* ENLACES Y ELEMENTOS DESTACADOS */
-body .eyebrow,
-body .auth-switch {
-  color: var(--app-accent) !important;
-}
-
-/* SCROLLBAR ADAPTADA AL TEMA */
-body .debts-list::-webkit-scrollbar-thumb,
-body .expense-list::-webkit-scrollbar-thumb,
-body .pending-list::-webkit-scrollbar-thumb,
-body .payments-list::-webkit-scrollbar-thumb,
-body .card-list::-webkit-scrollbar-thumb {
-  background: var(--app-accent) !important;
-  border-radius: 10px;
-}
-
-/* RESPETAR EL COLOR DE LOS ESTADOS PAGADO Y PENDIENTE */
-body .badge.paid {
-  background: var(--green-light) !important;
-  color: var(--green) !important;
-}
-
-body .badge.pending {
-  background: var(--red-light) !important;
-  color: var(--red) !important;
-}
-
-body .badge.debt {
-  background: var(--app-accent-soft) !important;
-  color: var(--app-accent) !important;
-}
-
-/* COMPATIBILIDAD CON NAVEGADORES SIN color-mix */
-@supports not (background: color-mix(in srgb, white, black)) {
-  body input:focus,
-  body select:focus,
-  body textarea:focus {
-    box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.15) !important;
-  }
-
-  body.dark-blue-mode input:focus,
-  body.dark-blue-mode select:focus,
-  body.dark-blue-mode textarea:focus {
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
-  }
-}
