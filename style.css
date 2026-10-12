@@ -1579,8 +1579,13 @@ body .toolbar {
 
 
 /* =========================================================
-   CORRECCIÓN DE MONTOS OCULTOS (PUNTOS) EN TODOS LOS MODOS
+   CORRECCIÓN DEFINITIVA DE MONTOS OCULTOS (PUNTOS SIN BLUR)
 ========================================================= */
+
+/* Eliminar cualquier efecto de blur previo */
+body.amounts-hidden .rec-amount {
+  filter: none !important;
+}
 
 body.amounts-hidden .rec-amount,
 body.amounts-hidden .expense-amount strong,
