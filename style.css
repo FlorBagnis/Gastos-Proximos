@@ -1559,3 +1559,18 @@ body .rec-item:hover {
   border-color: var(--app-accent) !important;
   background-color: var(--app-accent-soft) !important;
 }
+
+
+
+/* =========================================================
+   CORRECCIÓN DE BORDES REDONDEADOS PARA LA TOOLBAR ("MIS PENDIENTES")
+========================================================= */
+body .toolbar {
+  background-color: var(--app-card) !important;
+  color: var(--app-text) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: var(--app-shadow) !important;
+}
