@@ -1794,6 +1794,20 @@ function recMontarUI() {
     .rec-icon.pay:hover{background:rgba(34,160,90,.35);border-color:rgba(34,160,90,.8)}
     .rec-item{transition:border-color .2s,background .2s}
     .rec-item:hover{border-color:#f29cb5;background:rgba(251,196,212,.18)}
+    .rec-panel{--rec-text:#4a1d31;--rec-pay:#1f8a4c}
+    body.dark-mode .rec-panel{--rec-text:#fdf2f6;--rec-pay:#6fdc9a}
+    body.dark-blue-mode .rec-panel{--rec-text:#f1f5f9;--rec-pay:#6fdc9a}
+    body.black-mode .rec-panel{--rec-text:#ffffff;--rec-pay:#6fdc9a}
+    .rec-panel,.rec-panel .rec-name,.rec-panel .rec-group h4,.rec-panel .rec-head h2,.rec-panel .rec-head p,.rec-panel .rec-meta,.rec-panel .rec-resumen,.rec-panel .rec-empty{color:var(--rec-text)!important}
+    .rec-panel .rec-icon{color:var(--rec-text)!important;background:transparent;opacity:1!important}
+    .rec-panel .rec-icon.pay{color:var(--rec-pay)!important;background:rgba(34,160,90,.18)}
+    .rec-panel .rec-btn{color:#5a2337!important}
+    .rec-panel .rec-btn.ghost{color:var(--rec-text)!important}
+    .rec-panel .rec-btn:hover{background:#f29cb5!important;border-color:#ea5b8e!important;color:#5a2337!important;transform:translateY(-2px);box-shadow:0 6px 14px rgba(234,91,142,.3)}
+    .rec-panel .rec-btn.ghost:hover{background:#fbc4d4!important;border-color:#f29cb5!important;color:#5a2337!important}
+    .rec-panel .rec-icon:hover{background:#fbc4d4!important;border-color:#f29cb5!important;color:#5a2337!important;transform:scale(1.12);box-shadow:0 3px 8px rgba(234,91,142,.3)}
+    .rec-panel .rec-icon.pay:hover{background:rgba(34,160,90,.35)!important;border-color:rgba(34,160,90,.8)!important;color:#14532d!important}
+    .rec-panel .rec-item:hover{border-color:#f29cb5!important;background:rgba(251,196,212,.18)!important}
     .rec-empty{text-align:center;padding:20px 10px;opacity:.75;font-size:.9rem}
     .rec-collapsed .rec-body{display:none}
     body.amounts-hidden .rec-amount{filter:blur(6px);user-select:none}
