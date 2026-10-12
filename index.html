@@ -13,10 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* =========================================================
-       ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
-    ========================================================= */
-    <style>
+    
     /* =========================================================
         ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
     ========================================================= */
@@ -37,10 +34,34 @@
     }
 
     /* =========================================================
-        MODO OSCURO ESTÁNDAR (🌙)
+        1. MODO CLARO (🌸 Tonos Rosas)
+    ========================================================= */
+    body {
+      background-color: #fff9fc !important;
+      color: #333333 !important;
+    }
+
+    body header.header,
+    body .toolbar,
+    body .summary-card,
+    body .summary-card.main-card,
+    body .expense,
+    body .auth-card,
+    body .modal,
+    body dialog,
+    body .rec-panel {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      border: 1px solid #f2cfdf !important;
+      border-radius: 20px !important;
+      color: #333333 !important;
+    }
+
+    /* =========================================================
+        2. MODO OSCURO (🍷 Tonos Borravinos)
     ========================================================= */
     body.dark-mode {
-      background-color: #121212 !important;
+      background-color: #191419 !important;
       color: #f1f5f9 !important;
     }
 
@@ -51,10 +72,11 @@
     body.dark-mode .expense,
     body.dark-mode .auth-card,
     body.dark-mode .modal,
-    body.dark-mode dialog {
-      background: #1e1e1e !important;
-      background-color: #1e1e1e !important;
-      border: 1px solid #2d2d2d !important;
+    body.dark-mode dialog,
+    body.dark-mode .rec-panel {
+      background: #371e2d !important;
+      background-color: #371e2d !important;
+      border: 1px solid #50233a !important;
       border-radius: 20px !important;
       color: #f1f5f9 !important;
     }
@@ -70,13 +92,13 @@
     body.dark-mode input[type="email"],
     body.dark-mode input[type="password"],
     body.dark-mode textarea {
-      background-color: #2d2d2d !important;
+      background-color: #50233a !important;
       color: #ff78a0 !important;
-      border: 1px solid #3d3d3d !important;
+      border: 1px solid #6c304f !important;
     }
 
     /* =========================================================
-        MODO AZUL (💙)
+        3. MODO AZUL (💙 Tonos Azules)
     ========================================================= */
     body.dark-blue-mode,
     body.dark-blue-mode main.app,
@@ -92,7 +114,8 @@
     body.dark-blue-mode .expense,
     body.dark-blue-mode .auth-card,
     body.dark-blue-mode .modal,
-    body.dark-blue-mode dialog {
+    body.dark-blue-mode dialog,
+    body.dark-blue-mode .rec-panel {
       background: #0f1c3f !important;
       background-color: #0f1c3f !important;
       border: 1px solid #14244b !important;
@@ -100,27 +123,8 @@
       color: #f1f5f9 !important;
     }
 
-    body.dark-blue-mode header.header {
-      padding: 28px !important;
-      margin-bottom: 24px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-    }
-
-    body.dark-blue-mode .toolbar {
-      padding: 24px !important;
-      margin-top: 24px !important;
-      margin-bottom: 24px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-    }
-
     body.dark-blue-mode .summary-card.main-card strong {
       color: #38bdf8 !important;
-    }
-
-    body.dark-blue-mode .modal-overlay {
-      background: rgba(2, 6, 15, 0.75) !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
     }
 
     body.dark-blue-mode .secondary-button,
@@ -146,7 +150,7 @@
     }
 
     /* =========================================================
-        MODO BLACK DEFINITIVO (🖤)
+        4. MODO BLACK (🖤 Tonos Negros Puros)
     ========================================================= */
     body.black-mode {
       background-color: #000000 !important;
@@ -160,7 +164,8 @@
     body.black-mode .expense,
     body.black-mode .auth-card,
     body.black-mode .modal,
-    body.black-mode dialog {
+    body.black-mode dialog,
+    body.black-mode .rec-panel {
       background: #121212 !important;
       background-color: #121212 !important;
       border: 1px solid #262626 !important;
