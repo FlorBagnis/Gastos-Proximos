@@ -1825,6 +1825,75 @@ function recMontarUI() {
     .rec-check{display:flex!important;grid-template-columns:none!important;align-items:center;gap:8px!important;font-weight:600!important}
     .rec-check input{width:auto}
     .rec-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+    /* Colores sincronizados con cada tema */
+    .rec-panel {
+      --rec-accent: #e85d9e;
+      --rec-accent-soft: #fce7f0;
+      --rec-accent-border: #f2b5d0;
+      --rec-accent-hover: #fbc4d4;
+      --rec-accent-text: #5a2337;
+    }
+
+    body.dark-mode .rec-panel {
+      --rec-accent: #ff78a0;
+      --rec-accent-soft: #39232e;
+      --rec-accent-border: #754257;
+      --rec-accent-hover: #50303f;
+      --rec-accent-text: #fff1f6;
+    }
+
+    body.dark-blue-mode .rec-panel {
+      --rec-accent: #38bdf8;
+      --rec-accent-soft: #132b49;
+      --rec-accent-border: #285782;
+      --rec-accent-hover: #1b3d60;
+      --rec-accent-text: #e0f2fe;
+    }
+
+    body.black-mode .rec-panel {
+      --rec-accent: #ffffff;
+      --rec-accent-soft: #1b1b1b;
+      --rec-accent-border: #444444;
+      --rec-accent-hover: #292929;
+      --rec-accent-text: #ffffff;
+    }
+
+    .rec-panel .rec-btn {
+      background: var(--rec-accent-soft) !important;
+      color: var(--rec-accent-text) !important;
+      border-color: var(--rec-accent-border) !important;
+    }
+
+    .rec-panel .rec-btn.ghost {
+      background: transparent !important;
+      color: var(--rec-text) !important;
+      border-color: var(--rec-accent-border) !important;
+    }
+
+    .rec-panel .rec-btn:hover,
+    .rec-panel .rec-btn.ghost:hover {
+      background: var(--rec-accent-hover) !important;
+      border-color: var(--rec-accent) !important;
+      color: var(--rec-accent-text) !important;
+    }
+
+    .rec-panel .rec-icon:hover {
+      background: var(--rec-accent-hover) !important;
+      border-color: var(--rec-accent) !important;
+      color: var(--rec-accent-text) !important;
+    }
+
+    .rec-panel .rec-icon.pay:hover {
+      background: rgba(34,160,90,.35) !important;
+      border-color: rgba(34,160,90,.8) !important;
+      color: var(--rec-pay) !important;
+    }
+
+    .rec-panel .rec-item:hover {
+      border-color: var(--rec-accent-border) !important;
+      background: var(--rec-accent-soft) !important;
+    }
+    
   `;
   document.head.appendChild(style);
 
