@@ -337,14 +337,16 @@ dialog[open] {
           Iniciar sesión
         </button>
 
-        <button type="button" id="forgotPasswordBtn" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; color: #ff78a0 !important; font-size: 0.85rem; cursor: pointer; text-decoration: underline; width: 100%; text-align: center; margin-top: 14px; padding: 4px;">
+        <!-- CAMBIO: se agregó class="auth-switch" y se sacó el color fijo -->
+        <button type="button" id="forgotPasswordBtn" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; font-size: 0.85rem; cursor: pointer; text-decoration: underline; width: 100%; text-align: center; margin-top: 14px; padding: 4px;">
           ¿Olvidaste tu contraseña?
         </button>
       </form>
 
       <p id="authMessage" class="auth-message"></p>
 
-      <button id="authSwitchBtn" type="button" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; color: #ffffff !important; font-size: 0.9rem; cursor: pointer; width: 100%; text-align: center; margin-top: 12px; padding: 6px;">
+      <!-- CAMBIO: se sacó el color blanco fijo -->
+      <button id="authSwitchBtn" type="button" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; font-size: 0.9rem; cursor: pointer; width: 100%; text-align: center; margin-top: 12px; padding: 6px;">
         ¿No tenés una cuenta? Registrate
       </button>
     </div>
