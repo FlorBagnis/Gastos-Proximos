@@ -1035,20 +1035,21 @@ footer {
 
 
 
-
-
 /* =========================================================
-   CORRECCIÓN DEFINITIVA PARA OCULTAR LA TOOLBAR / PENDIENTES
+   CONTROL DE VISIBILIDAD DE REGISTROS (MIS PENDIENTES)
 ========================================================= */
-.toolbar.collapsed,
-.toolbar.expenses-hidden,
-.collapsible-section.collapsed,
-.table-container-collapsible.collapsed {
+body.expenses-hidden .toolbar ~ .panel,
+body.expenses-hidden .toolbar ~ div:has(#misPendientes),
+body.expenses-hidden #misPendientes,
+body.expenses-hidden .expenses-list,
+body.expenses-hidden .toolbar + .expenses-list,
+body.expenses-hidden :is(.toolbar, .section-title, .filters) ~ .expenses-list {
   display: none !important;
-  max-height: 0 !important;
-  opacity: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  pointer-events: none !important;
 }
+
+/* Ocultar también si la clase se aplica directamente al contenedor o sección */
+.expenses-hidden,
+.collapsed {
+  display: none !important;
+}
+
