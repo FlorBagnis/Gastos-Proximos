@@ -1031,29 +1031,24 @@ footer {
   }
 }
 
+
+
+
+
+
+
 /* =========================================================
-   CONTROL DE COLAPSO (MOSTRAR / OCULTAR SECCIONES Y TOOLBAR)
+   CORRECCIÓN DEFINITIVA PARA OCULTAR LA TOOLBAR / PENDIENTES
 ========================================================= */
-.collapsible-section,
-.table-container-collapsible,
-.toolbar {
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin 0.3s ease, padding 0.3s ease;
-  max-height: 2000px;
-  opacity: 1;
-}
-
+.toolbar.collapsed,
+.toolbar.expenses-hidden,
 .collapsible-section.collapsed,
-.table-container-collapsible.collapsed,
-.toolbar.collapsed {
+.table-container-collapsible.collapsed {
+  display: none !important;
   max-height: 0 !important;
-  opacity: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  border-width: 0 !important;
-  pointer-events: none;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  pointer-events: none !important;
 }
-
-
