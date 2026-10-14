@@ -1191,48 +1191,55 @@ $("pdfBtn")?.addEventListener("click", () => {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ unit: "mm", format: "a4" });
 
-const isDarkMode = document.body.classList.contains("dark-mode");
+  const isDarkMode = document.body.classList.contains("dark-mode");
   const isBlueMode = document.body.classList.contains("dark-blue-mode");
   const isBlackMode = document.body.classList.contains("black-mode");
 
-  let pink, dark, light, headerBg, cardBorder, lineDivider, pageBgColor, footerColorGP;
+  /* COLORES DEL PDF = PALETA DE MENSUALES
+     pink = color del encabezado de las tablas
+     labelColor = color de los títulos chicos de las tarjetas */
+  let pink, dark, light, headerBg, cardBorder, lineDivider, pageBgColor, footerColorGP, labelColor;
 
   if (isBlackMode) {
-    pink = [255, 255, 255];
+    pink = [20, 20, 23];
+    labelColor = [255, 255, 255];
     dark = [255, 255, 255];
-    light = [26, 26, 26];
-    headerBg = [18, 18, 18];
-    cardBorder = [51, 51, 51];
-    lineDivider = [40, 40, 40];
+    light = [18, 18, 21];
+    headerBg = [15, 15, 17];
+    cardBorder = [31, 31, 35];
+    lineDivider = [26, 26, 31];
     pageBgColor = [0, 0, 0];
-    footerColorGP = [179, 179, 179];
+    footerColorGP = [156, 163, 175];
   } else if (isBlueMode) {
-    pink = [56, 189, 248];
-    dark = [234, 244, 255];
-    light = [20, 36, 75];
+    pink = [20, 36, 75];
+    labelColor = [56, 189, 248];
+    dark = [241, 245, 249];
+    light = [15, 28, 63];
     headerBg = [15, 28, 63];
-    cardBorder = [30, 58, 138];
-    lineDivider = [20, 40, 90];
+    cardBorder = [20, 36, 75];
+    lineDivider = [20, 36, 75];
     pageBgColor = [7, 13, 30];
-    footerColorGP = [167, 189, 217];
+    footerColorGP = [143, 165, 202];
   } else if (isDarkMode) {
-    pink = [232, 93, 158];
-    dark = [252, 238, 243];
-    light = [51, 29, 43];
-    headerBg = [33, 22, 32];
-    cardBorder = [73, 51, 67];
-    lineDivider = [55, 38, 50];
-    pageBgColor = [20, 14, 19];
-    footerColorGP = [184, 147, 164];
+    pink = [90, 26, 42];
+    labelColor = [224, 122, 133];
+    dark = [245, 233, 236];
+    light = [44, 20, 28];
+    headerBg = [74, 17, 31];
+    cardBorder = [61, 26, 36];
+    lineDivider = [50, 22, 32];
+    pageBgColor = [21, 10, 14];
+    footerColorGP = [179, 146, 153];
   } else {
-    pink = [232, 93, 158];
-    dark = [51, 41, 52];
-    light = [255, 240, 247];
-    headerBg = [255, 227, 240];
-    cardBorder = [240, 223, 232];
-    lineDivider = [245, 230, 238];
+    pink = [234, 91, 142];
+    labelColor = [201, 59, 110];
+    dark = [82, 22, 42];
+    light = [255, 231, 236];
+    headerBg = [255, 176, 194];
+    cardBorder = [255, 197, 210];
+    lineDivider = [247, 220, 227];
     pageBgColor = null;
-    footerColorGP = [139, 125, 134];
+    footerColorGP = [141, 115, 126];
   }
 
   if (pageBgColor) {
@@ -1290,7 +1297,7 @@ const isDarkMode = document.body.classList.contains("dark-mode");
     pdf.setDrawColor(...cardBorder);
     pdf.roundedRect(x, 46, 56, 22, 3, 3, "S");
 
-    pdf.setTextColor(...pink);
+    pdf.setTextColor(...labelColor);
     pdf.setFontSize(7);
     pdf.setFont("helvetica", "bold");
     pdf.text(card[0], x + 4, 53);
