@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gastos Próximos</title>
+  <link rel="icon" type="image/png" href="./icono.png">
+  <link rel="apple-touch-icon" href="./icono.png">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Librería jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    /* =========================================================
+       ALINEACIÓN PERFECTA DEL HEADER Y BOTONES
+    ========================================================= */
+    header.header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 20px !important;
+    }
+
+    .header-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex-wrap: wrap !important;
+      justify-content: flex-end !important;
+      flex: 1 !important;
+    }
+
+    /* =========================================================
+       MODO AZUL
+    ========================================================= */
+    body.dark-blue-mode,
+    body.dark-blue-mode main.app,
+    body.dark-blue-mode dialog {
+      background-color: #070d1e !important;
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-blue-mode header.header,
+    body.dark-blue-mode .toolbar,
+    body.dark-blue-mode .summary-card,
+    body.dark-blue-mode .summary-card.main-card,
+    body.dark-blue-mode .expense,
+    body.dark-blue-mode .auth-card,
+    body.dark-blue-mode .modal,
+    body.dark-blue-mode dialog {
+      background: #0f1c3f !important;
+      background-color: #0f1c3f !important;
+      border: 1px solid #14244b !important;
+      border-radius: 20px !important;
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-blue-mode header.header {
+      padding: 28px !important;
+      margin-bottom: 24px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    body.dark-blue-mode .toolbar {
+      padding: 24px !important;
+      margin-top: 24px !important;
+      margin-bottom: 24px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    body.dark-blue-mode header.header .eyebrow,
+    body.dark-blue-mode header.header h1,
+    body.dark-blue-mode header.header p,
+    body.dark-blue-mode .summary-card.main-card strong,
+    body.dark-blue-mode .modal-header h2,
+    body.dark-blue-mode .modal-header p,
+    body.dark-blue-mode .form-group label,
+    body.dark-blue-mode .section-title h2,
+    body.dark-blue-mode .section-title span {
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-blue-mode .summary-card.main-card strong {
+      color: #38bdf8 !important;
+    }
+
+    body.dark-blue-mode .modal-overlay {
+      background: rgba(2, 6, 15, 0.75) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    body.dark-blue-mode .secondary-button,
+    body.dark-blue-mode .primary-button,
+    body.dark-blue-mode button:not(.action-button),
+    body.dark-blue-mode select,
+    body.dark-blue-mode input[type="search"],
+    body.dark-blue-mode input[type="date"],
+    body.dark-blue-mode input[type="number"],
+    body.dark-blue-mode input[type="text"],
+    body.dark-blue-mode input[type="email"],
+    body.dark-blue-mode input[type="password"],
+    body.dark-blue-mode textarea {
+      background-color: #14244b !important;
+      color: #38bdf8 !important;
+      border: 1px solid #1e3a8a !important;
+    }
+
+    body.dark-blue-mode .secondary-button:hover,
+    body.dark-blue-mode .primary-button:hover {
+      background-color: #1e3a8a !important;
+      color: #ffffff !important;
+    }
+
+    /* =========================================================
+       MODO BLACK DEFINITIVO
+    ========================================================= */
+    body.black-mode {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode header.header,
+    body.black-mode .toolbar,
+    body.black-mode .summary-card,
+    body.black-mode .summary-card.main-card,
+    body.black-mode .expense,
+    body.black-mode .auth-card,
+    body.black-mode .modal,
+    body.black-mode dialog {
+      background: #121212 !important;
+      background-color: #121212 !important;
+      border: 1px solid #262626 !important;
+      border-radius: 20px !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode header.header .eyebrow,
+    body.black-mode header.header h1,
+    body.black-mode header.header p,
+    body.black-mode .summary-card.main-card strong,
+    body.black-mode .modal-header h2,
+    body.black-mode .modal-header p,
+    body.black-mode .form-group label,
+    body.black-mode .section-title h2,
+    body.black-mode .section-title span {
+      color: #ffffff !important;
+    }
+
+    body.black-mode .secondary-button,
+    body.black-mode .primary-button,
+    body.black-mode button:not(.action-button),
+    body.black-mode select,
+    body.black-mode input[type="search"],
+    body.black-mode input[type="date"],
+    body.black-mode input[type="number"],
+    body.black-mode input[type="text"],
+    body.black-mode input[type="email"],
+    body.black-mode input[type="password"],
+    body.black-mode textarea {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      border: 1px solid #333333 !important;
+    }
+
+    body.black-mode .secondary-button:hover,
+    body.black-mode .primary-button:hover {
+      background-color: #262626 !important;
+      color: #ffffff !important;
+      border-color: #ffffff !important;
+    }
+
+    body.black-mode input::placeholder,
+    body.black-mode textarea::placeholder {
+      color: #888888 !important;
+    }
+
+    body.black-mode .modal-overlay {
+      background: rgba(0, 0, 0, 0.65) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    body.black-mode .type-option span {
+      background-color: #1a1a1a !important;
+      border: 1px solid #333333 !important;
+      color: #ffffff !important;
+    }
+
+    body.black-mode .type-option input:checked + span {
+      background-color: #262626 !important;
+      border-color: #ffffff !important;
+    }
+
+    body.black-mode .close-modal,
+    body.black-mode .modal-icon,
+    body.black-mode .card-icon,
+    body.black-mode .small-icon,
+    body.black-mode .expense-icon {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 1024px) {
+      header.header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .header-actions {
+        justify-content: flex-start !important;
+        margin-top: 15px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 4px !important;
+        box-sizing: border-box !important;
+      }
+      .app {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+      }
+      header.header {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px !important;
+      }
+      .header-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+        margin-top: 15px !important;
+        box-sizing: border-box !important;
+      }
+      .header-actions > * {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+        margin: 0 !important;
+      }
+      .summary-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .summary-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .toolbar {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px !important;
+      }
+      .toolbar input[type="search"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 10px !important;
+      }
+      .filters {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .filters button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .expense {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .modal {
+        width: 95% !important;
+        max-height: 85vh !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+
+dialog[open] {
+  margin: auto !important;
+  inset: 0 !important;
+}
+    
+  
+/* =========================================================
+   PANEL CARGA POR VOZ (LOS 4 MODOS)
+========================================================= */
+.voice-box {
+  background: var(--card, #ffffff);
+  border: 1px solid var(--line, #f2cfdf);
+  border-radius: 18px;
+  padding: 14px;
+  margin: 10px 0 14px;
+  display: grid;
+  gap: 8px;
+  color: var(--text, #332934);
+  box-shadow: 0 4px 20px rgba(90, 35, 55, 0.06);
+}
+
+.voice-box .voice-help {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted, #8b7d86);
+  line-height: 1.4;
+}
+
+/* Modo Rosa Oscuro */
+body.dark-mode .voice-box {
+  background: #2a161d !important;
+  border-color: #4e2b37 !important;
+  color: #ffb6c1 !important;
+}
+body.dark-mode .voice-box .voice-help {
+  color: #f7a8b8 !important;
+  opacity: 0.85;
+}
+
+/* Modo Azul */
+body.dark-blue-mode .voice-box {
+  background: #0f1c3f !important;
+  border-color: #14244b !important;
+  color: #f1f5f9 !important;
+}
+body.dark-blue-mode .voice-box .voice-help {
+  color: #94a3b8 !important;
+  opacity: 0.9;
+}
+
+/* Modo Black */
+body.black-mode .voice-box {
+  background: #121212 !important;
+  border-color: #262626 !important;
+  color: #ffffff !important;
+}
+body.black-mode .voice-box .voice-help {
+  color: #a3a3a3 !important;
+  opacity: 0.85;
+}
+
+
+/* Cuadro donde aparece lo que dictás: sigue el modo (claro, rosa oscuro, azul, black) */
+.voice-box .vzt{border:1.5px solid var(--line,#f2cfdf);background:#ffffff;color:#3b2a33}
+body.dark-mode .voice-box .vzt{background:#1d0f14;border-color:#4e2b37;color:#ffe4ea}
+body.dark-blue-mode .voice-box .vzt{background:#0a1430;border-color:#1f3a73;color:#f1f5f9}
+body.black-mode .voice-box .vzt{background:#000000;border-color:#2e2e2e;color:#ffffff}
+body.dark-mode .voice-box .vzm{color:#ffb6c1}
+body.dark-blue-mode .voice-box .vzm{color:#cbd5e1}
+body.black-mode .voice-box .vzm{color:#d4d4d4}
+.voice-box .vzi{border:1.5px solid var(--line,#f2cfdf);background:#ffffff;color:#3b2a33;border-radius:12px;padding:8px 10px;font:inherit;font-size:16px;min-width:0;flex:1;outline:none}
+body.dark-mode .voice-box .vzi{background:#1d0f14;border-color:#4e2b37;color:#ffe4ea}
+body.dark-blue-mode .voice-box .vzi{background:#0a1430;border-color:#1f3a73;color:#f1f5f9}
+body.black-mode .voice-box .vzi{background:#000000;border-color:#2e2e2e;color:#ffffff}
+</style>
+</head>
+<body>
+
+  <!-- ==============================
+       AUTENTICACIÓN (LOGIN / REGISTRO)
+  =============================== -->
+  <section id="authSection" class="auth-section">
+    <div class="auth-card">
+      <div class="auth-logo">🌸</div>
+      <span class="eyebrow">MI ORGANIZACIÓN 💗</span>
+      <h1>Gastos Próximos</h1>
+      <p class="auth-subtitle">Ingresá con tu misma cuenta de MENSUALES para sincronizar todo.</p>
+    
+      <form id="authForm">
+        <label>
+          Email
+          <input id="authEmail" type="email" placeholder="tu@email.com" autocomplete="email" required>
+        </label>
+
+        <label>
+          Contraseña
+          <div class="password-wrap">
+            <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required>
+            <button type="button" id="togglePasswordBtn" class="toggle-password" title="Mostrar/Ocultar contraseña">🔒</button>
+          </div>
+        </label>
+
+        <button id="authSubmitBtn" type="submit" class="primary-button auth-submit">
+          Iniciar sesión
+        </button>
+
+        <!-- CAMBIO: se agregó class="auth-switch" y se sacó el color fijo -->
+        <button type="button" id="forgotPasswordBtn" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; font-size: 0.85rem; cursor: pointer; text-decoration: underline; width: 100%; text-align: center; margin-top: 14px; padding: 4px;">
+          ¿Olvidaste tu contraseña?
+        </button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+
+      <!-- CAMBIO: se sacó el color blanco fijo -->
+      <button id="authSwitchBtn" type="button" class="auth-switch" style="background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; font-size: 0.9rem; cursor: pointer; width: 100%; text-align: center; margin-top: 12px; padding: 6px;">
+        ¿No tenés una cuenta? Registrate
+      </button>
+    </div>
+  </section>
+
+  <!-- ==============================
+       APLICACIÓN PRINCIPAL
+  =============================== -->
+  <div class="app hidden" id="appContent" style="width: 100%; max-width: 1200px; margin: 0 auto; min-height: 100vh;">
+    <!-- HEADER -->
+    <header class="header">
+      <div>
+        <span class="eyebrow">MI ORGANIZACIÓN 💗</span>
+        <h1>Gastos Próximos</h1>
+        <p>Todo lo que tengo que pagar, recordar o debo.</p>
+        <div id="dolarBadge" class="dolar-badge" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(232, 93, 158, 0.12); color: #c43878;">
+          💵 Dólar Blue: cargando...
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="userEmail" class="user-email"></span>
+
+        <a 
+          href="https://gastosmensuales-two.vercel.app/" 
+          class="secondary-button"
+          style="padding: 11px 18px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"
+        >
+          💗 Mensuales
+        </a>
+
+        <button class="secondary-button" id="toggleThemeBtn" type="button">🌙 Modo oscuro</button>
+        <button class="secondary-button" id="toggleBlueThemeBtn" type="button">💙 Modo Azul</button>
+        <button class="secondary-button" id="btnBlackMode" type="button">🖤 Modo Black</button>
+        <button class="secondary-button" id="toggleAmountsBtn" type="button">👁️ Ocultar montos</button>
+        <button class="secondary-button" id="toggleExpensesBtn" type="button">👁️ Ocultar registros</button>
+        <button class="secondary-button" id="csvBtn" type="button">📊 CSV</button>
+        <button class="secondary-button" id="pdfBtn" type="button">📄 PDF</button>
+        <button class="primary-button" id="openModalBtn">＋ Agregar</button>
+        <button class="secondary-button" id="logoutBtn" type="button">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- RESUMEN -->
+    <section class="summary-grid">
+      <article class="summary-card main-card">
+        <div class="card-icon">💰</div>
+        <div>
+          <span>Total pendiente</span>
+          <strong id="totalPending">$0</strong>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <div class="small-icon">📅</div>
+        <span>Próximos 7 días</span>
+        <strong id="nextSevenDays">$0</strong>
+      </article>
+
+      <article class="summary-card">
+        <div class="small-icon">📆</div>
+        <span>Este mes</span>
+        <strong id="thisMonth">$0</strong>
+      </article>
+
+      <article class="summary-card">
+        <div class="small-icon">💸</div>
+        <span>Deudas</span>
+        <strong id="totalDebts">$0</strong>
+      </article>
+    </section>
+
+    <!-- FILTROS Y BÚSQUEDA -->
+    <section class="toolbar">
+      <div class="section-title">
+        <h2>Mis pendientes</h2>
+        <span id="itemsCount">0 registros</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <input 
+          type="search" 
+          id="searchInput" 
+          placeholder="🔍 Buscar registro..." 
+          style="padding: 7px 14px; border-radius: 999px; border: 1px solid #f2cfdf; outline: none; font-size: 0.85rem; min-width: 170px;"
+        >
+
+        <div class="filters">
+          <button class="filter active" data-filter="all">Todos</button>
+          <button class="filter" data-filter="pending">Pendientes</button>
+          <button class="filter" data-filter="debt">Deudas</button>
+          <button class="filter" data-filter="paid">Pagados</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTA -->
+    <main>
+      <div id="expensesList" class="expenses-list"></div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">🌸</div>
+        <h3>No tenés pendientes</h3>
+        <p>Agregá un gasto, una deuda o algo que quieras recordar pagar.</p>
+        <button class="primary-button" id="emptyAddBtn">＋ Agregar primer registro</button>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Hecho by Flor Bagnis 💗 para organizar mejor los gastos.</p>
+    </footer>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <button class="close-modal" id="closeModalBtn">×</button>
+
+      <div class="modal-header">
+        <span class="modal-icon">🌸</span>
+        <div>
+          <h2 id="modalTitle">Agregar registro</h2>
+          <p>Guardá algo que tengas que pagar o recordar.</p>
+        </div>
+      </div>
+
+      <form id="expenseForm">
+        <input type="hidden" id="expenseId">
+
+        <!-- TIPO -->
+        <div class="form-group">
+          <label>¿Qué querés registrar?</label>
+          <div class="type-options">
+            <label class="type-option">
+              <input type="radio" name="type" value="expense" checked>
+              <span>
+                🧾
+                <strong>Gasto próximo</strong>
+                <small>Algo que tengo que pagar</small>
+              </span>
+            </label>
+
+            <label class="type-option">
+              <input type="radio" name="type" value="debt">
+              <span>
+                💸
+                <strong>Deuda</strong>
+                <small>Algo que debo</small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FECHA DE INICIO DE DEUDA -->
+        <div class="form-group" id="debtStartDateGroup" style="display: none;">
+          <label for="startDate">¿Cuándo se originó esta deuda?</label>
+          <input type="date" id="startDate">
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="form-group">
+          <label for="description">¿Qué tenés que pagar?</label>
+          <input type="text" id="description" placeholder="Ej: Bidones de agua" required>
+        </div>
+
+        <!-- CATEGORÍA CON GRUPOS -->
+        <div class="form-group">
+          <label for="category">Categoría</label>
+          <select id="category" required>
+            <option value="" disabled selected>Seleccioná una categoría</option>
+            <optgroup label="— Hogar y Servicios —">
+              <option value="Alquiler">🏠 Alquiler</option>
+              <option value="Hogar">🏠 Hogar</option>
+              <option value="Agua">💧 Agua</option>
+              <option value="Servicios">💡 Servicios</option>
+              <option value="Suscripciones">📱 Suscripciones</option>
+            </optgroup>
+            <optgroup label="— Diario y Personal —">
+              <option value="Comida">🍔 Comida</option>
+              <option value="Transporte">🚗 Transporte</option>
+              <option value="Salud">💊 Salud</option>
+              <option value="Gimnasio">💪 Gimnasio</option>
+              <option value="Mascotas">🐾 Mascotas</option>
+            </optgroup>
+            <optgroup label="— Negocio y Finanzas —">
+              <option value="Local">🏬 Local</option>
+              <option value="Mercadería">📦 Mercadería</option>
+              <option value="Deudas">💸 Deudas</option>
+              <option value="Cuotas">💳 Cuotas</option>
+              <option value="Otros">📦 Otros</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- MONTO + MONEDA + CANTIDAD -->
+        <div class="form-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; align-items: start;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="amount">Monto</label>
+            <div class="money-input">
+              <span id="currencySymbol">$</span>
+              <input type="text" inputmode="decimal" id="amount" placeholder="0,00">
+            </div>
+            <small class="helper">Podés dejarlo vacío si aún no lo sabés.</small>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="currency">Moneda</label>
+            <select id="currency">
+              <option value="ARS" selected>ARS ($)</option>
+              <option value="USD">USD (u$s)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="quantity">Cantidad</label>
+            <input type="number" id="quantity" min="1" value="1">
+          </div>
+        </div>
+
+        <!-- FECHA -->
+        <div class="form-group">
+          <label for="date">¿Cuándo lo tengo que pagar?</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <!-- NOTA -->
+        <div class="form-group">
+          <label for="notes">Nota</label>
+          <textarea id="notes" rows="3" placeholder="Ej: Le debo 3 bidones al aguatero"></textarea>
+        </div>
+
+        <button type="submit" class="save-button">Guardar registro</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+<script>/* voz: gastos próximos */
+(function(){
+var $=function(i){return document.getElementById(i)};
+if(!$("openModalBtn")||!$("expenseForm")||!$("expensesList"))return;
+function fold(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function iso(d){return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+/* Reemplaza (o saca) lo que coincide con una regex GLOBAL, buscando sobre el texto sin tildes pero conservando el original */
+function foldRe(s,re,rep){var F=fold(s);if(F.length!==s.length)return s;var out="",last=0,m;re.lastIndex=0;
+ while((m=re.exec(F))){out+=s.slice(last,m.index)+(rep==null?" ":rep);last=m.index+m[0].length;if(!m[0].length)re.lastIndex++}
+ return out+s.slice(last)}
+function stripRe(s,re){return foldRe(s,re," ").replace(/\s+/g," ").trim()}
+function CATS(){var o=[];[].forEach.call($("expenseCategory").options,function(x){if(x.value)o.push(x.value)});return o}
+function money(n,c){return (c==="USD"?"u$s ":"$ ")+(Math.round(n*100)/100).toLocaleString("es-AR")}
+var NW={un:1,una:1,uno:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,quince:15,veinte:20,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,trescientos:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900};
+var NWR=new RegExp("\\b("+Object.keys(NW).join("|")+")\\s+mil\\b","gi");
+var NU={un:1,una:1,uno:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiun:21,veintiuno:21,veintiuna:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,doscientas:200,trescientos:300,trescientas:300,cuatrocientos:400,cuatrocientas:400,quinientos:500,quinientas:500,seiscientos:600,seiscientas:600,setecientos:700,setecientas:700,ochocientos:800,ochocientas:800,novecientos:900,novecientas:900};
+var NUW=Object.keys(NU).concat(["mil","millon","millones"]).sort(function(a,b){return b.length-a.length}).join("|");
+var NUR=new RegExp("\\b(?:"+NUW+")(?:\\s+(?:y\\s+)?(?:"+NUW+"))*\\b","g");
+function numVal(tk){var tot=0,cur=0,prev=null;
+ for(var i=0;i<tk.length;i++){var t=tk[i];
+  if(t==="y"){if(!(prev&&NU[prev]>=30&&NU[prev]<=90&&NU[prev]%10===0))return null;prev=t;continue}
+  if(t==="mil"){tot+=(cur||1)*1000;cur=0}
+  else if(t==="millon"||t==="millones"){tot+=(cur||1)*1e6;cur=0}
+  else cur+=NU[t];
+  prev=t}
+ return tot+cur}
+/* Convierte a número solo cuando es un monto: lleva «mil/millón», va seguido de pesos/dólares/lucas/palos, o es una centena que cierra el renglón («pan quinientos») */
+function numWords(s){var F=fold(s);if(F.length!==s.length)return s;
+ var out="",last=0,m;NUR.lastIndex=0;
+ while((m=NUR.exec(F))){var run=m[0],st=m.index,en=st+run.length,tk=run.split(/\s+/),v=numVal(tk),
+  after=F.slice(en),before=F.slice(0,st),
+  hasMul=/\b(?:mil|millon|millones)\b/.test(run),
+  unitAfter=/^\s+(?:pesos?|dolar(?:es)?|usd|ars|lucas?|palos?|k)\b/.test(after),
+  lone=tk.length===1&&/^(?:un|una|uno)$/.test(tk[0]),
+  afterDigit=/\d\s*$/.test(before)&&/^(?:mil|millon|millones)\b/.test(run),
+  hundEnd=v>=100&&/^\s*(?:§|[,;.]|$)/.test(after)&&!/\d/.test(before.split("§").pop());
+  if(v==null||afterDigit||!(hasMul||unitAfter||hundEnd)||(lone&&!unitAfter))continue;
+  out+=s.slice(last,st)+v;last=en}
+ return out+s.slice(last)}
+function pre0(s){return numWords(String(s||"").replace(/\s+/g," ").trim()).replace(NWR,function(a,w){return NW[w.toLowerCase()]+" mil"}).replace(/(?<!\d)(?<!\d\s)\bmil\b/gi,"1 mil")}
+var MES={enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,setiembre:8,octubre:9,noviembre:10,diciembre:11};
+function toN(s,u){s=String(s).replace(/[.,]+$/,"");var n=/^\d{1,3}(?:\.\d{3})+(?:,\d+)?$/.test(s)?parseFloat(s.replace(/\./g,"").replace(",",".")):parseFloat(s.replace(",","."));if(n==n&&u){if(/^(palo|millon)/.test(u))n*=1e6;else if(/^(mil|k|luca)/.test(u))n*=1000}return n}
+var SPK=true;try{SPK=localStorage.getItem("vzSpeak2")!=="0"}catch(e){}
+function CATS(){var o=[];[].forEach.call($("category").options,function(x){if(x.value)o.push(x.value)});return o}
+function set(id,v){var e=$(id);if(!e)return;e.value=v;e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}))}
+function vis(e){if(!e)return false;var c=getComputedStyle(e);return c.display!=="none"&&c.visibility!=="hidden"&&+c.opacity>0&&(e.offsetParent!==null||c.position==="fixed")}
+function cap(x){x=String(x||"").trim();return x?x.charAt(0).toUpperCase()+x.slice(1):""}
+function escR(k){return k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}
+function vocab(){try{return JSON.parse(localStorage.getItem("vzVocabP")||"{}")}catch(e){return{}}}
+function vocabCat(F){var v=vocab(),k;for(k in v)if(new RegExp("(^|[^a-z0-9])"+escR(k)+"($|[^a-z0-9])").test(F))return v[k];return null}
+var KWP=[["Alquiler",/\b(alquiler|inquilino|propietario)\b/],["Agua",/\b(aysa|aguas|bidon(?:es)?|agua)\b/],["Servicios",/\b(luz|gas|internet|wifi|celular|telefono|expensas|edenor|edesur|metrogas|telecentro|fibertel|personal flow|claro|movistar|abl|patente|impuesto|municipal)\b/],["Suscripciones",/\b(netflix|spotify|disney|youtube|hbo|max|prime|amazon|suscripcion|icloud|chatgpt|apple|paramount)\b/],["Transporte",/\b(nafta|colectivo|sube|uber|cabify|combustible|peaje|estacionamiento|cochera|taxi|tren|subte|remis)\b/],["Salud",/\b(farmacia|medico|doctor|obra social|prepaga|remedios?|dentista|psicologo|psicologa|terapia|analisis|clinica|osde|swiss medical|galeno)\b/],["Gimnasio",/\b(gym|gimnasio|pilates|crossfit|yoga)\b/],["Mascotas",/\b(veterinari[oa]|perro|gato|mascota|balanceado)\b/],["Cuotas",/\b(cuotas?|tarjeta|prestamo|credito|visa|master|mastercard)\b/],["Mercadería",/\b(mercaderia|proveedor|proveedores|stock)\b/],["Local",/\b(local|negocio|comercio)\b/],["Hogar",/\b(muebles?|ferreteria|limpieza|pintura|plomero|electricista|arreglo|electrodomestico|decoracion|lavandina|bazar)\b/],["Comida",/\b(cafe|pizza|helado|empanadas|asado|carne|pollo|verdura|fruta|super|supermercado|verduleria|carniceria|almacen|panaderia|comida|delivery|kiosco|fiambreria|dietetica|mercado)\b/]];
+var MESRX="enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre";
+function addM(i,k){var p=i.split("-"),y=+p[0],m=+p[1]-1,d=+p[2],n=new Date(y,m+k,1),last=new Date(n.getFullYear(),n.getMonth()+1,0).getDate();return iso(new Date(n.getFullYear(),n.getMonth(),Math.min(d,last)))}
+function dLbl(i){return new Date(i+"T00:00").toLocaleDateString("es-AR",{day:"numeric",month:"long"})}
+/* ===== INTERPRETA UNA FRASE ===== */
+function parseP(raw){
+ var T=pre0(raw),F=fold(T),g={cur:"ARS",type:"expense"},m;
+ function cut(re){var x=F.match(re);if(!x)return null;T=T.slice(0,x.index)+" "+T.slice(x.index+x[0].length);F=F.slice(0,x.index)+" "+F.slice(x.index+x[0].length);return x}
+ var nm=F.match(/\bnota\s+(.+)$/);if(nm){g.notes=cap(T.slice(nm.index+nm[0].length-nm[1].length));T=T.slice(0,nm.index);F=F.slice(0,nm.index)}
+ if(cut(/(?:\b(?:dolares?|dolar|usd)\b|u\$s|us\$)/))g.cur="USD";
+ cut(/\b(?:pesos?|ars)\b/);
+ if(cut(/\b(?:le\s+debo|les\s+debo|debo|deuda(?:\s+(?:de|con))?)\b/))g.type="debt";
+ if(g.type==="debt"&&(m=cut(new RegExp("\\b(?:desde|se\\s+origino)\\s+(?:el\\s+)?(\\d{1,2})\\s+de\\s+("+MESRX+")(?:\\s+de\\s+(20\\d\\d))?\\b"))))g.start=iso(new Date(m[3]?+m[3]:new Date().getFullYear(),MES[m[2]],+m[1]));
+ var cuo=cut(/\b(?:en\s+)?(\d{1,2})\s+cuotas?\s+(?:de\s+)?\$?\s*(\d[\d.,]*)(?:\s*(mil\b|k\b|lucas?\b))?/);
+ if(cuo){var cn=toN(cuo[2],cuo[3]);if(cn==cn){g.cuotas=+cuo[1];g.amt=String(Math.round(cn*100)/100).replace(".",",")}}
+ if((m=cut(/\b(?:cantidad|x)\s*(\d{1,2})\b/)))g.qty=+m[1];
+ /* fecha en que hay que pagar */
+ var now=new Date(),d0=new Date(now.getFullYear(),now.getMonth(),now.getDate()),r=null,y;
+ function A(n){var d=new Date(d0);d.setDate(d.getDate()+n);return d}
+ if(cut(/\bpasado\s+manana\b/))r=A(2);
+ else if(cut(/\bmanana\b/))r=A(1);
+ else if(cut(/\bhoy\b/))r=A(0);
+ else if((m=cut(/\ben\s+(\d{1,3}|una|un|dos|tres|cuatro|cinco)\s+(dias?|semanas?|mes(?:es)?)\b/))){var n=/^\d/.test(m[1])?+m[1]:{un:1,una:1,dos:2,tres:3,cuatro:4,cinco:5}[m[1]];r=/^dia/.test(m[2])?A(n):/^sem/.test(m[2])?A(7*n):new Date(d0.getFullYear(),d0.getMonth()+n,d0.getDate())}
+ else if(cut(/\b(?:la\s+semana\s+que\s+viene|proxima\s+semana)\b/))r=A(7);
+ else if(cut(/\b(?:el\s+mes\s+que\s+viene|proximo\s+mes)\b/))r=new Date(d0.getFullYear(),d0.getMonth()+1,d0.getDate());
+ else if(cut(/\b(?:a\s+)?fin\s+de\s+mes\b/))r=new Date(d0.getFullYear(),d0.getMonth()+1,0);
+ else if((m=cut(new RegExp("\\b(?:el\\s+)?(\\d{1,2})\\s+de\\s+("+MESRX+")(?:\\s+de\\s+(20\\d\\d))?\\b")))){y=m[3]?+m[3]:d0.getFullYear();r=new Date(y,MES[m[2]],+m[1]);if(!m[3]&&r<A(-1))r=new Date(y+1,MES[m[2]],+m[1])}
+ else if((m=cut(/\b(?:el\s+)?(?:proximo\s+)?(lunes|martes|miercoles|jueves|viernes|sabado|domingo)\b/))){var W=["domingo","lunes","martes","miercoles","jueves","viernes","sabado"];r=A((W.indexOf(m[1])-d0.getDay()+7)%7||7)}
+ else if((m=cut(/\b(?:el\s+)?dia\s+(\d{1,2})\b|\bel\s+(\d{1,2})\b(?!\s*(?:mil|k\b|lucas?))/))){var dd=+(m[1]||m[2]);r=new Date(d0.getFullYear(),d0.getMonth(),dd);if(r<d0)r=new Date(d0.getFullYear(),d0.getMonth()+1,dd)}
+ if(r)g.date=iso(r);
+ cut(/\bmonto\b/);
+ if(!g.cuotas&&(m=cut(/\$?\s*(\d[\d.,]*)(?:\s*(mil\b|k\b|lucas?\b|palos?\b|millon(?:es)?\b))?/))){var v=toN(m[1],m[2]);if(v==v)g.amt=String(Math.round(v*100)/100).replace(".",",")}
+ var cats=CATS(),direct=null,i;
+ cats.forEach(function(c){if(!direct&&new RegExp("\\b"+fold(c)+"\\b").test(F))direct=c});
+ var vv=vocabCat(F);
+ g.cat=(vv&&cats.indexOf(vv)>=0)?vv:direct;
+ if(!g.cat)for(i=0;i<KWP.length;i++)if(KWP[i][1].test(F)&&cats.indexOf(KWP[i][0])>=0){g.cat=KWP[i][0];break}
+ if(!g.cat&&g.type==="debt")g.cat="Deudas";
+ if(g.cuotas&&!g.cat)g.cat="Cuotas";
+ cut(/\b(?:vence|vencimiento|se\s+vence|tengo\s+que\s+pagar|hay\s+que\s+pagar|a\s+pagar|gasto\s+proximo|proximo\s+gasto)\b/);
+ while(cut(/^[\s,;.]*(?:pagar|recordame|recordar|anotar|anota|anotame|agregar|agrega|agregame|sumar|suma|cargar|carga|cargame|poner|pone)\b/));
+ if(direct&&F.replace(/[^a-z0-9ñ]+/g," ").trim().split(" ").length>1)cut(new RegExp("\\b"+fold(direct)+"\\b"));
+ for(var k=0;k<6;k++){if(!cut(/^[\s,;.]*(?:de|en|el|la|los|las|un|una|por|para|a|al|con|del|y|que|es)\b/))break}
+ for(k=0;k<6;k++){if(!cut(/\b(?:de|en|el|la|los|las|un|una|por|para|a|al|con|del|y|que|es)[\s,;.]*$/))break}
+ var d=T.replace(/^[\s,;.:\-–—]+|[\s,;.:\-–—]+$/g,"").replace(/\s+/g," ");
+ if(!d&&direct)d=direct;
+ g.desc=cap(d);return g}
+function resP(g){var L=[g.type==="debt"?"💸 Deuda":"🧾 Gasto próximo"];if(g.desc)L.push(g.desc);L.push(g.cat||"Otros");L.push(g.amt?money(toN(g.amt),g.cur):"sin monto");
+ L.push(g.date?"vence "+g.date.split("-").reverse().join("/"):"⚠️ falta la fecha");if(g.cuotas)L.push(g.cuotas+" cuotas, una por mes");if(g.notes)L.push("nota: "+g.notes);return L.join(" · ")}
+function missP(g){return !g.desc?"la descripción":!g.date?"la fecha (decí «el 15», «mañana», «en 3 días»…)":""}
+function emptyP(g){return !g.desc&&!g.amt}
+/* ===== FORMULARIO ===== */
+async function openForm(){if(vis($("description")))return true;$("openModalBtn").click();for(var i=0;i<25&&!vis($("description"));i++)await sleep(60);await sleep(120);return vis($("description"))}
+async function volcar(g,o){
+ if(!(await openForm()))return{ok:false,msg:"No pude abrir el formulario."};
+ var cats=CATS(),rd=document.querySelector('input[name="type"][value="'+g.type+'"]');if(rd&&!rd.checked)rd.click();await sleep(60);
+ if(g.type==="debt"&&$("startDate"))set("startDate",g.start||$("startDate").value||o.date||iso(new Date()));
+ set("description",o.desc);set("category",cats.indexOf(g.cat)>=0?g.cat:"Otros");set("amount",g.amt||"");set("currency",g.cur);set("quantity",g.qty||1);set("date",o.date||"");set("notes",g.notes||"");
+ if(!o.send)return{ok:true};
+ var f=$("expenseForm");if(!f.checkValidity()){$("closeModalBtn").click();return{ok:false,msg:"El formulario pidió datos que faltan."}}
+ var c0=$("itemsCount").textContent,l0=$("expensesList").children.length;
+ (f.querySelector(".save-button")||f.querySelector('[type="submit"]')).click();
+ for(var k=0;k<50;k++){await sleep(100);if(!vis($("description"))||$("itemsCount").textContent!==c0||$("expensesList").children.length!==l0)break}
+ await sleep(200);
+ if(vis($("description"))&&$("itemsCount").textContent===c0&&$("expensesList").children.length===l0){$("closeModalBtn").click();return{ok:false,msg:"No se pudo guardar."}}
+ return{ok:true}}
+/* ===== TARJETAS DE LA LISTA ===== */
+var DELB=/elimin|borr|delete|remove|trash|🗑|✖|×|\bdel\b/,PAYB=/pagad|pagar|paid|done|✓|✅|check|toggle/;
+function findCard(n,needPay){var K=fold(n).replace(/s$/,""),all=[].slice.call($("expensesList").children).filter(function(c){return fold(c.textContent).indexOf(K)>=0});
+ if(needPay){var p=all.filter(function(c){return actBtn(c,"pay")});if(p.length)return p[0]}return all[0]}
+function actBtn(card,a){return card.querySelector('button[data-action="'+a+'"]')}
+/* Pagar = el mismo botón ✓ de la tarjeta (la app ya lo pasa a MENSUALES); acá solo capturo su aviso para que no trabe el dictado */
+async function payCard(n){
+ var c=findCard(n,true);if(!c)return{t:"⚠️ No encontré «"+n+"» en la lista."};
+ var b=actBtn(c,"pay");if(!b)return{t:"ℹ️ «"+n+"» ya estaba pagado.",say:"Ese ya estaba pagado."};
+ var oa=window.alert,msg=null;window.alert=function(t){msg=String(t)};
+ try{b.click();for(var i=0;i<60&&msg===null;i++)await sleep(100)}finally{window.alert=oa}
+ if(msg===null)return{t:"✅ Marqué «"+n+"» como pagado (revisalo en Mensuales).",say:"Dale, "+n+" pagado."};
+ if(/^Para marcarlo/i.test(msg))return{t:"⚠️ «"+n+"» no tiene monto. Cargale el monto y volvé a decir «pagué "+n+"».",say:n+" no tiene monto, cargale el monto primero."};
+ if(/error/i.test(msg))return{t:"⚠️ "+msg};
+ return{t:"✅ «"+n+"»: "+msg.replace(/^✓\s*/,""),say:"Dale, pagué "+n+" y lo pasé a Mensuales."}}
+function btnOf(card,re){return[].slice.call(card.querySelectorAll("button,[role=button]")).filter(function(b){return re.test(fold((b.title||"")+" "+(b.getAttribute("aria-label")||"")+" "+b.textContent+" "+b.className+" "+Object.keys(b.dataset||{}).join(" ")+" "+Object.values(b.dataset||{}).join(" ")))})[0]}
+var RX={
+ teach:/\b(?:ensenale|ensena|aprende|aprendete|recorda|acordate)\s+(?:que\s+)?([a-z0-9 ]+?)\s+(?:es|son|va\s+en|va\s+a|igual\s+a|se\s+carga\s+en)\s+(?:de\s+|en\s+)?([a-z]+)\b/,
+ undo:/\b(?:borra|borrame|saca|sacame|quita|quitame|elimina|deshace|deshaz)\s+(?:el\s+ultimo|la\s+ultima|lo\s+ultimo|lo\s+anterior)\b/,
+ delN:/\b(?:borra|borrame|elimina|eliminame|saca|sacame|quita|quitame)\s+(?:el\s+|la\s+|los\s+|las\s+)?([a-z0-9]+(?:\s+[a-z0-9]+)?)\s+de\s+(?:la\s+lista|pendientes|los\s+proximos|gastos\s+proximos)\b/,
+ paid:/\b(?:marca|marcame|pone|ponele)\s+(?:el\s+|la\s+|los\s+|las\s+)?([a-z0-9]+(?:\s+[a-z0-9]+)?)\s+como\s+(?:pagad[oa]s?|cobrad[oa]s?)\b|\b(?:ya\s+)?(?:pague|pagamos)\s+(?:el\s+|la\s+|los\s+|las\s+)?([a-z0-9]+)\b|\b(?:pasa|pasame|manda|mandame|mueve|move)\s+(?:el\s+|la\s+|los\s+|las\s+)?([a-z0-9]+)\s+a\s+mensuales\b/,
+ filt:/\b(?:mostrame|muestrame|ver|mira|anda\s+a)\s+(?:solo\s+)?(?:las\s+|los\s+|todos\s+los\s+|todo\s+)?(deudas|pagad[oa]s|pagados?|pendientes|todos|todo)\b/,
+ clr:/\b(?:limpia|borra)\s+(?:la\s+)?busqueda\b/,
+ srch:/\bbusca(?:me)?\s+(.+)$/,
+ q2:/\bcuanto\s+(?:tengo\s+que\s+pagar|hay\s+que\s+pagar|pago|vence)\s+(?:esta\s+semana|en\s+(?:los\s+)?(?:proximos\s+)?7\s+dias|estos\s+dias)\b/,
+ q3:/\bcuanto\s+(?:tengo\s+que\s+pagar|hay\s+que\s+pagar|pago)\s+(?:este\s+mes|en\s+el\s+mes)\b/,
+ q4:/\bcuanto\s+(?:tengo\s+pendiente|debo\s+en\s+total|tengo\s+que\s+pagar|es\s+el\s+total)\b/,
+ q1:/\bcuanto\s+(?:debo|tengo\s+de\s+deudas?)\b/
+};
+var CMD=/(?:^|[\s,;.])(?:y\s+)?(?:por\s+favor\s+)?(?:gu[aá]rd(?:ar|[aá]l[oa]|[aá]me|[aá])|registr(?:ar|[aá]lo|[aá]la|[aá])|list[oa])(?:\s+por\s+favor)?(?=[\s,;.]|$)/i,
+CAN=/(?:^|[\s,;.])(?:cancel[aá]r?|descart[aá]r?|borr[aá]r?)\s+(?:eso|esto|ese|este)(?=[\s,;.]|$)/i;
+function ERR(c){return c==="not-allowed"||c==="service-not-allowed"?"No se pudo usar el micrófono (permiso denegado o bloqueado por iOS en la app instalada). Usá la cajita de texto de abajo con el micrófono del teclado.":c==="audio-capture"?"No encuentro el micrófono.":c==="network"?"El dictado no pudo conectarse al servicio de voz del navegador. Probá con Chrome.":"El dictado se detuvo ("+c+")."}
+function okW(){var a=["Dale, listo","Listo, ya está","Hecho","Dale, ya quedó"];return a[Math.floor(Math.random()*a.length)]}
+function sayMoney(n){n=Math.round(n);return n>=1000&&n%1000===0?n/1000+" mil":n.toLocaleString("es-AR")}
+function build(){
+ var box=document.createElement("section");box.className="voice-box";
+ box.innerHTML='<button class="pastel-btn primary-button vzb" type="button" style="width:100%;padding:12px">🎙️ Cargar por voz</button><label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" class="vzs">🔊 Que me conteste hablando</label><button type="button" class="vzp" style="margin-top:8px;padding:6px 12px;border-radius:999px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:.82rem;cursor:pointer;justify-self:start">🔈 Probar voz</button><div style="display:flex;gap:6px;margin-top:8px"><input class="vzi" type="text" placeholder="✍️ O escribí / dictá con el teclado: pagué agua" autocomplete="off" autocapitalize="none" enterkeyhint="send"><button type="button" class="vzo" style="padding:6px 14px;border-radius:12px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer">Enviar</button></div><div class="vzt" style="margin-top:10px;min-height:64px;max-height:150px;overflow-y:auto;padding:12px 14px;border-radius:14px;font-size:1.05rem;line-height:1.45;word-break:break-word"></div><div class="vzm" style="white-space:pre-line;font-size:.88rem;font-weight:600"></div>';
+ var btn=box.querySelector(".vzb"),msg=box.querySelector(".vzm"),tp=box.querySelector(".vzt"),spk=box.querySelector(".vzs"),VZ=null;
+ spk.checked=SPK;
+ box.querySelector(".vzp").onclick=function(){
+  var ss=window.speechSynthesis;if(!ss||!window.SpeechSynthesisUtterance){say("⚠️ Este navegador no puede hablar.");return}
+  try{ss.cancel();var vs=ss.getVoices(),vz=vs.filter(function(x){return /^es[-_]AR/i.test(x.lang)})[0]||vs.filter(function(x){return /^es[-_](419|US|MX)/i.test(x.lang)})[0]||vs.filter(function(x){return /^es/i.test(x.lang)})[0];
+   var u=new SpeechSynthesisUtterance("Hola, soy tu asistente. Si me escuchás, la voz funciona.");u.lang="es-AR";u.volume=1;if(vz){u.voice=vz;u.lang=vz.lang}
+   u.onerror=function(e){say("⚠️ La voz falló ("+(e&&e.error||"error")+"). Revisá el volumen y que el celu no esté en silencio.")};
+   ss.speak(u);
+   say(vz?"🔈 Hablando con la voz «"+vz.name+"» ("+vz.lang+"). Si no escuchás nada, subí el volumen y sacá el modo silencio.":"🔈 Probando. Este Safari no tiene voz en español: usa la del sistema, que puede sonar en inglés. Descargá una en Ajustes > Accesibilidad > Contenido hablado > Voces.")
+  }catch(e){say("⚠️ No pude hablar: "+e.message)}};
+ spk.onchange=function(){SPK=spk.checked;try{localStorage.setItem("vzSpeak2",SPK?"1":"0")}catch(e){}if(SPK&&window.speechSynthesis){try{var tu=new SpeechSynthesisUtterance("Voz activada");tu.lang="es-AR";speechSynthesis.cancel();speechSynthesis.speak(tu)}catch(e){}}else if(window.speechSynthesis){try{speechSynthesis.cancel()}catch(e){}}};
+ function paintT(said,im){tp.textContent="";var a=String(said||"").trim(),b=String(im||"").trim();
+  if(!a&&!b){var h=document.createElement("span");h.style.opacity=".5";h.textContent="🎙️ Lo que vayas diciendo va a aparecer acá…";tp.appendChild(h);return}
+  var x=document.createElement("span");x.textContent=a;tp.appendChild(x);
+  if(b){var y=document.createElement("span");y.style.opacity=".55";y.style.fontStyle="italic";y.textContent=(a?" ":"")+b;tp.appendChild(y)}tp.scrollTop=tp.scrollHeight}
+ paintT("","");
+ function say(t){msg.textContent=t}
+ function runVoice(TXT){
+  if(VZ){if(TXT!=null)say("Terminá el dictado (⏹️) y probá de nuevo.");else VZ.stop();return}
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(TXT==null&&!SR){say("Este navegador no permite reconocimiento de voz. Probá con Chrome o Safari.");return}
+  if(SPK&&window.speechSynthesis){try{var pu=new SpeechSynthesisUtterance(" ");pu.volume=0;speechSynthesis.speak(pu)}catch(e){}}
+  var r=TXT!=null?mkFake():new SR(),buf="",im="",want=true,err=0,done=0,lastF="",lastAt=0,t0=0,fast=0,note="",chain=Promise.resolve(),log=[],said="",sLast="",sAt=0,U=[],talking=false;
+  r.lang="es-AR";r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+  /* texto escrito/dictado con el teclado: pasa por el mismo camino que la voz, sin micrófono */
+  function mkFake(){var o={start:function(){setTimeout(function(){var rr=[{isFinal:true,0:{transcript:TXT}}];rr.length=1;try{o.onresult({resultIndex:0,results:rr})}catch(e){}want=false;setTimeout(function(){if(o.onend)o.onend()},60)},30)},stop:function(){},abort:function(){}};return o}
+  function queue(f){chain=chain.then(f).catch(function(x){log.push("⚠️ Error inesperado: "+(x&&x.message||x))}).then(function(){if(VZ)show()})}
+  function toast_(t){if(window.toast)try{toast(t)}catch(e){}}
+  function speak(t){if(!SPK||!window.speechSynthesis||!t)return;
+   try{var ss=window.speechSynthesis,mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var go=function(){var u=new SpeechSynthesisUtterance(t),vs=ss.getVoices(),vz=vs.filter(function(x){return /^es[-_]AR/i.test(x.lang)})[0]||vs.filter(function(x){return /^es[-_](419|US|MX)/i.test(x.lang)})[0]||vs.filter(function(x){return /^es/i.test(x.lang)})[0];
+     u.lang="es-AR";u.volume=1;u.rate=1;if(vz){u.voice=vz;u.lang=vz.lang}
+     talking=true;var fin=false,end=function(){if(fin)return;fin=true;setTimeout(function(){talking=false},800)};
+     u.onend=u.onerror=end;setTimeout(end,4000+t.length*120);
+     /* en el celu el micrófono tapa la voz: lo pauso mientras habla (se reanuda solo al terminar) */
+     if(mob){try{r.abort()}catch(e){}}
+     var wasBusy=ss.speaking||ss.pending;if(wasBusy)ss.cancel();
+     setTimeout(function(){try{ss.resume();ss.speak(u)}catch(e){end()}},wasBusy?150:(mob?250:0))};
+    if(!ss.getVoices().length){var d=false,once=function(){if(d)return;d=true;go()};ss.onvoiceschanged=once;setTimeout(once,700)}else go()
+   }catch(x){talking=false}}
+  function grab(re){var F=fold(buf);if(F.length!==buf.length)return null;var m=re.exec(F);if(!m)return null;buf=(buf.slice(0,m.index)+" "+buf.slice(m.index+m[0].length)).replace(/\s+/g," ").trim();lastF="";return m}
+  function reply(t){log.push("💬 "+t);speak(t)}
+  function delCard(n,re){var c=findCard(n);if(!c)return"⚠️ No encontré «"+n+"» en la lista.";var b=actBtn(c,"delete");if(!b)return"⚠️ No encontré el botón en «"+n+"».";b.click();return""}
+  function cmds(){var m,g=0,k,vk;
+   while(g++<12){
+    if((m=grab(RX.teach))){var K=fold(m[2]),c=CATS().filter(function(x){return fold(x)===K})[0];
+     if(c){var v=vocab();v[fold(m[1]).trim()]=c;try{localStorage.setItem("vzVocabP",JSON.stringify(v))}catch(e){}var tx="Dale, anotado: "+m[1].trim()+" va a "+c+".";log.push("🧠 "+tx);speak(tx)}else log.push("⚠️ No conozco la categoría «"+m[2]+"».");continue}
+    var fg=0;vk=vocab();for(k in vk)if(grab(new RegExp("\\bolvid\\w*\\s+(?:de\\s+)?(?:el\\s+|la\\s+)?"+escR(k)+"\\b"))){delete vk[k];try{localStorage.setItem("vzVocabP",JSON.stringify(vk))}catch(e){}log.push("🧠 Olvidé «"+k+"».");fg=1;break}
+    if(fg)continue;
+    if(grab(RX.undo)){queue(function(){if(U.length){var n=U.pop(),e=delCard(n,DELB);log.push(e||"↩️ Saqué «"+n+"» de la lista")}else log.push("⚠️ No tengo nada reciente para deshacer.")});continue}
+    if((m=grab(RX.delN))){(function(n){queue(function(){var e=delCard(n,DELB);log.push(e||"🗑️ Saqué «"+n+"» de la lista")})})(m[1]);continue}
+    if((m=grab(RX.paid))){(function(n){queue(function(){return payCard(n).then(function(r){log.push(r.t);if(r.say)speak(r.say)})})})(m[1]||m[2]||m[3]);continue}
+    if((m=grab(RX.filt))){var fk=/^deud/.test(m[1])?"debt":/^pag/.test(m[1])?"paid":/^pend/.test(m[1])?"pending":"all",fb=document.querySelector('[data-filter="'+fk+'"]');if(fb){fb.click();log.push("👀 Mostrando: "+fb.textContent.trim())}continue}
+    if(grab(RX.clr)){set("searchInput","");log.push("🔍 Búsqueda limpia");continue}
+    var qs=[["q2","nextSevenDays","en los próximos 7 días tenés para pagar "],["q3","thisMonth","este mes tenés para pagar "],["q4","totalPending","tenés pendiente en total "],["q1","totalDebts","debés en total "]],hit=0;
+    for(var q=0;q<qs.length;q++)if(grab(RX[qs[q][0]])){var el=$(qs[q][1]);reply(cap(qs[q][2])+(el?el.textContent.trim():"—")+".");hit=1;break}
+    if(hit)continue;
+    if((m=grab(RX.srch))){set("searchInput",m[1].trim());log.push("🔍 Buscando «"+m[1].trim()+"»");continue}
+    break}}
+  function show(){paintT(said,im);
+   var cur=(buf+" "+im).trim(),pv="";
+   if(cur){var g=parseP(cur.replace(CMD,"  "));if(!emptyP(g))pv="\n→ "+resP(g)+"\n(decí «guardar» para registrarlo)"}
+   say((log.length?log.slice(-5).join("\n")+"\n":"")+(note?note+"\n":"")+"🎙️ Escuchando… "+cur+pv)}
+  function handleSave(seg){
+   var g=hasT(seg)?parseP(seg):null;if(!g||emptyP(g))return true;
+   var mi=missP(g);if(mi){note="⚠️ No guardé: falta "+mi+". Decilo y volvé a decir «guardar».";buf=(seg+" "+buf).trim();lastF="";return false}
+   note="";
+   var base=g.date,n=g.cuotas||1;
+   for(var j=0;j<n;j++)(function(j){queue(function(){
+    var o={send:true,date:g.cuotas?addM(base,j):g.date,desc:g.cuotas?g.desc+" (cuota "+(j+1)+"/"+n+")":g.desc};
+    return volcar(g,o).then(function(res){
+     if(res.ok){U.push(o.desc);log.push("✅ "+resP(g)+(g.cuotas?" · cuota "+(j+1)+"/"+n:""));
+      if(j===n-1){toast_("✅ Guardado");speak(okW()+": "+g.desc+(g.amt?", "+sayMoney(toN(g.amt))+(g.cur==="USD"?" dólares":" pesos"):"")+(g.cuotas?", en "+n+" cuotas":"")+", vence el "+dLbl(g.date)+".")}}
+     else log.push("⚠️ "+res.msg+" ("+(g.desc||"")+")")})})})(j);
+   return true}
+  function hasT(s){return !!fold(s).replace(/[^a-z0-9]/g,"")}
+  function proc(){var g=0;cmds();
+   while(g++<30){
+    var mc=buf.match(CAN),mg=buf.match(CMD);
+    if(mc&&(!mg||mc.index<=mg.index)){buf=buf.slice(mc.index+mc[0].length).trim();note="🗑️ Descartado lo pendiente.";lastF="";continue}
+    if(!mg)break;
+    var seg=buf.slice(0,mg.index);buf=buf.slice(mg.index+mg[0].length).trim();lastF="";
+    if(handleSave(seg)===false)break}}
+  r.onresult=function(e){if(talking)return;im="";var ch=false;
+   for(var i=e.resultIndex;i<e.results.length;i++){var t=e.results[i][0].transcript.trim();
+    if(e.results[i].isFinal){if(i<done)continue;done=i+1;if(!t)continue;
+     var f=fold(t),lf=fold(lastF);
+     if(lastF&&f.length>lf.length&&f.indexOf(lf)===0){buf=buf.slice(0,lastAt)+t}else{lastAt=buf?buf.length+1:0;buf=buf?buf+" "+t:t}
+     var ls=fold(sLast);
+     if(sLast&&f.length>ls.length&&f.indexOf(ls)===0){said=said.slice(0,sAt)+t}else{sAt=said?said.length+1:0;said=said?said+" "+t:t}
+     sLast=t;lastF=t;ch=true}
+    else im+=" "+t}
+   if(ch)proc();show()};
+  r.onerror=function(e){if((e.error==="no-speech"||e.error==="aborted")&&want)return;err=1;want=false;say(ERR(e.error))};
+  r.onend=function(){
+   if(want&&!err){if(Date.now()-t0<400){if(++fast>3)want=false}else fast=0;
+    if(want){done=0;lastF="";sLast="";var rs=function(){if(!want)return;if(talking){setTimeout(rs,300);return}try{t0=Date.now();r.start()}catch(x){}};if(talking){setTimeout(rs,300);return}try{t0=Date.now();r.start();return}catch(x){}}}
+   VZ=null;btn.textContent="🎙️ Cargar por voz";btn.style.background="";btn.style.color="";
+   if(err)return;
+   if(im.trim()){said=(said?said+" ":"")+im.trim();paintT(said,"");buf=(buf+" "+im).trim();im=""}
+   proc();
+   chain.then(async function(){
+    var left=buf.trim(),h=log.length?log.slice(-6).join("\n")+"\n":"",g=hasT(left)?parseP(left):null;buf="";
+    if(g&&!emptyP(g)){await volcar(g,{send:false,date:g.date||"",desc:g.desc});say(h+"Quedó sin guardar: "+resP(g)+"\nRevisalo en el formulario y tocá «Guardar registro».")}
+    else say(h||"No se escuchó nada. Probá de nuevo y hablá cerca del micrófono.")})};
+  var api={stop:function(){want=false;try{r.stop()}catch(x){}}};
+  try{t0=Date.now();r.start();VZ=api;if(TXT==null){btn.textContent="⏹️ Listo, terminar";btn.style.background="#c43878";btn.style.color="#fff"}log=[];note="";paintT("","");say(TXT!=null?"✍️ Procesando…":"🎙️ Escuchando… Decí qué tenés que pagar y «guardar».\nEj: «pagué agua» (lo pasa a Mensuales) · «luz 20 mil el 15, guardar» · «heladera en 3 cuotas de 12000 el 10» · «le debo 15 mil al aguatero, nota: bidones»")}catch(e){say("No pude iniciar el micrófono.")}}
+ btn.onclick=function(){runVoice(null)};
+ var txi=box.querySelector(".vzi"),txb=box.querySelector(".vzo");
+ function sendTxt(){var v=(txi.value||"").trim();if(!v)return;txi.value="";runVoice(v)}
+ txb.onclick=sendTxt;txi.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();sendTxt()}};
+ return box}
+var sg=document.querySelector("#appContent .summary-grid");
+if(sg)sg.parentNode.insertBefore(build(),sg);
+
+})();
+</script>
+</body>
+</html>
