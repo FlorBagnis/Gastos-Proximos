@@ -1,0 +1,2437 @@
+/* ==========================================
+   GASTOS PRÓXIMOS
+   ESTILO ROSA · RESPONSIVE + MODOS OSCURO, AZUL & BLACK
+========================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --pink: #e85d9e;
+  --pink-dark: #d94487;
+  --pink-light: #fff0f7;
+  --pink-soft: #ffe3f0;
+
+  --text: #332934;
+  --muted: #8b7d86;
+
+  --background: #fff9fc;
+  --white: #ffffff;
+
+  --green: #55a878;
+  --green-light: #eaf8ef;
+
+  --red: #d95c70;
+  --red-light: #fff0f2;
+
+  --border: #f0dfe8;
+
+  --shadow: 0 10px 30px rgba(180, 90, 130, 0.08);
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #fff5fa 0%, #fff9fc 40%, #ffffff 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* CONTAINER */
+.app {
+  width: min(1150px, 92%);
+  margin: auto;
+  padding: 45px 0;
+}
+
+/* HEADER Y ALINEACIÓN DE BOTONES */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.eyebrow {
+  display: block;
+  color: var(--pink);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 7px;
+}
+
+.header h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.header p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.user-email {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* BOTONES */
+.primary-button {
+  border: none;
+  background: var(--pink);
+  color: white;
+  padding: 14px 22px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(232, 93, 158, 0.25);
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.primary-button:hover {
+  background: var(--pink-dark);
+  transform: translateY(-2px);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+.secondary-button {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.secondary-button:hover {
+  background: var(--pink-light);
+  border-color: var(--pink);
+  color: var(--pink-dark);
+}
+
+a.secondary-button.back-link {
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* AUTENTICACIÓN */
+.auth-section {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.auth-card {
+  width: min(420px, 100%);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 35px 30px;
+  box-shadow: 0 20px 60px rgba(180, 90, 130, 0.12);
+  text-align: left;
+}
+
+.auth-logo {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pink-soft);
+  border-radius: 16px;
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+.auth-card h1 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.auth-card form {
+  display: grid;
+  gap: 15px;
+}
+
+.auth-card label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 5px;
+  padding: 14px;
+}
+
+.auth-message {
+  min-height: 18px;
+  margin: 12px 0 4px;
+  text-align: center;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-message.success {
+  color: var(--green);
+}
+
+.auth-switch {
+  border: 0;
+  background: transparent;
+  color: var(--pink-dark);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto 0;
+}
+
+/* RESUMEN */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 42px;
+}
+
+.summary-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-card span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.summary-card strong {
+  font-size: 25px;
+  margin-top: 2px;
+}
+
+.main-card {
+  background: linear-gradient(135deg, #fff0f7, #ffffff);
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.card-icon,
+.small-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  background: var(--pink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+.main-card strong {
+  color: var(--pink-dark);
+  font-size: 30px;
+}
+
+/* TOOLBAR Y FILTROS */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.section-title h2 {
+  font-size: 22px;
+}
+
+.section-title span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.filters {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--muted);
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: white;
+}
+
+/* LISTA */
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.expense {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 17px;
+  box-shadow: var(--shadow);
+  transition: 0.2s ease;
+}
+
+.expense:hover {
+  transform: translateY(-2px);
+}
+
+.expense-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  background: var(--pink-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.expense-info h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.expense-info p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.expense-date {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.expense-date strong {
+  display: block;
+  color: var(--text);
+  margin-top: 3px;
+}
+
+.expense-amount {
+  min-width: 110px;
+  text-align: right;
+}
+
+.expense-amount strong {
+  display: block;
+  font-size: 17px;
+}
+
+.no-amount {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  margin-top: 7px;
+}
+
+.badge.pending {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+.badge.paid {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.badge.debt {
+  background: var(--pink-light);
+  color: var(--pink-dark);
+}
+
+/* ACCIONES */
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.action-button {
+  border: 1px solid var(--border);
+  background: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.action-button:hover {
+  background: var(--pink-light);
+}
+
+.action-button.pay {
+  color: var(--green);
+}
+
+.action-button.unpay {
+  color: #e67e22;
+}
+
+.action-button.unpay:hover {
+  background: #fdf2e9;
+}
+
+.action-button.delete {
+  color: var(--red);
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 70px 20px;
+  background: white;
+  border: 1px dashed var(--border);
+  border-radius: 22px;
+}
+
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  max-width: 430px;
+  margin: 0 auto 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  margin-top: 45px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(70, 40, 55, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal {
+  width: min(560px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 25px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(80, 40, 60, 0.2);
+}
+
+.close-modal {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  border: none;
+  background: #f9edf3;
+  color: var(--muted);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.modal-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.modal-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: var(--pink-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+
+.modal-header h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.modal-header p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* FORMULARIO */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #fffafd;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 13px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.1);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+}
+
+.money-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: #fffafd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.money-input span {
+  padding-left: 13px;
+  color: var(--pink-dark);
+  font-weight: 800;
+}
+
+.money-input input {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.helper {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.type-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.type-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.type-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.type-option span {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  transition: 0.2s ease;
+}
+
+.type-option input:checked + span {
+  border-color: var(--pink);
+  background: var(--pink-light);
+}
+
+.type-option strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.type-option small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.save-button {
+  width: 100%;
+  border: none;
+  background: var(--pink);
+  color: white;
+  padding: 14px;
+  border-radius: 13px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: 0.2s ease;
+}
+
+.save-button:hover {
+  background: var(--pink-dark);
+}
+
+/* OCULTAR MONTOS */
+body.amounts-hidden #totalPending,
+body.amounts-hidden #nextSevenDays,
+body.amounts-hidden #thisMonth,
+body.amounts-hidden #totalDebts,
+body.amounts-hidden .expense-amount strong,
+body.amounts-hidden #amount {
+  color: transparent !important;
+  position: relative;
+  user-select: none;
+}
+
+body.amounts-hidden #totalPending::after,
+body.amounts-hidden #nextSevenDays::after,
+body.amounts-hidden #thisMonth::after,
+body.amounts-hidden #totalDebts::after,
+body.amounts-hidden .expense-amount strong::after,
+body.amounts-hidden #amount::after {
+  content: "••••••";
+  color: var(--pink-dark) !important;
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+body.amounts-hidden .expense-amount strong::after {
+  justify-content: flex-end;
+}
+
+/* PASSWORD WRAPPER */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  width: 100%;
+  padding-right: 42px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.toggle-password:hover {
+  transform: scale(1.1);
+}
+
+
+/* =========================================================
+   MODO OSCURO (ORIGINAL BORRAVINO / BORDÓ)
+========================================================= */
+body.dark-mode {
+  background: #140e13 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .auth-card,
+body.dark-mode .summary-card,
+body.dark-mode .expense,
+body.dark-mode .modal,
+body.dark-mode .empty-state {
+  background: #211620 !important;
+  border-color: #3b2334 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .main-card {
+  background: linear-gradient(135deg, #2b1825, #211620) !important;
+}
+
+body.dark-mode .header h1 {
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .header p,
+body.dark-mode .user-email {
+  color: #e5a7be !important;
+}
+
+body.dark-mode .eyebrow {
+  color: #ff9db4 !important;
+}
+
+body.dark-mode .summary-card span,
+body.dark-mode .section-title span,
+body.dark-mode .expense-info p,
+body.dark-mode .expense-date,
+body.dark-mode .auth-subtitle,
+body.dark-mode .modal-header p,
+body.dark-mode .helper,
+body.dark-mode footer {
+  color: #b893a4 !important;
+}
+
+body.dark-mode .expense-date strong {
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .card-icon,
+body.dark-mode .small-icon,
+body.dark-mode .expense-icon,
+body.dark-mode .modal-icon,
+body.dark-mode .auth-logo {
+  background: #331d2b !important;
+  color: #ff9db4 !important;
+}
+
+body.dark-mode .close-modal {
+  background: #2b1c2a !important;
+  color: #e5a7be !important;
+}
+
+body.dark-mode .close-modal:hover {
+  background: #3d233a !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .money-input {
+  background: #170f16 !important;
+  border-color: #3b2334 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .money-input span {
+  color: #ff9db4 !important;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+  border-color: var(--pink) !important;
+  box-shadow: 0 0 0 3px rgba(232, 93, 158, 0.2) !important;
+}
+
+body.dark-mode .secondary-button {
+  background: #211620 !important;
+  color: #ff9db4 !important;
+  border-color: #592e47 !important;
+}
+
+body.dark-mode .secondary-button:hover {
+  background: #331d2b !important;
+  border-color: #e85d9e !important;
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .filter {
+  background: #211620 !important;
+  border-color: #3b2334 !important;
+  color: #b893a4 !important;
+}
+
+body.dark-mode .filter:hover {
+  border-color: #592e47 !important;
+  color: #ffdbe4 !important;
+}
+
+body.dark-mode .filter.active {
+  background: var(--pink) !important;
+  border-color: var(--pink) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .action-button {
+  background: #2b1c2a !important;
+  border-color: #592e47 !important;
+  color: #fceef3 !important;
+}
+
+body.dark-mode .action-button:hover {
+  background: #3d233a !important;
+}
+
+body.dark-mode .type-option span {
+  border-color: #3b2334 !important;
+  background: #191118 !important;
+}
+
+body.dark-mode .type-option input:checked + span {
+  border-color: var(--pink) !important;
+  background: #301726 !important;
+}
+
+body.dark-mode .type-option small {
+  color: #b893a4 !important;
+}
+
+body.dark-mode .badge.debt {
+  background: #3d1b2e !important;
+  color: #ffb0c2 !important;
+}
+
+body.dark-mode .empty-state h3 {
+  color: #ffdbe4 !important;
+}
+
+
+/* =========================================================
+   MODO AZUL (FONDO COMPLETO Y AZUL)
+========================================================= */
+body.dark-blue-mode {
+  background: #070d1e !important;
+  background-color: #070d1e !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode header.header,
+body.dark-blue-mode .toolbar,
+body.dark-blue-mode .summary-card,
+body.dark-blue-mode .summary-card.main-card,
+body.dark-blue-mode .expense,
+body.dark-blue-mode .auth-card,
+body.dark-blue-mode .modal,
+body.dark-blue-mode dialog {
+  background: #0f1c3f !important;
+  background-color: #0f1c3f !important;
+  border: 1px solid #14244b !important;
+  border-radius: 20px !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode header.header {
+  padding: 28px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-blue-mode .toolbar {
+  padding: 24px !important;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-blue-mode header.header .eyebrow,
+body.dark-blue-mode header.header h1,
+body.dark-blue-mode header.header p,
+body.dark-blue-mode .summary-card.main-card strong,
+body.dark-blue-mode .modal-header h2,
+body.dark-blue-mode .modal-header p,
+body.dark-blue-mode .form-group label,
+body.dark-blue-mode .section-title h2,
+body.dark-blue-mode .section-title span {
+  color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode .summary-card.main-card strong {
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .modal-overlay {
+  background: rgba(2, 6, 15, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+body.dark-blue-mode input:not([type="radio"]),
+body.dark-blue-mode select,
+body.dark-blue-mode textarea,
+body.dark-blue-mode .money-input {
+  background-color: #070d1e !important;
+  color: #38bdf8 !important;
+  border: 1px solid #14244b !important;
+}
+
+body.dark-blue-mode .type-option span {
+  background-color: #070d1e !important;
+  border: 1px solid #14244b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-blue-mode .type-option input:checked + span {
+  background-color: #10214a !important;
+  border-color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .close-modal {
+  background-color: #14244b !important;
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .modal-icon,
+body.dark-blue-mode .card-icon,
+body.dark-blue-mode .small-icon,
+body.dark-blue-mode .expense-icon {
+  background-color: #14244b !important;
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .secondary-button,
+body.dark-blue-mode .primary-button {
+  background-color: #14244b !important;
+  color: #38bdf8 !important;
+  border: 1px solid #1e3a8a !important;
+}
+
+body.dark-blue-mode .secondary-button:hover,
+body.dark-blue-mode .primary-button:hover {
+  background-color: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   MODO BLACK (FONDO DE PANTALLA COMPLETO Y NEGRO OLED)
+========================================================= */
+body.black-mode {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode header.header,
+body.black-mode .toolbar,
+body.black-mode .summary-card,
+body.black-mode .summary-card.main-card,
+body.black-mode .expense,
+body.black-mode .auth-card,
+body.black-mode .modal,
+body.black-mode dialog {
+  background: #121212 !important;
+  background-color: #121212 !important;
+  border: 1px solid #262626 !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+}
+
+body.black-mode header.header {
+  padding: 28px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.black-mode .toolbar {
+  padding: 24px !important;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.black-mode header.header .eyebrow,
+body.black-mode header.header h1,
+body.black-mode header.header p,
+body.black-mode .summary-card.main-card strong,
+body.black-mode .modal-header h2,
+body.black-mode .modal-header p,
+body.black-mode .form-group label,
+body.black-mode .section-title h2,
+body.black-mode .section-title span {
+  color: #ffffff !important;
+}
+
+body.black-mode .summary-card.main-card strong {
+  color: #ffffff !important;
+}
+
+body.black-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+body.black-mode input:not([type="radio"]),
+body.black-mode select,
+body.black-mode textarea,
+body.black-mode .money-input {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+body.black-mode .type-option span {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .type-option input:checked + span {
+  background-color: #262626 !important;
+  border-color: #ffffff !important;
+}
+
+body.black-mode .close-modal {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .modal-icon,
+body.black-mode .card-icon,
+body.black-mode .small-icon,
+body.black-mode .expense-icon {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .secondary-button,
+body.black-mode .primary-button {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+body.black-mode .secondary-button:hover,
+body.black-mode .primary-button:hover {
+  background-color: #262626 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 768px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .app {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  header.header {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+  }
+
+  .header-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  .header-actions > * {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+
+  .summary-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolbar {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+  }
+
+  .toolbar input[type="search"] {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 10px !important;
+  }
+
+  .filters {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .filters button {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .expense {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .modal {
+    width: 95% !important;
+    max-height: 85vh !important;
+    box-sizing: border-box !important;
+  }
+}
+
+
+/* =========================================================
+   CORRECCIÓN BOTONES DE ACCIÓN (EXPENSE ACTIONS)
+========================================================= */
+
+/* Modo Black */
+body.black-mode .action-button {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+body.black-mode .action-button:hover {
+  background-color: #262626 !important;
+  border-color: #ffffff !important;
+}
+
+/* Modo Azul */
+body.dark-blue-mode .action-button {
+  background-color: #14244b !important;
+  border: 1px solid #1e3a8a !important;
+  color: #38bdf8 !important;
+}
+
+body.dark-blue-mode .action-button:hover {
+  background-color: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+
+
+/* =========================================================
+   SCROLL RESPONSIVE PARA LISTAS EN GASTOS PRÓXIMOS
+========================================================= */
+
+/* Limitar la altura de las listas de gastos y deudas en PC */
+.debts-list,
+.expense-list,
+.pending-list,
+.payments-list,
+.card-list,
+.table-wrap,
+#debtsList,
+#expensesList {
+  max-height: 580px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain !important;
+  scroll-behavior: smooth !important;
+  padding-right: 4px;
+}
+
+/* En celulares: altura más compacta */
+@media (max-width: 768px) {
+  .debts-list,
+  .expense-list,
+  .pending-list,
+  .payments-list,
+  .card-list,
+  .table-wrap,
+  #debtsList,
+  #expensesList {
+    max-height: 360px !important;
+  }
+}
+
+/* Scrollbar fina estética */
+.debts-list::-webkit-scrollbar,
+.expense-list::-webkit-scrollbar,
+.pending-list::-webkit-scrollbar,
+.card-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.debts-list::-webkit-scrollbar-track,
+.expense-list::-webkit-scrollbar-track,
+.pending-list::-webkit-scrollbar-track,
+.card-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.debts-list::-webkit-scrollbar-thumb,
+.expense-list::-webkit-scrollbar-thumb,
+.pending-list::-webkit-scrollbar-thumb,
+.card-list::-webkit-scrollbar-thumb {
+  background: #f29cb5;
+  border-radius: 10px;
+}
+
+
+/* Ocultar lista/tabla de gastos */
+.expenses-hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   GASTOS PRÓXIMOS — CORRECCIÓN DE HEADER Y ESTILOS
+========================================================= */
+
+/* 1. MODO CLARO (Default) */
+:root {
+  color-scheme: light;
+  --app-bg: #fff9fc;
+  --app-card: #ffffff;
+  --app-field: #fffafd;
+  --app-text: #332934;
+  --app-muted: #8b7d86;
+  --app-border: #f0dfe8;
+  --app-accent: #e85d9e;
+  --app-accent-hover: #d94487;
+  --app-accent-soft: #fff0f7;
+  --app-accent-text: #ffffff;
+  --app-shadow: 0 10px 30px rgba(180, 90, 130, 0.08);
+}
+
+/* 2. MODO OSCURO (Bordó / Borravino) */
+body.dark-mode {
+  color-scheme: dark;
+  --app-bg: #140e13;
+  --app-card: #211620;
+  --app-field: #170f16;
+  --app-text: #fceef3;
+  --app-muted: #b893a4;
+  --app-border: #493343;
+  --app-accent: #e85d9e;
+  --app-accent-hover: #f078b2;
+  --app-accent-soft: #331d2b;
+  --app-accent-text: #ffffff;
+  --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+/* 3. MODO BLACK (OLED Puro) */
+body.black-mode {
+  color-scheme: dark;
+  --app-bg: #000000;
+  --app-card: #121212;
+  --app-field: #080808;
+  --app-text: #ffffff;
+  --app-muted: #b3b3b3;
+  --app-border: #262626;
+  --app-accent: #ffffff;
+  --app-accent-hover: #d9d9d9;
+  --app-accent-soft: #1a1a1a;
+  --app-accent-text: #000000;
+  --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. MODO AZUL (Marino y Celeste) */
+body.dark-blue-mode {
+  color-scheme: dark;
+  --app-bg: #070d1e;
+  --app-card: #0f1c3f;
+  --app-field: #0a1530;
+  --app-text: #eaf4ff;
+  --app-muted: #a7bdd9;
+  --app-border: #1e3a8a;
+  --app-accent: #38bdf8;
+  --app-accent-hover: #7dd3fc;
+  --app-accent-soft: #14244b;
+  --app-accent-text: #07111f;
+  --app-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* APLICACIÓN GENERAL DE VARIABLES */
+body {
+  background-color: var(--app-bg) !important;
+  color: var(--app-text) !important;
+}
+
+body .header h1,
+body .section-title h2,
+body .expense-info h3,
+body .summary-card strong,
+body .modal-header h2,
+body .auth-card h1,
+body .empty-state h3 {
+  color: var(--app-text) !important;
+}
+
+body .header p,
+body .user-email,
+body .section-title span,
+body .summary-card span,
+body .expense-info p,
+body .expense-date,
+body .auth-subtitle,
+body .modal-header p,
+body .helper,
+body footer {
+  color: var(--app-muted) !important;
+}
+
+/* HEADER EN TARJETA EN LOS 4 MODOS (igual que el azul, con fecha y hora adentro) */
+body:not(.dark-blue-mode):not(.black-mode) header.header {
+  background-color: var(--app-card) !important;
+  border: 1px solid var(--pm-card-line, var(--app-border)) !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  margin-bottom: 24px !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+/* En Modo Azul y Modo Black el header se mantiene como tarjeta integrada */
+body.dark-blue-mode header.header,
+body.black-mode header.header {
+  background-color: var(--app-card) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+/* TARJETAS, MODALES Y CONTENEDORES */
+body .auth-card,
+body .summary-card,
+body .expense,
+body .modal,
+body .empty-state,
+body .rec-panel,
+body .toolbar {
+  background-color: var(--app-card) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+body .main-card {
+  background-color: var(--app-accent-soft) !important;
+  border-color: var(--app-border) !important;
+}
+
+body .main-card strong {
+  color: var(--app-accent) !important;
+}
+
+/* ÍCONOS Y BADGES */
+body .card-icon,
+body .small-icon,
+body .expense-icon,
+body .modal-icon,
+body .auth-logo {
+  background-color: var(--app-accent-soft) !important;
+  color: var(--app-accent) !important;
+}
+
+/* BOTONES */
+body .primary-button,
+body .save-button,
+body .auth-submit {
+  background-color: var(--app-accent) !important;
+  color: var(--app-accent-text) !important;
+  border-color: var(--app-accent) !important;
+}
+
+body .primary-button:hover,
+body .save-button:hover,
+body .auth-submit:hover {
+  background-color: var(--app-accent-hover) !important;
+}
+
+body .secondary-button,
+body .filter,
+body .action-button {
+  background-color: var(--app-card) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+}
+
+body .secondary-button:hover,
+body .filter:hover,
+body .action-button:hover {
+  background-color: var(--app-accent-soft) !important;
+  border-color: var(--app-accent) !important;
+  color: var(--app-accent) !important;
+}
+
+body .filter.active {
+  background-color: var(--app-accent) !important;
+  border-color: var(--app-accent) !important;
+  color: var(--app-accent-text) !important;
+}
+
+/* INPUTS Y FORMULARIOS */
+body input:not([type="radio"]):not([type="checkbox"]),
+body select,
+body textarea,
+body .money-input {
+  background-color: var(--app-field) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+}
+
+body input:focus,
+body select:focus,
+body textarea:focus {
+  border-color: var(--app-accent) !important;
+}
+
+body .money-input span {
+  color: var(--app-accent) !important;
+}
+
+body .type-option span {
+  background-color: var(--app-field) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+}
+
+body .type-option input:checked + span {
+  background-color: var(--app-accent-soft) !important;
+  border-color: var(--app-accent) !important;
+}
+
+/* GASTOS RECURRENTES ITEMS */
+body .rec-item {
+  background-color: var(--app-field) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+body .rec-item .rec-name {
+  color: var(--app-text) !important;
+}
+
+body .rec-item .rec-meta {
+  color: var(--app-muted) !important;
+}
+
+body .rec-item:hover {
+  border-color: var(--app-accent) !important;
+  background-color: var(--app-accent-soft) !important;
+}
+
+
+
+/* =========================================================
+   CORRECCIÓN DE BORDES REDONDEADOS PARA LA TOOLBAR ("MIS PENDIENTES")
+========================================================= */
+body .toolbar {
+  background-color: var(--app-card) !important;
+  color: var(--app-text) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+
+
+
+/* =========================================================
+   CORRECCIÓN DEFINITIVA DE MONTOS OCULTOS (PUNTOS SIN BLUR)
+========================================================= */
+
+/* Eliminar cualquier efecto de blur previo */
+body.amounts-hidden .rec-amount {
+  filter: none !important;
+}
+
+body.amounts-hidden .rec-amount,
+body.amounts-hidden .expense-amount strong,
+body.amounts-hidden #totalPending,
+body.amounts-hidden #nextSevenDays,
+body.amounts-hidden #thisMonth,
+body.amounts-hidden #totalDebts,
+body.amounts-hidden #amount {
+  color: transparent !important;
+  position: relative;
+  user-select: none;
+}
+
+body.amounts-hidden .rec-amount::after,
+body.amounts-hidden .expense-amount strong::after,
+body.amounts-hidden #totalPending::after,
+body.amounts-hidden #nextSevenDays::after,
+body.amounts-hidden #thisMonth::after,
+body.amounts-hidden #totalDebts::after,
+body.amounts-hidden #amount::after {
+  content: "••••••";
+  color: var(--app-accent) !important;
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+body.amounts-hidden .expense-amount strong::after,
+body.amounts-hidden .rec-amount::after {
+  justify-content: flex-end;
+}
+
+
+/* =========================================================
+   GASTOS PRÓXIMOS · MISMA INTERFAZ QUE MENSUALES
+   Claro (rosa) · Oscuro (bordó) · Azul · Black
+
+   Pegar AL FINAL de style.css (tiene que ir último para
+   ganarle a las reglas anteriores). Reemplaza al
+   proximos-modos.css anterior: borrar ese y usar este.
+
+   Las paletas son las mismas que usa Mensuales.
+   Para ajustar un color, tocar la variable en el bloque del modo.
+========================================================= */
+
+
+/* =========================================================
+   1. PALETAS (copiadas de Mensuales)
+========================================================= */
+
+/* ---------- CLARO (rosa) ---------- */
+html body {
+  color-scheme: light;
+
+  --app-bg: #f9eef2;
+  --app-card: #ffffff;
+  --app-field: #ffffff;
+  --app-text: #52162a;
+  --app-muted: #8d737e;
+  --app-border: #f3c9d4;
+  --app-accent: #ea5b8e;
+  --app-accent-hover: #d94f84;
+  --app-accent-soft: #ffe3ea;
+  --app-accent-text: #ffffff;
+  --app-shadow: 0 10px 30px rgba(132, 38, 67, .08);
+
+  --pm-card-line: #ffc5d2;
+  --pm-label: #c93b6e;
+  --pm-ink: #c93b6e;
+  --pm-dots: #c93b6e;
+
+  --pm-hero-bg: linear-gradient(110deg, #ffb0c2, #ffa5bb);
+  --pm-hero-line: transparent;
+  --pm-hero-title: #52162a;
+  --pm-hero-sub: #7d2c46;
+  --pm-eyebrow: #c93b6e;
+
+  --pm-primary-bg: #ea5b8e;
+  --pm-primary-text: #ffffff;
+  --pm-primary-line: #ea5b8e;
+  --pm-primary-hover: #d94f84;
+
+  --pm-outline-bg: #ffffff;
+  --pm-outline-text: #c93b6e;
+  --pm-outline-line: #ff9db4;
+  --pm-outline-hover: #fff3f6;
+
+  --pm-modal-bg: #ffe0e9;
+  --pm-modal-line: #ff9db4;
+  --pm-dialog-shadow: 0 25px 80px rgba(132, 38, 67, .25);
+  --pm-backdrop: rgba(65, 15, 32, .35);
+  --pm-blur: 3px;
+
+  --pm-item-bg: #ffffff;
+  --pm-item-line: #f3c9d4;
+
+  --pm-glow: rgba(220, 90, 130, .32);
+  --pm-line-hover: #ff8fae;
+  --pm-scroll: #f29cb5;
+  --pm-danger: #b8324b;
+  --pm-danger-line: #ef9cac;
+
+  --pm-fuchsia: #ec407a;
+  --pm-fuchsia-line: #f8bbd0;
+  --pm-fuchsia-soft: #fff0f3;
+}
+
+/* ---------- OSCURO (bordó) ---------- */
+html body.dark-mode {
+  color-scheme: dark;
+
+  --app-bg: #150a0e;
+  --app-card: #241016;
+  --app-field: #1a0b10;
+  --app-text: #f5e9ec;
+  --app-muted: #b39299;
+  --app-border: #3d1a24;
+  --app-accent: #f0a3ab;
+  --app-accent-hover: #f5b8be;
+  --app-accent-soft: #3a1822;
+  --app-accent-text: #f0a3ab;
+  --app-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+
+  --pm-card-line: #3d1a24;
+  --pm-label: #e07a85;
+  --pm-ink: #f0a3ab;
+  --pm-dots: #f0a3ab;
+
+  --pm-hero-bg: linear-gradient(110deg, #4a111f, #2e0b14);
+  --pm-hero-line: #5a1a2a;
+  --pm-hero-title: #fbe9ec;
+  --pm-hero-sub: #d9a3ab;
+  --pm-eyebrow: #e07a85;
+
+  --pm-primary-bg: #3a1620;
+  --pm-primary-text: #f0a3ab;
+  --pm-primary-line: #5a2535;
+  --pm-primary-hover: #4a1c2a;
+
+  --pm-outline-bg: #2e131b;
+  --pm-outline-text: #f0a3ab;
+  --pm-outline-line: #5a2535;
+  --pm-outline-hover: #3a1822;
+
+  --pm-modal-bg: #1a0a10;
+  --pm-modal-line: #4a1c2a;
+  --pm-dialog-shadow: 0 25px 80px rgba(0, 0, 0, .65);
+  --pm-backdrop: rgba(0, 0, 0, .6);
+  --pm-blur: 3px;
+
+  --pm-item-bg: #2a1119;
+  --pm-item-line: #4a1c2a;
+
+  --pm-glow: rgba(194, 65, 93, .40);
+  --pm-line-hover: #8a2f47;
+  --pm-scroll: #5a2535;
+  --pm-danger: #ff6b81;
+  --pm-danger-line: rgba(255, 107, 129, .45);
+
+  --pm-fuchsia: #c2415d;
+  --pm-fuchsia-line: #5a2535;
+  --pm-fuchsia-soft: #2e131b;
+}
+
+/* ---------- AZUL ---------- */
+html body.dark-blue-mode {
+  color-scheme: dark;
+
+  --app-bg: #070d1e;
+  --app-card: #0f1c3f;
+  --app-field: #070d1e;
+  --app-text: #f1f5f9;
+  --app-muted: #8fa5ca;
+  --app-border: #14244b;
+  --app-accent: #38bdf8;
+  --app-accent-hover: #7dd3fc;
+  --app-accent-soft: #10214a;
+  --app-accent-text: #38bdf8;
+  --app-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+
+  --pm-card-line: #14244b;
+  --pm-label: #0ea5e9;
+  --pm-ink: #38bdf8;
+  --pm-dots: #38bdf8;
+
+  --pm-hero-bg: #0f1c3f;
+  --pm-hero-line: #14244b;
+  --pm-hero-title: #f1f5f9;
+  --pm-hero-sub: #f1f5f9;
+  --pm-eyebrow: #f1f5f9;
+
+  --pm-primary-bg: #14244b;
+  --pm-primary-text: #38bdf8;
+  --pm-primary-line: #1e3a8a;
+  --pm-primary-hover: #1e3a8a;
+
+  --pm-outline-bg: #14244b;
+  --pm-outline-text: #38bdf8;
+  --pm-outline-line: #1e3a8a;
+  --pm-outline-hover: #1e3a8a;
+
+  --pm-modal-bg: #070d1e;
+  --pm-modal-line: #1e356d;
+  --pm-dialog-shadow: 0 25px 80px rgba(0, 0, 0, .65);
+  --pm-backdrop: rgba(2, 6, 23, .6);
+  --pm-blur: 3px;
+
+  --pm-item-bg: #0f1c3f;
+  --pm-item-line: #14244b;
+
+  --pm-glow: rgba(56, 189, 248, .34);
+  --pm-line-hover: #2f4f9a;
+  --pm-scroll: #1e3a8a;
+  --pm-danger: #ff6b81;
+  --pm-danger-line: rgba(255, 107, 129, .45);
+
+  --pm-fuchsia: #38bdf8;
+  --pm-fuchsia-line: #1e3a8a;
+  --pm-fuchsia-soft: #10214a;
+}
+
+/* ---------- BLACK (OLED) ---------- */
+html:has(body.black-mode) {
+  background: #000000;
+}
+
+html body.black-mode {
+  color-scheme: dark;
+
+  --app-bg: #000000;
+  --app-card: #0f0f11;
+  --app-field: #08080a;
+  --app-text: #ffffff;
+  --app-muted: #9ca3af;
+  --app-border: #1f1f23;
+  --app-accent: #ffffff;
+  --app-accent-hover: #d1d5db;
+  --app-accent-soft: #17171a;
+  --app-accent-text: #ffffff;
+  --app-shadow: 0 8px 30px rgba(0, 0, 0, .7);
+
+  --pm-card-line: #1f1f23;
+  --pm-label: #d1d5db;
+  --pm-ink: #e2e8f0;
+  --pm-dots: #ffffff;
+
+  --pm-hero-bg: #0f0f11;
+  --pm-hero-line: #1f1f23;
+  --pm-hero-title: #ffffff;
+  --pm-hero-sub: #d1d5db;
+  --pm-eyebrow: #ffffff;
+
+  --pm-primary-bg: #17171a;
+  --pm-primary-text: #ffffff;
+  --pm-primary-line: #2a2a2f;
+  --pm-primary-hover: #202025;
+
+  --pm-outline-bg: #17171a;
+  --pm-outline-text: #ffffff;
+  --pm-outline-line: #2a2a2f;
+  --pm-outline-hover: #202025;
+
+  --pm-modal-bg: #0d0d11;
+  --pm-modal-line: #1f1f24;
+  --pm-dialog-shadow: 0 16px 40px rgba(0, 0, 0, .85);
+  --pm-backdrop: rgba(0, 0, 0, .75);
+  --pm-blur: 10px;
+
+  --pm-item-bg: #141417;
+  --pm-item-line: #222227;
+
+  --pm-glow: rgba(255, 255, 255, .16);
+  --pm-line-hover: #434354;
+  --pm-scroll: #333333;
+  --pm-danger: #ff5c77;
+  --pm-danger-line: rgba(255, 92, 119, .45);
+
+  --pm-fuchsia: #ffffff;
+  --pm-fuchsia-line: #2a2a2f;
+  --pm-fuchsia-soft: #17171a;
+}
+
+
+/* =========================================================
+   2. FONDO Y TEXTOS
+   (html body:not(#pm) sube la prioridad para ganarle a las
+   reglas con !important de style.css)
+========================================================= */
+
+html body:not(#pm) {
+  background: var(--app-bg) !important;
+  background-color: var(--app-bg) !important;
+  color: var(--app-text) !important;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+/* Títulos y textos principales */
+html body:not(#pm) :is(
+  .section-title h2, .expense-info h3, .summary-card strong,
+  .modal-header h2, .auth-card h1, .empty-state h3,
+  .expense-date strong, .rec-item .rec-name
+) {
+  color: var(--app-text) !important;
+}
+
+/* Textos secundarios */
+html body:not(#pm) :is(
+  .section-title span, .expense-info p, .expense-date,
+  .auth-subtitle, .modal-header p, .helper, footer,
+  .type-option small, .rec-item .rec-meta
+) {
+  color: var(--app-muted) !important;
+}
+
+/* Etiquetas (como en Mensuales: color de acento suave) */
+html body:not(#pm) :is(.form-group label, .auth-card label, .summary-card span) {
+  color: var(--pm-label) !important;
+}
+
+
+/* =========================================================
+   3. HEADER (mismo formato que tenías, solo colores)
+========================================================= */
+
+/* Claro y oscuro: sin caja, como estaba */
+html body:not(.dark-blue-mode):not(.black-mode):not(#pm) header.header {
+  background: var(--app-card) !important;
+  border: 1px solid var(--pm-card-line, var(--app-border)) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+/* Azul y black: tarjeta con los colores de Mensuales */
+html body.dark-blue-mode:not(#pm) header.header,
+html body.black-mode:not(#pm) header.header {
+  background: var(--pm-hero-bg) !important;
+  border: 1px solid var(--pm-hero-line) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+html body:not(#pm) header.header h1 {
+  color: var(--app-text) !important;
+}
+
+html body:not(#pm) header.header :is(p, .user-email) {
+  color: var(--app-muted) !important;
+}
+
+html body:not(#pm) .eyebrow {
+  color: var(--pm-eyebrow) !important;
+}
+
+
+/* =========================================================
+   4. TARJETAS, TOOLBAR, MODALES Y CONTENEDORES
+========================================================= */
+
+html body:not(#pm) :is(.summary-card, .empty-state, .rec-panel) {
+  background: var(--app-card) !important;
+  background-color: var(--app-card) !important;
+  border: 1px solid var(--pm-card-line) !important;
+  color: var(--app-text) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+html body:not(#pm) .main-card {
+  background: var(--app-card) !important;
+  background-color: var(--app-card) !important;
+}
+
+html body:not(#pm) .main-card strong {
+  color: var(--pm-ink) !important;
+}
+
+html body:not(#pm) .toolbar {
+  background: var(--app-card) !important;
+  background-color: var(--app-card) !important;
+  border: 1px solid var(--app-border) !important;
+  color: var(--app-text) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+/* Tarjeta de cada gasto */
+html body:not(#pm) .expense {
+  background: var(--app-card) !important;
+  background-color: var(--app-card) !important;
+  border-color: var(--pm-card-line) !important;
+  color: var(--app-text) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+/* Login */
+html body:not(#pm) .auth-card {
+  background: var(--app-card) !important;
+  border: 1px solid var(--pm-card-line) !important;
+  color: var(--app-text) !important;
+}
+
+/* Modal */
+html body:not(#pm) .modal-overlay {
+  background: var(--pm-backdrop) !important;
+  backdrop-filter: blur(var(--pm-blur));
+  -webkit-backdrop-filter: blur(var(--pm-blur));
+}
+
+html body:not(#pm) .modal {
+  background: var(--pm-modal-bg) !important;
+  background-color: var(--pm-modal-bg) !important;
+  border: 1px solid var(--pm-modal-line) !important;
+  color: var(--app-text) !important;
+  box-shadow: var(--pm-dialog-shadow) !important;
+}
+
+
+/* =========================================================
+   5. ÍCONOS
+========================================================= */
+
+html body:not(#pm) :is(.card-icon, .small-icon, .modal-icon, .auth-logo, .close-modal) {
+  background: var(--app-accent-soft) !important;
+  background-color: var(--app-accent-soft) !important;
+  color: var(--pm-ink) !important;
+}
+
+html body:not(#pm) .expense-icon {
+  background: var(--pm-fuchsia-soft) !important;
+  background-color: var(--pm-fuchsia-soft) !important;
+  color: var(--pm-ink) !important;
+}
+
+
+/* =========================================================
+   6. BOTONES
+   Claro: botón rosa lleno (como .btn-pink de Mensuales).
+   Oscuros: tono del tema (como los botones de Mensuales).
+========================================================= */
+
+html body:not(#pm) :is(.primary-button, .save-button, .auth-submit) {
+  background: var(--pm-primary-bg) !important;
+  background-color: var(--pm-primary-bg) !important;
+  color: var(--pm-primary-text) !important;
+  border: 1px solid var(--pm-primary-line) !important;
+  box-shadow: none !important;
+}
+
+html body:not(#pm) :is(.primary-button, .save-button, .auth-submit):hover:not(:disabled) {
+  background: var(--pm-primary-hover) !important;
+  background-color: var(--pm-primary-hover) !important;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 22px var(--pm-glow) !important;
+}
+
+html body:not(#pm) :is(.primary-button, .save-button, .auth-submit):active:not(:disabled) {
+  transform: translateY(0) scale(.98);
+}
+
+/* Secundarios, filtros y acciones = botón "outline" de Mensuales */
+html body:not(#pm) :is(.secondary-button, .filter, .action-button) {
+  background: var(--pm-outline-bg) !important;
+  background-color: var(--pm-outline-bg) !important;
+  color: var(--pm-outline-text) !important;
+  border: 1px solid var(--pm-outline-line) !important;
+}
+
+html body:not(#pm) :is(.secondary-button, .filter, .action-button):hover {
+  background: var(--pm-outline-hover) !important;
+  background-color: var(--pm-outline-hover) !important;
+  border-color: var(--pm-outline-line) !important;
+  color: var(--pm-outline-text) !important;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 22px var(--pm-glow) !important;
+}
+
+html body:not(#pm) .filter.active {
+  background: var(--pm-primary-bg) !important;
+  background-color: var(--pm-primary-bg) !important;
+  color: var(--pm-primary-text) !important;
+  border-color: var(--pm-primary-line) !important;
+}
+
+/* Borrar: rojo, como el botón de peligro de Mensuales */
+html body:not(#pm) .action-button.delete {
+  color: var(--pm-danger) !important;
+  border-color: var(--pm-danger-line) !important;
+}
+
+html body:not(#pm) .auth-switch {
+  background: transparent !important;
+  color: var(--pm-label) !important;
+}
+
+
+/* =========================================================
+   7. CAMPOS DE FORMULARIO
+========================================================= */
+
+html body:not(#pm) :is(
+  input:not([type="radio"]):not([type="checkbox"]), select, textarea, .money-input
+) {
+  background-color: var(--app-field) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+}
+
+html body:not(#pm) .money-input input {
+  background-color: transparent !important;
+  border: 0 !important;
+}
+
+html body:not(#pm) :is(
+  input:not([type="radio"]):not([type="checkbox"]), select, textarea
+):focus {
+  border-color: var(--pm-line-hover) !important;
+}
+
+html body:not(#pm) :is(input, textarea)::placeholder {
+  color: var(--app-muted) !important;
+}
+
+html body:not(#pm) select option {
+  background-color: var(--app-field);
+  color: var(--app-text);
+}
+
+html body:not(#pm) .money-input span {
+  color: var(--pm-ink) !important;
+}
+
+html body:not(#pm) .type-option span {
+  background-color: var(--app-field) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+html body:not(#pm) .type-option input:checked + span {
+  background-color: var(--app-accent-soft) !important;
+  border-color: var(--pm-line-hover) !important;
+}
+
+
+/* =========================================================
+   8. BADGES Y GASTOS RECURRENTES
+========================================================= */
+
+html body:not(#pm) .badge.debt {
+  background: var(--app-accent-soft) !important;
+  color: var(--pm-ink) !important;
+}
+
+html body:not(#pm) .rec-item {
+  background-color: var(--pm-item-bg) !important;
+  border: 1px solid var(--pm-item-line) !important;
+  color: var(--app-text) !important;
+}
+
+html body:not(#pm) .rec-item:hover {
+  background-color: var(--pm-item-bg) !important;
+  border-color: var(--pm-line-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--pm-glow);
+}
+
+
+/* =========================================================
+   9. EFECTOS (los mismos brillos de Mensuales)
+========================================================= */
+
+html body .summary-card,
+html body .expense,
+html body .rec-item {
+  transition: transform .22s cubic-bezier(.34, 1.56, .64, 1),
+              box-shadow .22s ease,
+              border-color .2s ease;
+}
+
+html body:not(#pm) .summary-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 26px var(--pm-glow) !important;
+  border-color: var(--pm-line-hover) !important;
+}
+
+html body:not(#pm) .expense:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px var(--pm-glow) !important;
+}
+
+
+/* =========================================================
+   10. SCROLL DE LAS LISTAS
+========================================================= */
+
+html body .debts-list::-webkit-scrollbar-thumb,
+html body .expense-list::-webkit-scrollbar-thumb,
+html body .pending-list::-webkit-scrollbar-thumb,
+html body .card-list::-webkit-scrollbar-thumb {
+  background: var(--pm-scroll);
+}
+
+
+/* =========================================================
+   11. MONTOS OCULTOS (puntos del color del tema)
+========================================================= */
+
+html body.amounts-hidden :is(
+  .rec-amount, .expense-amount strong, #totalPending,
+  #nextSevenDays, #thisMonth, #totalDebts, #amount
+)::after {
+  color: var(--pm-dots) !important;
+}
+
+
+/* =========================================================
+   12. AJUSTES SEGÚN EL HTML
+========================================================= */
+
+/* Badge del dólar: tenía colores rosas fijos en el HTML */
+html body:not(#pm) .dolar-badge {
+  background: var(--app-accent-soft) !important;
+  color: var(--pm-ink) !important;
+  border: 1px solid var(--pm-card-line) !important;
+}
+
+html body.dark-mode:not(#pm) .dolar-badge,
+html body.dark-blue-mode:not(#pm) .dolar-badge,
+html body.black-mode:not(#pm) .dolar-badge {
+  color: var(--app-text) !important;
+  border-color: var(--pm-outline-line) !important;
+}
+
+/* Candadito de la contraseña: sin fondo de botón */
+html body:not(#pm) .toggle-password {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  color: var(--app-muted) !important;
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   13. AJUSTES SEGÚN app.js
+========================================================= */
+
+/* Fondo negro también cuando solo el <html> tiene la clase */
+html.black-mode {
+  background: #000000;
+}
+
+/* Monto en dólares debajo del total: tenía rosa fijo en el JS */
+html body:not(#pm) .summary-card strong small {
+  color: var(--pm-ink) !important;
+}
+
+/* ---------- GASTOS RECURRENTES ----------
+   El panel se arma desde app.js con sus propias variables (--rec-*).
+   Acá se las pisa con la paleta de Mensuales de cada modo. */
+html body .rec-panel {
+  --rec-text: #52162a;
+  --rec-pay: #1f8a4c;
+  --rec-accent: #ea5b8e;
+  --rec-accent-soft: #ffe3ea;
+  --rec-accent-border: #ffc5d2;
+  --rec-accent-hover: #ffd3df;
+  --rec-accent-text: #c93b6e;
+}
+
+html body.dark-mode .rec-panel {
+  --rec-text: #f5e9ec;
+  --rec-pay: #6fdc9a;
+  --rec-accent: #e07a85;
+  --rec-accent-soft: #3a1620;
+  --rec-accent-border: #5a2535;
+  --rec-accent-hover: #4a1c2a;
+  --rec-accent-text: #f0a3ab;
+}
+
+html body.dark-blue-mode .rec-panel {
+  --rec-text: #f1f5f9;
+  --rec-pay: #6fdc9a;
+  --rec-accent: #38bdf8;
+  --rec-accent-soft: #14244b;
+  --rec-accent-border: #1e3a8a;
+  --rec-accent-hover: #1e3a8a;
+  --rec-accent-text: #38bdf8;
+}
+
+html body.black-mode .rec-panel {
+  --rec-text: #ffffff;
+  --rec-pay: #6fdc9a;
+  --rec-accent: #ffffff;
+  --rec-accent-soft: #17171a;
+  --rec-accent-border: #2a2a2f;
+  --rec-accent-hover: #202025;
+  --rec-accent-text: #ffffff;
+}
+
+/* Ventana de "Agregar recurrente" = diálogo de Mensuales */
+html body:not(#pm) .rec-dialog {
+  background: var(--pm-modal-bg) !important;
+  border: 1px solid var(--pm-modal-line) !important;
+  color: var(--app-text) !important;
+  box-shadow: var(--pm-dialog-shadow) !important;
+}
+
+html body:not(#pm) .rec-dialog label {
+  color: var(--pm-label);
+}
+
+/* El fondo del diálogo se escribe con colores fijos porque ::backdrop
+   no siempre hereda las variables */
+html body .rec-dialog::backdrop {
+  background: rgba(65, 15, 32, .35);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+html body.dark-mode .rec-dialog::backdrop {
+  background: rgba(0, 0, 0, .6);
+}
+html body.dark-blue-mode .rec-dialog::backdrop {
+  background: rgba(2, 6, 23, .6);
+}
+html body.black-mode .rec-dialog::backdrop {
+  background: rgba(0, 0, 0, .75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* =========================================================
+   HEADER FUCSIA (solo tema claro)
+========================================================= */
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header {
+  background: linear-gradient(110deg, #ee66a0, #d93c7c) !important;
+  border: 1px solid #d93c7c !important;
+  box-shadow: 0 10px 30px rgba(217, 60, 124, .28) !important;
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header h1,
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .eyebrow {
+  color: #ffffff !important;
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header p,
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .user-email {
+  color: rgba(255, 255, 255, .92) !important;
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .dolar-badge {
+  background: rgba(255, 255, 255, .92) !important;
+  color: #c43878 !important;
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .primary-button {
+  background: #ffffff !important;
+  color: #c93b6e !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(120, 20, 60, .22) !important;
+}
+
+/* =========================================================
+   MICRÓFONO DE "CARGAR POR VOZ" (tema claro): blanco sobre el fucsia
+========================================================= */
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) .vzb .ic {
+  --ic-line: #ffffff;
+  --ic-a1: #ffffff;
+  --ic-sf: transparent;
+}
+
+/* =========================================================
+   PANEL DE VOZ: botones y checkbox con el estilo del resto de la app (4 modos)
+========================================================= */
+html body:not(#pm) .voice-box .vzs {
+  width: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: none !important;
+  accent-color: var(--app-accent);
+}
+html body:not(#pm) .voice-box label {
+  justify-content: flex-start !important;
+  width: fit-content;
+  color: var(--app-text);
+}
+html body:not(#pm) .voice-box :is(.vzp, .vzo) {
+  background: var(--pm-outline-bg) !important;
+  background-color: var(--pm-outline-bg) !important;
+  color: var(--pm-outline-text) !important;
+  border: 1px solid var(--pm-outline-line) !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: 0.2s ease !important;
+}
+html body:not(#pm) .voice-box :is(.vzp, .vzo):hover:not(:disabled) {
+  background: var(--pm-outline-hover) !important;
+  background-color: var(--pm-outline-hover) !important;
+  border-color: var(--pm-outline-line) !important;
+  color: var(--pm-outline-text) !important;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 22px var(--pm-glow) !important;
+}
+html body:not(#pm) .voice-box :is(.vzp, .vzo):active:not(:disabled) {
+  transform: translateY(0) scale(.98) !important;
+}
+
+/* =========================================================
+   PANEL DE VOZ: lápiz del campo de texto en el estilo de los íconos de la app (4 modos)
+========================================================= */
+html body:not(#pm) .voice-box .vzi {
+  padding-left: 40px !important;
+  background-repeat: no-repeat !important;
+  background-position: 13px center !important;
+  background-size: 20px 20px !important;
+}
+html body:not(#pm) .voice-box .vzi { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d6457a' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4.5L16 4.5 19.5 8 8.5 19z' fill='%23ff9fbd'/%3E%3Cpath d='M14 6.5l3.5 3.5M4 20l3-.7'/%3E%3C/svg%3E") !important; }
+html body.dark-mode:not(#pm) .voice-box .vzi { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ec8aa5' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4.5L16 4.5 19.5 8 8.5 19z' fill='%23c43a63'/%3E%3Cpath d='M14 6.5l3.5 3.5M4 20l3-.7'/%3E%3C/svg%3E") !important; }
+html body.dark-blue-mode:not(#pm) .voice-box .vzi { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238fd3ff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4.5L16 4.5 19.5 8 8.5 19z' fill='%2338bdf8'/%3E%3Cpath d='M14 6.5l3.5 3.5M4 20l3-.7'/%3E%3C/svg%3E") !important; }
+html body.black-mode:not(#pm) .voice-box .vzi { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l1-4.5L16 4.5 19.5 8 8.5 19z' fill='%230a0a0a'/%3E%3Cpath d='M14 6.5l3.5 3.5M4 20l3-.7'/%3E%3C/svg%3E") !important; }
+
+/* =========================================================
+   FLORCITA DEL HEADER (tema claro): halo iluminado y con volumen, como en los otros temas
+========================================================= */
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .home-mascot {
+  background: radial-gradient(circle at 35% 28%, #ffffff 0%, #ffe6ee 50%, #ffbcd1 100%) !important;
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, .20),
+    0 0 30px 8px rgba(255, 255, 255, .50),
+    0 14px 30px -8px rgba(110, 15, 55, .50),
+    inset 0 5px 9px rgba(255, 255, 255, .90),
+    inset 0 -7px 12px rgba(217, 60, 124, .22) !important;
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .home-mascot svg.hm-flor {
+  filter: drop-shadow(0 3px 3px rgba(150, 20, 70, .35));
+}
+html body:not(.dark-mode):not(.dark-blue-mode):not(.black-mode):not(#pm) header.header .home-mascot svg.hm-h {
+  fill: #ffffff;
+  stroke: #ffb3cb;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, .85));
+}
