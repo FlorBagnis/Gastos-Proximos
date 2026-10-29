@@ -1,7 +1,9 @@
 # 🌸 Gastos Próximos · Organización de pagos y deudas
 
 <p align="center">
-<img width="1654" height="876" alt="image" src="https://github.com/user-attachments/assets/0a6d6c13-c6d9-400c-8686-c5ee68eee968" />
+
+<img width="1919" height="885" alt="image" src="https://github.com/user-attachments/assets/effe77e7-ebed-4cc3-9be1-53d1619027b0" />
+
 </p>
 
 > **Gastos Próximos** es una aplicación web minimalista e intuitiva para registrar, recordar y organizar compromisos de pago futuros, deudas pendientes y compras planificadas. Se integra en tiempo real con **[MENSUALES](https://github.com/florbagnis/Mensuales)** bajo el mismo ecosistema financiero.
